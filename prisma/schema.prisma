@@ -1,0 +1,112 @@
+generator client {
+  provider = "prisma-client-js"
+  // output   = "../lib/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Category {
+  id           String @id @default(uuid())
+  categoryName String
+  Word         Word[]
+}
+
+model Group {
+  id        String @id @default(uuid())
+  groupName String
+  Word      Word[]
+}
+
+model PartOfSpeech {
+  id           String @id @default(uuid())
+  PartOfSpeech String
+  Word         Word[]
+}
+
+model Language {
+  id           String @id @default(uuid())
+  languageName String
+  Word         Word[]
+}
+
+model WordCase {
+  id   String @id @default(uuid())
+  case String
+  Word Word[]
+}
+
+model User {
+  id            String    @id @default(uuid()) @db.Uuid
+  userName      String    @default("NO_NAME")
+  firstName     String    @default("NO_NAME")
+  lastName      String    @default("NO_NAME")
+  email         String    @unique(map: "user_email_idx")
+  emailVerified DateTime? @db.Timestamp(6)
+  password      String
+  role          Role      @default(user)
+  image         String?
+  createdAt     DateTime  @default(now()) @db.Timestamp(6)
+  sessions      Session[]
+  Word          Word[]
+}
+
+model Session {
+  sessionToken String   @id
+  userId       String   @db.Uuid
+  expires      DateTime @db.Timestamp(6)
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Word {
+  id             String       @id @default(uuid()) @db.Uuid
+  word           String
+  known          Boolean
+  favorite       Boolean
+  groupId        String       @db.Uuid
+  group          Group        @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  userId         String       @db.Uuid
+  user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  wordCaseId     String       @db.Uuid
+  wordCase       WordCase     @relation(fields: [wordCaseId], references: [id], onDelete: Cascade)
+  languageId     String       @db.Uuid
+  language       Language     @relation(fields: [languageId], references: [id], onDelete: Cascade)
+  categoryId     String       @db.Uuid
+  category       Category     @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  partOfSpeechId String       @db.Uuid
+  partOfSpeech   PartOfSpeech @relation(fields: [partOfSpeechId], references: [id], onDelete: Cascade)
+  createdAt      DateTime     @default(now()) @db.Timestamp(6)
+  updatedAt      DateTime     @updatedAt @db.Timestamp(6)
+  synonym        String?
+  antonym        String?
+  meaning        String?
+  status         WordStatus   @default(private)
+
+  @@unique([userId, word])
+  @@index([userId])
+  @@index([groupId])
+  @@index([categoryId])
+  @@index([languageId])
+  @@index([partOfSpeechId])
+  @@index([wordCaseId])
+}
+
+model VerificationToken {
+  identifier String
+  token      String
+  expires    DateTime
+
+  @@id([identifier, token])
+}
+
+enum Role {
+  user
+  admin
+}
+
+enum WordStatus {
+  private
+  public
+}
