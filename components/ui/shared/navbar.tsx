@@ -4,9 +4,15 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X } from 'lucide-react';
+import { Menu, Moon, Sun, X } from 'lucide-react';
 import Image from 'next/image';
 import { APP_NAME } from '@/lib/constants';
+import LanguageDropdown from './languages';
+import UserButton from './user-button';
+
+type MainAdminNavProps = {
+  toggleDarkMode: () => void;
+};
 
 const links = [
   { name: 'Home', href: '/' },
@@ -15,14 +21,14 @@ const links = [
   { name: 'Contact', href: '/contact' },
 ];
 
-export default function Navbar() {
+export default function Navbar({ toggleDarkMode }: MainAdminNavProps) {
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleMenu = () => setIsOpen((prev) => !prev);
 
   return (
-    <nav className="fixed top-0 left-0 w-full bg-white shadow-md z-50">
+    <nav className="fixed top-0 left-0 w-full bg-white dark:bg-gray-900 shadow-md z-50">
       <div className="flex items-center justify-between px-6 py-4 max-w-7xl mx-auto">
         <Link href="/" className="text-xl font-bold text-blue-600">
           <Image
@@ -43,8 +49,8 @@ export default function Navbar() {
             <Link
               key={link.name}
               href={link.href}
-              className={`text-gray-700 hover:text-blue-600 transition-colors ${
-                pathname === link.href ? 'font-semibold text-blue-600' : ''
+              className={`hover:text-gray-800 dark:hover:text-gray-200 transition-colors ${
+                pathname === link.href ? 'font-semibold text-amber-100' : ''
               }`}
             >
               {link.name}
@@ -52,7 +58,17 @@ export default function Navbar() {
           ))}
         </div>
 
-        <div className="text-black">toggle</div>
+        <div className="flex items-center gap-4 px-5">
+          <LanguageDropdown />
+          <button
+            onClick={toggleDarkMode}
+            className="p-1 rounded hover:bg-gray-100 hover:text-gray-800 dark:hover:text-gray-200 transition"
+          >
+            <Sun className="w-5 h-5 text-gray-800 dark:hidden" />
+            <Moon className="w-5 h-5 text-gray-200 hidden dark:block" />
+          </button>
+          <UserButton />
+        </div>
 
         {/* Mobile Toggle */}
         <button className="md:hidden text-gray-700" onClick={toggleMenu}>
@@ -64,7 +80,7 @@ export default function Navbar() {
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            className="md:hidden bg-white shadow-md"
+            className="md:hidden bg-white dark:bg-gray-900 shadow-md"
             initial={{ height: 0 }}
             animate={{ height: 'auto' }}
             exit={{ height: 0 }}
@@ -75,7 +91,7 @@ export default function Navbar() {
                 <Link
                   key={link.name}
                   href={link.href}
-                  className={`text-gray-700 hover:text-blue-600 transition-colors ${
+                  className={`text-gray-700 dark:text-gray-300 hover:text-gray-800 dark:hover:text-gray-200 transition-colors ${
                     pathname === link.href ? 'font-semibold text-blue-600' : ''
                   }`}
                   onClick={() => setIsOpen(false)}

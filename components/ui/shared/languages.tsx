@@ -2,8 +2,8 @@
 
 import { useState } from 'react';
 import { useRouter, usePathname, useParams } from 'next/navigation';
-
 import Flag from 'react-world-flags';
+import Image from 'next/image';
 
 const languages = [
   { code: 'en', country: 'us', label: 'English' },
@@ -29,6 +29,8 @@ export default function LanguageDropdown() {
     setOpen(false);
   };
 
+  console.log('selectedLang:', selectedLang);
+
   return (
     <div className="relative inline-block text-left">
       <button
@@ -36,15 +38,18 @@ export default function LanguageDropdown() {
         className="inline-flex items-center justify-between w-16 px-2 py-2 bg-gray-50 dark:bg-gray-900 rounded-lg hover:bg-gray-100 hover:dark:bg-gray-800 focus:outline-none"
         title={selectedLang?.label}
       >
-        <Flag
-          code={selectedLang?.country || ''}
-          style={{
-            width: '18px',
-            height: '18px',
-            borderRadius: '50%',
-            objectFit: 'cover',
-          }}
-        />
+        {selectedLang?.country && (
+          <Image
+            src={`https://flagcdn.com/w40/${selectedLang.country.toLowerCase()}.png`}
+            alt={selectedLang.label}
+            width={18}
+            height={18}
+            style={{
+              borderRadius: '50%',
+              objectFit: 'cover',
+            }}
+          />
+        )}
         <svg
           className="w-4 h-4 ml-1 text-gray-400"
           viewBox="0 0 20 20"
@@ -69,7 +74,8 @@ export default function LanguageDropdown() {
                 title={lang.label}
               >
                 <Flag
-                  code={lang.country}
+                  src={lang?.country}
+                  alt={lang.label}
                   style={{
                     width: '18px',
                     height: '18px',
