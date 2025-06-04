@@ -23,8 +23,10 @@ const links = [
 
 export default function Navbar({ toggleDarkMode }: MainAdminNavProps) {
   const pathname = usePathname();
-  const [isOpen, setIsOpen] = useState(false);
+  const segments = pathname.split('/').filter(Boolean);
+  const locale = segments[0] ?? 'en'; // fallback locale
 
+  const [isOpen, setIsOpen] = useState(false);
   const toggleMenu = () => setIsOpen((prev) => !prev);
 
   return (
@@ -32,7 +34,7 @@ export default function Navbar({ toggleDarkMode }: MainAdminNavProps) {
       <div className="flex items-center justify-between px-6 py-4 max-w-7xl mx-auto">
         <Link href="/" className="text-xl font-bold text-blue-600">
           <Image
-            priority={true}
+            priority
             src="/images/logo.png"
             width={30}
             height={30}
@@ -45,17 +47,23 @@ export default function Navbar({ toggleDarkMode }: MainAdminNavProps) {
 
         {/* Desktop Links */}
         <div className="hidden md:flex gap-8">
-          {links.map((link) => (
-            <Link
-              key={link.name}
-              href={link.href}
-              className={`hover:text-gray-800 dark:hover:text-gray-200 transition-colors ${
-                pathname === link.href ? 'font-semibold text-amber-100' : ''
-              }`}
-            >
-              {link.name}
-            </Link>
-          ))}
+          {links.map((link) => {
+            const localizedHref = `/${locale}${link.href}`;
+
+            return (
+              <Link
+                key={link.name}
+                href={localizedHref}
+                className={`hover:text-gray-800 dark:hover:text-gray-200 transition-colors ${
+                  pathname === localizedHref
+                    ? 'font-semibold text-amber-100'
+                    : ''
+                }`}
+              >
+                {link.name}
+              </Link>
+            );
+          })}
         </div>
 
         <div className="flex items-center gap-4 px-5">
@@ -87,18 +95,23 @@ export default function Navbar({ toggleDarkMode }: MainAdminNavProps) {
             transition={{ duration: 0.3 }}
           >
             <div className="flex flex-col px-6 pb-4 gap-4">
-              {links.map((link) => (
-                <Link
-                  key={link.name}
-                  href={link.href}
-                  className={`text-gray-700 dark:text-gray-300 hover:text-gray-800 dark:hover:text-gray-200 transition-colors ${
-                    pathname === link.href ? 'font-semibold text-blue-600' : ''
-                  }`}
-                  onClick={() => setIsOpen(false)}
-                >
-                  {link.name}
-                </Link>
-              ))}
+              {links.map((link) => {
+                const localizedHref = `/${locale}${link.href}`;
+
+                return (
+                  <Link
+                    key={link.name}
+                    href={localizedHref}
+                    className={`hover:text-gray-800 dark:hover:text-gray-200 transition-colors ${
+                      pathname === localizedHref
+                        ? 'font-semibold text-amber-100'
+                        : ''
+                    }`}
+                  >
+                    {link.name}
+                  </Link>
+                );
+              })}
             </div>
           </motion.div>
         )}
