@@ -17,14 +17,13 @@ type MainAdminNavProps = {
 const links = [
   { name: 'Home', href: '/' },
   { name: 'About', href: '/about' },
-  { name: 'Projects', href: '/projects' },
   { name: 'Contact', href: '/contact' },
 ];
 
 export default function Navbar({ toggleDarkMode }: MainAdminNavProps) {
   const pathname = usePathname();
   const segments = pathname.split('/').filter(Boolean);
-  const locale = segments[0] ?? 'en'; // fallback locale
+  const locale = segments[0] ?? 'en';
 
   const [isOpen, setIsOpen] = useState(false);
   const toggleMenu = () => setIsOpen((prev) => !prev);
@@ -32,7 +31,7 @@ export default function Navbar({ toggleDarkMode }: MainAdminNavProps) {
   return (
     <nav className="fixed top-0 left-0 w-full bg-white dark:bg-gray-900 shadow-md z-50">
       <div className="flex items-center justify-between px-6 py-4 max-w-7xl mx-auto">
-        <Link href="/" className="text-xl font-bold text-blue-600">
+        <Link href={`/${locale}/`} className="text-xl font-bold text-blue-600">
           <Image
             priority
             src="/images/logo.png"
@@ -48,14 +47,13 @@ export default function Navbar({ toggleDarkMode }: MainAdminNavProps) {
         {/* Desktop Links */}
         <div className="hidden md:flex gap-8">
           {links.map((link) => {
-            const localizedHref = `/${locale}${link.href}`;
-
             return (
               <Link
                 key={link.name}
-                href={localizedHref}
+                href={`/${locale}/${link.href}`}
+                locale={locale}
                 className={`hover:text-gray-800 dark:hover:text-gray-200 transition-colors ${
-                  pathname === localizedHref
+                  pathname === `/${locale}${link.href}`
                     ? 'font-semibold text-amber-100'
                     : ''
                 }`}
@@ -96,14 +94,13 @@ export default function Navbar({ toggleDarkMode }: MainAdminNavProps) {
           >
             <div className="flex flex-col px-6 pb-4 gap-4">
               {links.map((link) => {
-                const localizedHref = `/${locale}${link.href}`;
-
                 return (
                   <Link
                     key={link.name}
-                    href={localizedHref}
+                    href={`/${locale}/${link.href}`}
+                    locale={locale}
                     className={`hover:text-gray-800 dark:hover:text-gray-200 transition-colors ${
-                      pathname === localizedHref
+                      pathname === `/${locale}${link.href}`
                         ? 'font-semibold text-amber-100'
                         : ''
                     }`}

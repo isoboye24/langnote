@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import { useRouter, usePathname, useParams } from 'next/navigation';
-import Flag from 'react-world-flags';
 import Image from 'next/image';
 
 const languages = [
@@ -22,9 +21,16 @@ export default function LanguageDropdown() {
   const selectedLang = languages.find((lang) => lang.code === selected);
 
   const changeLanguage = (lang: string) => {
-    const segments = pathname.split('/');
-    segments[1] = lang; // update the locale part
-    const newPath = segments.join('/');
+    const segments = pathname.split('/').filter(Boolean);
+    const locales = ['en', 'de', 'ru'];
+
+    if (locales.includes(segments[0])) {
+      segments[0] = lang;
+    } else {
+      segments.unshift(lang);
+    }
+
+    const newPath = '/' + segments.join('/');
     router.push(newPath);
     setOpen(false);
   };
@@ -45,7 +51,7 @@ export default function LanguageDropdown() {
             width={18}
             height={18}
             style={{
-              borderRadius: '50%',
+              borderRadius: '10%',
               objectFit: 'cover',
             }}
           />
@@ -64,7 +70,7 @@ export default function LanguageDropdown() {
       </button>
 
       {open && (
-        <div className="absolute z-[9999] w-10 mt-2 origin-top-right bg-white rounded-lg shadow-lg ring-1 ring-gray-100 ring-opacity-5">
+        <div className="absolute z-[9999] w-10 mt-2 origin-top-right  bg-white rounded-lg shadow-lg ring-1 ring-gray-100 ring-opacity-5">
           <div className="py-1">
             {languages.map((lang) => (
               <button
@@ -73,13 +79,13 @@ export default function LanguageDropdown() {
                 className="block w-full px-2 py-2 text-center hover:bg-gray-100"
                 title={lang.label}
               >
-                <Flag
-                  src={lang?.country}
+                <Image
+                  src={`https://flagcdn.com/w40/${lang.country.toLowerCase()}.png`}
                   alt={lang.label}
+                  width={18}
+                  height={18}
                   style={{
-                    width: '18px',
-                    height: '18px',
-                    borderRadius: '50%',
+                    borderRadius: '10%',
                     objectFit: 'cover',
                   }}
                 />
