@@ -33,7 +33,10 @@ export default function Navbar({ toggleDarkMode }: MainAdminNavProps) {
   return (
     <nav className="fixed top-0 left-0 w-full bg-white dark:bg-gray-900 shadow-md z-50">
       <div className="flex items-center justify-between px-6 py-4 max-w-7xl mx-auto">
-        <Link href={`/${locale}/`} className="text-xl font-bold text-blue-600">
+        <Link
+          href={`/${locale}/`}
+          className="text-xl font-bold text-blue-600 flex"
+        >
           <Image
             priority
             src="/images/logo.png"
