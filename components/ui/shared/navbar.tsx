@@ -9,18 +9,20 @@ import Image from 'next/image';
 import { APP_NAME } from '@/lib/constants';
 import LanguageDropdown from './languages';
 import UserButton from './user-button';
+import { useTranslation } from 'react-i18next';
 
 type MainAdminNavProps = {
   toggleDarkMode: () => void;
 };
 
-const links = [
-  { name: 'Home', href: '/' },
-  { name: 'About', href: '/about' },
-  { name: 'Contact', href: '/contact' },
-];
-
 export default function Navbar({ toggleDarkMode }: MainAdminNavProps) {
+  const { t } = useTranslation();
+
+  const links = [
+    { name: t('home'), href: '/' },
+    { name: t('about'), href: '/about' },
+    { name: t('contact'), href: '/contact' },
+  ];
   const pathname = usePathname();
   const segments = pathname.split('/').filter(Boolean);
   const locale = segments[0] ?? 'en';
@@ -49,7 +51,7 @@ export default function Navbar({ toggleDarkMode }: MainAdminNavProps) {
           {links.map((link) => {
             return (
               <Link
-                key={link.name}
+                key={t(link.name)}
                 href={`/${locale}/${link.href}`}
                 locale={locale}
                 className={`hover:text-gray-800 dark:hover:text-gray-200 transition-colors ${
@@ -96,8 +98,8 @@ export default function Navbar({ toggleDarkMode }: MainAdminNavProps) {
               {links.map((link) => {
                 return (
                   <Link
-                    key={link.name}
-                    href={`/${locale}/${link.href}`}
+                    key={t(link.name)}
+                    href={`/${locale}${link.href}`}
                     locale={locale}
                     className={`hover:text-gray-800 dark:hover:text-gray-200 transition-colors ${
                       pathname === `/${locale}${link.href}`

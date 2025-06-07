@@ -1,16 +1,18 @@
 import Footer from '@/components/ui/shared/footer';
 import Header from '@/components/ui/shared/header';
-import { ReactNode } from 'react';
 
 export default async function LocaleLayout({
   children,
   params,
 }: {
-  children: ReactNode;
-  params: { locale: string };
+  children: React.ReactNode;
+  params: Promise<{ locale: string }>;
 }) {
+  const resolvedParams = await params;
+  const locale = resolvedParams.locale;
+
   return (
-    <html lang={params.locale}>
+    <html lang={locale}>
       <Header />
       <main className="wrapper">{children}</main>
       <Footer />
