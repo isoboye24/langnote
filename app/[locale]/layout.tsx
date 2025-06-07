@@ -1,6 +1,3 @@
-import Footer from '@/components/ui/shared/footer';
-import Header from '@/components/ui/shared/header';
-
 export default async function LocaleLayout({
   children,
   params,
@@ -13,9 +10,7 @@ export default async function LocaleLayout({
 
   return (
     <html lang={locale}>
-      <Header />
-      <main className="wrapper">{children}</main>
-      <Footer />
+      <main>{children}</main>
     </html>
   );
 }

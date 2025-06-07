@@ -69,12 +69,7 @@ const UserButtonClient = () => {
             </Link>
           </DropdownMenuItem>
           <DropdownMenuItem asChild>
-            <Link className="w-full" href="/user/profile">
-              Profile
-            </Link>
-          </DropdownMenuItem>
-          <DropdownMenuItem asChild>
-            <Link className="w-full" href="/Admin/dashboard">
+            <Link className="w-full" href="/admin/dashboard">
               Admin
             </Link>
           </DropdownMenuItem>
