@@ -20,3 +20,7 @@ export const signUpDefaultValues = {
   confirmPassword: '',
   image: '',
 };
+
+export const languageDefaultValues = {
+  languageName: '',
+};
