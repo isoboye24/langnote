@@ -25,18 +25,23 @@ model PartOfSpeech {
 }
 
 model Language {
-  id              String            @id @default(uuid()) @db.Uuid
-  languageName    String
-  PartOfSpeech    PartOfSpeech[]
-  PopularListWord PopularListWord[]
-  User            User[]
-  WordCase        WordCase[]
+  id                  String                @id @default(uuid()) @db.Uuid
+  languageName        String
+  PartOfSpeech        PartOfSpeech[]
+  PopularListCategory PopularListCategory[]
+  PopularListWord     PopularListWord[]
+  User                User[]
+  WordCase            WordCase[]
 }
 
 model PopularListCategory {
   id              String            @id @default(uuid()) @db.Uuid
   popularCategory String
+  languageId      String            @db.Uuid
+  Language        Language          @relation(fields: [languageId], references: [id])
   PopularListWord PopularListWord[]
+
+  @@index([languageId])
 }
 
 model PopularListWord {

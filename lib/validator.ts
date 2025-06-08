@@ -14,4 +14,5 @@ export const upsertPopularListCategorySchema = z.object({
     .min(1, 'If provided, category id is should be at least 1 character')
     .optional(),
   popularCategory: z.string().min(1, 'Language name is required'),
+  languageId: z.string().min(1, 'Language is required'),
 });

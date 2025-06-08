@@ -19,7 +19,7 @@ export const upsertPopularCategory = async (
     };
   }
 
-  const { id, popularCategory } = parsed.data;
+  const { id, popularCategory, languageId } = parsed.data;
 
   try {
     let category;
@@ -28,12 +28,12 @@ export const upsertPopularCategory = async (
     if (id) {
       category = await prisma.popularListCategory.upsert({
         where: { id },
-        update: { popularCategory },
-        create: { popularCategory },
+        update: { popularCategory, languageId },
+        create: { popularCategory, languageId },
       });
     } else {
       category = await prisma.popularListCategory.create({
-        data: { popularCategory },
+        data: { popularCategory, languageId },
       });
     }
 
@@ -52,8 +52,10 @@ export const upsertPopularCategory = async (
     };
   }
 };
-
-export const checkIfPopularCategoryExists = async (category: string) => {
+export const checkIfPopularCategoryExists = async (
+  category: string,
+  languageId: string
+) => {
   try {
     const existing = await prisma.popularListCategory.findFirst({
       where: {
@@ -61,6 +63,7 @@ export const checkIfPopularCategoryExists = async (category: string) => {
           equals: category,
           mode: 'insensitive',
         },
+        languageId,
       },
     });
 

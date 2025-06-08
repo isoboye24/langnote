@@ -24,3 +24,8 @@ export const signUpDefaultValues = {
 export const languageDefaultValues = {
   languageName: '',
 };
+
+export const popularCategoryDefaultValues = {
+  popularCategory: '',
+  languageId: '',
+};
