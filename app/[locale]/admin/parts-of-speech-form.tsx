@@ -10,14 +10,14 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { z } from 'zod';
-import { upsertPopularListCategorySchema } from '@/lib/validator';
+import { upsertPartsOfSpeechSchema } from '@/lib/validator';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
-import { popularCategoryDefaultValues } from '@/lib/constants';
+import { partsOfSpeechDefaultValues } from '@/lib/constants';
 
 import {
   Select,
@@ -26,47 +26,47 @@ import {
   SelectContent,
   SelectItem,
 } from '@/components/ui/select';
-import { PopularListCategory } from '@prisma/client';
+import { PartOfSpeech } from '@prisma/client';
 import { getAllLanguages } from '@/lib/actions/admin/language.actions';
 import {
-  checkIfPopularCategoryExists,
-  upsertPopularCategory,
-} from '@/lib/actions/admin/popular-list-category.actions';
+  checkIfPartsOfSpeechExists,
+  upsertPartsOfSpeech,
+} from '@/lib/actions/admin/parts-of-speech.actions';
 
-const PopularListCategoryForm = ({
+const PartsOfSpeechForm = ({
   type,
-  category,
+  partsOfSpeech,
   id,
 }: {
   type: 'Create' | 'Update';
-  category?: PopularListCategory;
+  partsOfSpeech?: PartOfSpeech;
   id?: string;
 }) => {
   const router = useRouter();
 
-  const form = useForm<z.infer<typeof upsertPopularListCategorySchema>>({
-    resolver: zodResolver(upsertPopularListCategorySchema),
-    defaultValues: category
+  const form = useForm<z.infer<typeof upsertPartsOfSpeechSchema>>({
+    resolver: zodResolver(upsertPartsOfSpeechSchema),
+    defaultValues: partsOfSpeech
       ? {
-          popularCategory: category.popularCategory,
-          languageId: category.languageId,
+          name: partsOfSpeech.name,
+          languageId: partsOfSpeech.languageId,
         }
-      : popularCategoryDefaultValues,
+      : partsOfSpeechDefaultValues,
   });
 
   const [languages, setLanguages] = useState<
     { id: string; languageName: string }[]
   >([]);
 
-  // Reset form values when category prop changes
+  // Reset form values when parts of speech prop changes
   useEffect(() => {
-    if (category && type === 'Update') {
+    if (partsOfSpeech && type === 'Update') {
       form.reset({
-        popularCategory: category.popularCategory,
-        languageId: category.languageId,
+        name: partsOfSpeech.name,
+        languageId: partsOfSpeech.languageId,
       });
     }
-  }, [category, type, form]);
+  }, [partsOfSpeech, type, form]);
 
   useEffect(() => {
     const fetchLanguages = async () => {
@@ -83,27 +83,29 @@ const PopularListCategoryForm = ({
   }, []);
 
   const onSubmit: SubmitHandler<
-    z.infer<typeof upsertPopularListCategorySchema>
+    z.infer<typeof upsertPartsOfSpeechSchema>
   > = async (values) => {
     if (type === 'Create') {
-      const exists = await checkIfPopularCategoryExists(
-        values.popularCategory,
+      const exists = await checkIfPartsOfSpeechExists(
+        values.name,
         values.languageId
       );
       if (exists) {
-        toast.error('Category with this name and language already exists.');
+        toast.error(
+          'Part of speech with this name and language already exists.'
+        );
         return;
       }
     }
     const payload = { ...values, id: type === 'Update' && id ? id : undefined };
 
-    const res = await upsertPopularCategory(payload);
+    const res = await upsertPartsOfSpeech(payload);
 
     if (!res.success) {
       toast.error(res.message);
     } else {
       toast.success(res.message);
-      router.push('/admin/popular-lists-categories');
+      router.push('/admin/parts-of-speech');
     }
   };
 
@@ -120,12 +122,12 @@ const PopularListCategoryForm = ({
               <div className="">
                 <FormField
                   control={form.control}
-                  name="popularCategory"
+                  name="name"
                   render={({ field }) => (
                     <FormItem className="w-full">
-                      <FormLabel>Popular Category</FormLabel>
+                      <FormLabel>Part of Speech</FormLabel>
                       <FormControl>
-                        <Input placeholder="Enter Category" {...field} />
+                        <Input placeholder="Enter Part of Speech" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -139,7 +141,7 @@ const PopularListCategoryForm = ({
                   name="languageId"
                   render={({ field }) => (
                     <FormItem className="w-full">
-                      <FormLabel>Category language</FormLabel>
+                      <FormLabel>Language of Part of Speech</FormLabel>
                       <FormControl>
                         <Select
                           value={field.value?.toString() || ''}
@@ -176,7 +178,7 @@ const PopularListCategoryForm = ({
               >
                 {form.formState.isSubmitting
                   ? 'Submitting...'
-                  : `${type} Category`}
+                  : `${type} Part of speech`}
               </Button>
             </div>
           </div>
@@ -186,4 +188,4 @@ const PopularListCategoryForm = ({
   );
 };
 
-export default PopularListCategoryForm;
+export default PartsOfSpeechForm;
