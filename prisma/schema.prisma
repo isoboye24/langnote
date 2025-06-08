@@ -20,42 +20,73 @@ model Group {
 }
 
 model PartOfSpeech {
-  id           String @id @default(uuid()) @db.Uuid
-  PartOfSpeech String
-  Word         Word[]
-}
-
-model Language {
-  id           String @id @default(uuid()) @db.Uuid
-  languageName String
-  Word         Word[]
-}
-
-model PopularListCategory {
-  id              String @id @default(uuid()) @db.Uuid
-  popularCategory String
+  id              String            @id @default(uuid()) @db.Uuid
+  PartOfSpeech    String
+  PopularListWord PopularListWord[]
   Word            Word[]
 }
 
+model Language {
+  id              String            @id @default(uuid()) @db.Uuid
+  languageName    String
+  PopularListWord PopularListWord[]
+  User            User[]
+}
+
+model PopularListCategory {
+  id              String            @id @default(uuid()) @db.Uuid
+  popularCategory String
+  PopularListWord PopularListWord[]
+}
+
+model PopularListWord {
+  id                String              @id @default(uuid()) @db.Uuid
+  word              String
+  known             Boolean
+  favorite          Boolean
+  wordCaseId        String              @db.Uuid
+  partOfSpeechId    String              @db.Uuid
+  createdAt         DateTime            @default(now()) @db.Timestamp(6)
+  updatedAt         DateTime            @updatedAt @db.Timestamp(6)
+  synonym           String?
+  antonym           String?
+  meaning           String?
+  popularCategoryId String              @db.Uuid
+  languageId        String?             @db.Uuid
+  Language          Language?           @relation(fields: [languageId], references: [id])
+  partOfSpeech      PartOfSpeech        @relation(fields: [partOfSpeechId], references: [id], onDelete: Cascade)
+  popularCategory   PopularListCategory @relation(fields: [popularCategoryId], references: [id], onDelete: Cascade)
+  wordCase          WordCase            @relation(fields: [wordCaseId], references: [id], onDelete: Cascade)
+
+  @@index([partOfSpeechId])
+  @@index([wordCaseId])
+  @@index([popularCategoryId])
+  @@index([languageId])
+}
+
 model WordCase {
-  id   String @id @default(uuid()) @db.Uuid
-  case String
-  Word Word[]
+  id              String            @id @default(uuid()) @db.Uuid
+  case            String
+  PopularListWord PopularListWord[]
+  Word            Word[]
 }
 
 model User {
   id            String    @id @default(uuid()) @db.Uuid
-  userName      String    @default("NO_NAME")
+  userName      String    @unique(map: "user_userName_idx")
   firstName     String    @default("NO_NAME")
   lastName      String    @default("NO_NAME")
-  email         String    @unique(map: "user_email_idx")
+  email         String    @default("NO_Email")
   emailVerified DateTime? @db.Timestamp(6)
   password      String
   role          Role      @default(user)
-  image         String?
   createdAt     DateTime  @default(now()) @db.Timestamp(6)
+  languageId    String    @db.Uuid
   sessions      Session[]
+  language      Language  @relation(fields: [languageId], references: [id], onDelete: Cascade)
   Word          Word[]
+
+  @@index([languageId])
 }
 
 model Session {
@@ -66,39 +97,32 @@ model Session {
 }
 
 model Word {
-  id                String              @id @default(uuid()) @db.Uuid
-  word              String
-  known             Boolean
-  favorite          Boolean
-  groupId           String              @db.Uuid
-  userId            String              @db.Uuid
-  wordCaseId        String              @db.Uuid
-  languageId        String              @db.Uuid
-  categoryId        String              @db.Uuid
-  partOfSpeechId    String              @db.Uuid
-  createdAt         DateTime            @default(now()) @db.Timestamp(6)
-  updatedAt         DateTime            @updatedAt @db.Timestamp(6)
-  synonym           String?
-  antonym           String?
-  meaning           String?
-  status            WordStatus          @default(private)
-  popularCategoryId String              @db.Uuid
-  category          Category            @relation(fields: [categoryId], references: [id], onDelete: Cascade)
-  group             Group               @relation(fields: [groupId], references: [id], onDelete: Cascade)
-  language          Language            @relation(fields: [languageId], references: [id], onDelete: Cascade)
-  partOfSpeech      PartOfSpeech        @relation(fields: [partOfSpeechId], references: [id], onDelete: Cascade)
-  popularCategory   PopularListCategory @relation(fields: [popularCategoryId], references: [id], onDelete: Cascade)
-  user              User                @relation(fields: [userId], references: [id], onDelete: Cascade)
-  wordCase          WordCase            @relation(fields: [wordCaseId], references: [id], onDelete: Cascade)
+  id             String       @id @default(uuid()) @db.Uuid
+  word           String
+  known          Boolean
+  favorite       Boolean
+  groupId        String       @db.Uuid
+  userId         String       @db.Uuid
+  wordCaseId     String       @db.Uuid
+  categoryId     String       @db.Uuid
+  partOfSpeechId String       @db.Uuid
+  createdAt      DateTime     @default(now()) @db.Timestamp(6)
+  updatedAt      DateTime     @updatedAt @db.Timestamp(6)
+  synonym        String?
+  antonym        String?
+  meaning        String?
+  category       Category     @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  group          Group        @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  partOfSpeech   PartOfSpeech @relation(fields: [partOfSpeechId], references: [id], onDelete: Cascade)
+  user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  wordCase       WordCase     @relation(fields: [wordCaseId], references: [id], onDelete: Cascade)
 
   @@unique([userId, word])
   @@index([userId])
   @@index([groupId])
   @@index([categoryId])
-  @@index([languageId])
   @@index([partOfSpeechId])
   @@index([wordCaseId])
-  @@index([popularCategoryId])
 }
 
 model VerificationToken {
@@ -112,9 +136,4 @@ model VerificationToken {
 enum Role {
   user
   admin
-}
-
-enum WordStatus {
-  private
-  public
 }

@@ -32,7 +32,7 @@ export default function AdminSidebar() {
       icon: <UserPen size={20} />,
     },
     {
-      label: t('popular Cat '),
+      label: t('popular Cat'),
       href: '/admin/popular-lists-category',
       icon: <UserPen size={20} />,
     },
