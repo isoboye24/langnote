@@ -29,3 +29,8 @@ export const popularCategoryDefaultValues = {
   popularCategory: '',
   languageId: '',
 };
+
+export const partsOfSpeechDefaultValues = {
+  name: '',
+  languageId: '',
+};
