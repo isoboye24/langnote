@@ -7,7 +7,10 @@ import {
   LayoutDashboard,
   ChevronDown,
   ChevronRight,
-  UserPen,
+  Languages,
+  Group,
+  Component,
+  Radiation,
 } from 'lucide-react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -22,19 +25,29 @@ export default function AdminSidebar() {
       href: '/admin/dashboard',
       icon: <Home size={20} />,
     },
-    { label: t('Users'), href: '/admin/user', icon: <Users size={20} /> },
+    { label: t('Users'), href: '/admin/users', icon: <Users size={20} /> },
+    {
+      label: t('Languages'),
+      href: '/admin/languages',
+      icon: <Languages size={20} />,
+    },
+    {
+      label: t('Parts of Speech'),
+      href: '/admin/parts-of-speech',
+      icon: <Radiation size={20} />,
+    },
   ];
 
   const categoriesLinks = [
     {
       label: t('General Cat'),
-      href: '/admin/general-category',
-      icon: <UserPen size={20} />,
+      href: '/admin/general-categories',
+      icon: <Group size={20} />,
     },
     {
       label: t('popular Cat'),
-      href: '/admin/popular-lists-category',
-      icon: <UserPen size={20} />,
+      href: '/admin/popular-lists-categories',
+      icon: <Component size={20} />,
     },
   ];
 
