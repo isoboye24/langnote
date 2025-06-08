@@ -52,8 +52,8 @@ model PopularListWord {
   antonym           String?
   meaning           String?
   popularCategoryId String              @db.Uuid
-  languageId        String?             @db.Uuid
-  Language          Language?           @relation(fields: [languageId], references: [id])
+  languageId        String              @db.Uuid
+  Language          Language            @relation(fields: [languageId], references: [id])
   partOfSpeech      PartOfSpeech        @relation(fields: [partOfSpeechId], references: [id], onDelete: Cascade)
   popularCategory   PopularListCategory @relation(fields: [popularCategoryId], references: [id], onDelete: Cascade)
   wordCase          WordCase            @relation(fields: [wordCaseId], references: [id], onDelete: Cascade)
