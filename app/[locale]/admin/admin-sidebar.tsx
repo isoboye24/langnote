@@ -8,10 +8,10 @@ import {
   ChevronDown,
   ChevronRight,
   Languages,
-  Group,
   Component,
   Radiation,
   Boxes,
+  Earth,
 } from 'lucide-react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -27,6 +27,22 @@ export default function AdminSidebar() {
       icon: <Home size={20} />,
     },
     { label: t('Users'), href: '/admin/users', icon: <Users size={20} /> },
+  ];
+
+  const popularLinks = [
+    {
+      label: t('Popular Words'),
+      href: '/admin/popular-words',
+      icon: <Earth size={20} />,
+    },
+    {
+      label: t('popular Cat'),
+      href: '/admin/popular-lists-categories',
+      icon: <Component size={20} />,
+    },
+  ];
+
+  const InternalDataLinks = [
     {
       label: t('Languages'),
       href: '/admin/languages',
@@ -44,24 +60,12 @@ export default function AdminSidebar() {
     },
   ];
 
-  const categoriesLinks = [
-    {
-      label: t('General Cat'),
-      href: '/admin/general-categories',
-      icon: <Group size={20} />,
-    },
-    {
-      label: t('popular Cat'),
-      href: '/admin/popular-lists-categories',
-      icon: <Component size={20} />,
-    },
-  ];
-
   const pathname = usePathname();
   const segments = pathname.split('/').filter(Boolean);
   const locale = segments[0] ?? 'en';
 
-  const [isFrontendOpen, setIsFrontendOpen] = useState(false);
+  const [isPopularOpen, setIsPopularOpen] = useState(false);
+  const [isInternalDataOpen, setIsInternalDataOpen] = useState(false);
   return (
     <aside className="h-screen w-55 md:w-64 bg-teal-900 text-white p-4 flex flex-col border-r border-teal-800">
       <Link
@@ -72,28 +76,31 @@ export default function AdminSidebar() {
       </Link>
 
       <nav className="flex-1 space-y-2">
-        {links.map(({ href, label, icon }) => (
-          <Link
-            key={href}
-            href={`/${locale}/${href}`}
-            className="flex items-center space-x-3 p-2 rounded hover:bg-teal-800 transition"
-          >
-            {icon}
-            <span>{label}</span>
-          </Link>
-        ))}
-        <div className="border my-5 border-amber-500"></div>
-        {/* Categories */}
+        <div className="mb-10 space-y-2">
+          {links.map(({ href, label, icon }) => (
+            <Link
+              key={href}
+              href={`/${locale}/${href}`}
+              className="flex items-center space-x-3 p-2 rounded hover:bg-teal-800 transition"
+            >
+              {icon}
+              <span>{label}</span>
+            </Link>
+          ))}
+        </div>
+
+        <div className="border mb-5 border-amber-500"></div>
+        {/* Popular */}
         <div>
           <button
-            onClick={() => setIsFrontendOpen(!isFrontendOpen)}
+            onClick={() => setIsPopularOpen(!isPopularOpen)}
             className="flex w-full items-center justify-between p-2 rounded hover:bg-teal-800 transition"
           >
             <div className="flex items-center space-x-3">
               <LayoutDashboard size={20} />
-              <span>Categories</span>
+              <span>Popular</span>
             </div>
-            {isFrontendOpen ? (
+            {isPopularOpen ? (
               <ChevronDown size={16} />
             ) : (
               <ChevronRight size={16} />
@@ -102,10 +109,45 @@ export default function AdminSidebar() {
 
           <div
             className={`ml-8 mt-1 space-y-1 overflow-hidden transition-all duration-300 ease-in-out ${
-              isFrontendOpen ? 'max-h-40' : 'max-h-0'
+              isPopularOpen ? 'max-h-40' : 'max-h-0'
             }`}
           >
-            {categoriesLinks.map(({ href, label, icon }) => (
+            {popularLinks.map(({ href, label, icon }) => (
+              <Link
+                key={href}
+                href={`/${locale}/${href}`}
+                className="flex items-center space-x-3 p-2 rounded hover:bg-teal-800 transition"
+              >
+                {icon}
+                <span>{label}</span>
+              </Link>
+            ))}
+          </div>
+        </div>
+
+        {/* Internal Data */}
+        <div>
+          <button
+            onClick={() => setIsInternalDataOpen(!isInternalDataOpen)}
+            className="flex w-full items-center justify-between p-2 rounded hover:bg-teal-800 transition"
+          >
+            <div className="flex items-center space-x-3">
+              <LayoutDashboard size={20} />
+              <span>Internal Data</span>
+            </div>
+            {isInternalDataOpen ? (
+              <ChevronDown size={16} />
+            ) : (
+              <ChevronRight size={16} />
+            )}
+          </button>
+
+          <div
+            className={`ml-8 mt-1 space-y-1 overflow-hidden transition-all duration-300 ease-in-out ${
+              isInternalDataOpen ? 'max-h-40' : 'max-h-0'
+            }`}
+          >
+            {InternalDataLinks.map(({ href, label, icon }) => (
               <Link
                 key={href}
                 href={`/${locale}/${href}`}
