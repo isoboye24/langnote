@@ -38,6 +38,8 @@ model PopularListCategory {
   id              String            @id @default(uuid()) @db.Uuid
   popularCategory String
   languageId      String            @db.Uuid
+  darkImageIcon   String
+  lightImageIcon  String
   Language        Language          @relation(fields: [languageId], references: [id])
   PopularListWord PopularListWord[]
 

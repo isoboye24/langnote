@@ -19,7 +19,8 @@ export const upsertPopularCategory = async (
     };
   }
 
-  const { id, popularCategory, languageId } = parsed.data;
+  const { id, popularCategory, lightImageIcon, darkImageIcon, languageId } =
+    parsed.data;
 
   try {
     let category;
@@ -28,12 +29,12 @@ export const upsertPopularCategory = async (
     if (id) {
       category = await prisma.popularListCategory.upsert({
         where: { id },
-        update: { popularCategory, languageId },
-        create: { popularCategory, languageId },
+        update: { popularCategory, lightImageIcon, darkImageIcon, languageId },
+        create: { popularCategory, lightImageIcon, darkImageIcon, languageId },
       });
     } else {
       category = await prisma.popularListCategory.create({
-        data: { popularCategory, languageId },
+        data: { popularCategory, lightImageIcon, darkImageIcon, languageId },
       });
     }
 

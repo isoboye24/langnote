@@ -27,6 +27,8 @@ export const languageDefaultValues = {
 
 export const popularCategoryDefaultValues = {
   popularCategory: '',
+  lightImageIcon: '',
+  darkImageIcon: '',
   languageId: '',
 };
 

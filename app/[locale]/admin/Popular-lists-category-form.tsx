@@ -49,6 +49,8 @@ const PopularListCategoryForm = ({
     defaultValues: category
       ? {
           popularCategory: category.popularCategory,
+          lightImageIcon: category.lightImageIcon,
+          darkImageIcon: category.darkImageIcon,
           languageId: category.languageId,
         }
       : popularCategoryDefaultValues,
@@ -63,6 +65,8 @@ const PopularListCategoryForm = ({
     if (category && type === 'Update') {
       form.reset({
         popularCategory: category.popularCategory,
+        lightImageIcon: category.lightImageIcon,
+        darkImageIcon: category.darkImageIcon,
         languageId: category.languageId,
       });
     }
@@ -116,7 +120,7 @@ const PopularListCategoryForm = ({
           className="space-y-8"
         >
           <div className="">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-10">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-10">
               <div className="">
                 <FormField
                   control={form.control}
@@ -159,6 +163,43 @@ const PopularListCategoryForm = ({
                             ))}
                           </SelectContent>
                         </Select>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+
+              <div className="">
+                <FormField
+                  control={form.control}
+                  name="lightImageIcon"
+                  render={({ field }) => (
+                    <FormItem className="w-full">
+                      <FormLabel>Light Mode Image Icon</FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder="Enter Light Mode Image Icon"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+              <div className="">
+                <FormField
+                  control={form.control}
+                  name="darkImageIcon"
+                  render={({ field }) => (
+                    <FormItem className="w-full">
+                      <FormLabel>Dark Mode Image Icon</FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder="Enter Dark Mode Image Icon"
+                          {...field}
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
