@@ -20,8 +20,17 @@ export const upsertPopularListCategorySchema = z.object({
 export const upsertPartsOfSpeechSchema = z.object({
   id: z
     .string()
-    .min(1, 'If provided, category id is should be at least 1 character')
+    .min(1, 'If provided, part of speech id is should be at least 1 character')
     .optional(),
   name: z.string().min(1, 'Parts of Speech is required'),
+  languageId: z.string().min(1, 'Language is required'),
+});
+
+export const upsertCasesSchema = z.object({
+  id: z
+    .string()
+    .min(1, 'If provided, cases id is should be at least 1 character')
+    .optional(),
+  caseName: z.string().min(1, 'Case is required'),
   languageId: z.string().min(1, 'Language is required'),
 });

@@ -71,8 +71,8 @@ model PopularListWord {
 
 model WordCase {
   id              String            @id @default(uuid()) @db.Uuid
-  case            String
   languageId      String            @db.Uuid
+  caseName        String
   PopularListWord PopularListWord[]
   Word            Word[]
   Language        Language          @relation(fields: [languageId], references: [id])

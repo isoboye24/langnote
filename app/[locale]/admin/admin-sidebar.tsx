@@ -11,6 +11,7 @@ import {
   Group,
   Component,
   Radiation,
+  Boxes,
 } from 'lucide-react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -35,6 +36,11 @@ export default function AdminSidebar() {
       label: t('Parts of Speech'),
       href: '/admin/parts-of-speech',
       icon: <Radiation size={20} />,
+    },
+    {
+      label: t('Cases'),
+      href: '/admin/cases',
+      icon: <Boxes size={20} />,
     },
   ];
 

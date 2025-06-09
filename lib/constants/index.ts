@@ -34,3 +34,8 @@ export const partsOfSpeechDefaultValues = {
   name: '',
   languageId: '',
 };
+
+export const casesDefaultValues = {
+  caseName: '',
+  languageId: '',
+};
