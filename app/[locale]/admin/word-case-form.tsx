@@ -124,7 +124,7 @@ const WordCaseForm = ({
                   name="caseName"
                   render={({ field }) => (
                     <FormItem className="w-full">
-                      <FormLabel>Part of Speech</FormLabel>
+                      <FormLabel>Case Name</FormLabel>
                       <FormControl>
                         <Input placeholder="Enter Case Name" {...field} />
                       </FormControl>
