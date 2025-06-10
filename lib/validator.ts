@@ -36,3 +36,20 @@ export const upsertCasesSchema = z.object({
   caseName: z.string().min(1, 'Case is required'),
   languageId: z.string().min(1, 'Language is required'),
 });
+
+export const upsertPopularListWordSchema = z.object({
+  id: z
+    .string()
+    .min(1, 'If provided, word id is should be at least 1 character')
+    .optional(),
+  word: z.string().min(1, 'Case is required'),
+  known: z.boolean(),
+  favorite: z.boolean(),
+  wordCaseId: z.string(),
+  partOfSpeechId: z.string(),
+  synonym: z.string().optional().or(z.literal('')),
+  antonym: z.string().optional().or(z.literal('')),
+  meaning: z.string().optional().or(z.literal('')),
+  popularCategoryId: z.string(),
+  languageId: z.string(),
+});

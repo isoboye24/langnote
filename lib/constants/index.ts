@@ -41,3 +41,16 @@ export const casesDefaultValues = {
   caseName: '',
   languageId: '',
 };
+
+export const popularListWordDefaultValues = {
+  word: '',
+  known: false,
+  favorite: false,
+  wordCaseId: '',
+  partOfSpeechId: '',
+  synonym: '',
+  antonym: '',
+  meaning: '',
+  popularCategoryId: '',
+  languageId: '',
+};

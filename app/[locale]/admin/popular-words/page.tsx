@@ -1,7 +1,17 @@
 import React from 'react';
+import { Metadata } from 'next';
+import PopularListWordPageContent from './popular-lists-words-page-content';
 
-const PopularLists = () => {
-  return <div>Popular Lists</div>;
+export const metadata: Metadata = {
+  title: 'List of Popular Words',
 };
 
-export default PopularLists;
+const PopularWords = async () => {
+  return (
+    <>
+      <PopularListWordPageContent />
+    </>
+  );
+};
+
+export default PopularWords;
