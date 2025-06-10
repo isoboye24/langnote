@@ -75,23 +75,30 @@ export const checkIfPopularCategoryExists = async (
   }
 };
 
-export const getAllPopularCategory = async () => {
+export const getAllPopularCategories = async (
+  page: number = 1,
+  pageSize: number = 10
+) => {
   try {
-    const category = await prisma.popularListCategory.findMany({
-      orderBy: {
-        popularCategory: 'asc',
-      },
-    });
+    const [categories, total] = await Promise.all([
+      prisma.popularListCategory.findMany({
+        orderBy: { popularCategory: 'asc' },
+        skip: (page - 1) * pageSize,
+        take: pageSize,
+      }),
+      prisma.popularListCategory.count(),
+    ]);
 
     return {
       success: true,
-      data: category,
+      data: categories,
+      total,
     };
   } catch (error) {
-    console.error('Error fetching categories:', error);
+    console.error('Error fetching word categories:', error);
     return {
       success: false,
-      message: 'Failed to fetch categories',
+      message: 'Failed to fetch word categories',
     };
   }
 };

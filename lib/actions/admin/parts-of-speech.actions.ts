@@ -75,23 +75,30 @@ export const checkIfPartsOfSpeechExists = async (
   }
 };
 
-export const getAllPartsOfSpeech = async () => {
+export const getAllPartsOfSpeech = async (
+  page: number = 1,
+  pageSize: number = 10
+) => {
   try {
-    const partsOfSpeech = await prisma.partOfSpeech.findMany({
-      orderBy: {
-        name: 'asc',
-      },
-    });
+    const [partsOfSpeech, total] = await Promise.all([
+      prisma.partOfSpeech.findMany({
+        orderBy: { name: 'asc' },
+        skip: (page - 1) * pageSize,
+        take: pageSize,
+      }),
+      prisma.partOfSpeech.count(),
+    ]);
 
     return {
       success: true,
       data: partsOfSpeech,
+      total,
     };
   } catch (error) {
-    console.error('Error fetching parts of speech:', error);
+    console.error('Error fetching word parts of speech:', error);
     return {
       success: false,
-      message: 'Failed to fetch parts of speech',
+      message: 'Failed to fetch word parts of speech',
     };
   }
 };

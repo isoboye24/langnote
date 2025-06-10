@@ -24,7 +24,7 @@ export const Pagination: React.FC<PaginationProps> = ({
           onClick={() => goToPage(i)}
           className={`px-3 py-1 rounded-md border text-sm ${
             i === currentPage
-              ? 'bg-blue-600 text-white font-semibold'
+              ? 'bg-teal-600 text-white font-semibold'
               : 'bg-white hover:bg-gray-100 text-gray-800'
           }`}
         >

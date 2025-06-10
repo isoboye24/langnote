@@ -69,23 +69,30 @@ export const checkIfLanguageExists = async (language: string) => {
   }
 };
 
-export const getAllLanguages = async () => {
+export const getAllLanguages = async (
+  page: number = 1,
+  pageSize: number = 10
+) => {
   try {
-    const languages = await prisma.language.findMany({
-      orderBy: {
-        languageName: 'asc',
-      },
-    });
+    const [languages, total] = await Promise.all([
+      prisma.language.findMany({
+        orderBy: { languageName: 'asc' },
+        skip: (page - 1) * pageSize,
+        take: pageSize,
+      }),
+      prisma.language.count(),
+    ]);
 
     return {
       success: true,
       data: languages,
+      total,
     };
   } catch (error) {
-    console.error('Error fetching languages:', error);
+    console.error('Error fetching word languages:', error);
     return {
       success: false,
-      message: 'Failed to fetch languages',
+      message: 'Failed to fetch word languages',
     };
   }
 };
