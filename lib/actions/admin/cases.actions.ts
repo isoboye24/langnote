@@ -75,17 +75,24 @@ export const checkIfWordCaseExists = async (
   }
 };
 
-export const getAllWordCases = async () => {
+export const getAllWordCases = async (
+  page: number = 1,
+  pageSize: number = 10
+) => {
   try {
-    const cases = await prisma.wordCase.findMany({
-      orderBy: {
-        caseName: 'asc',
-      },
-    });
+    const [cases, total] = await Promise.all([
+      prisma.wordCase.findMany({
+        orderBy: { caseName: 'asc' },
+        skip: (page - 1) * pageSize,
+        take: pageSize,
+      }),
+      prisma.wordCase.count(),
+    ]);
 
     return {
       success: true,
       data: cases,
+      total,
     };
   } catch (error) {
     console.error('Error fetching word cases:', error);
@@ -143,10 +150,11 @@ export async function deleteWordCase(id: string) {
   }
 }
 
+// This total can be called when I need just the total alone.
 export const getTotalWordCase = async () => {
   try {
     const total = await prisma.wordCase.count();
-    return { success: true, total };
+    return { success: true, data: total };
   } catch (error) {
     console.error('Error calculating total word case:', error);
     return { success: false, message: 'Failed to count word case' };
