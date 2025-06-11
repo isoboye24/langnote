@@ -212,9 +212,7 @@ const PopularWordForm = ({
     (selectedLanguage?.languageName.toLowerCase() === 'english' &&
       selectedPartOfSpeech?.name.toLowerCase() === 'noun') ||
     (selectedLanguage?.languageName.toLowerCase() === 'german' &&
-      selectedPartOfSpeech?.name.toLowerCase() === 'nomen') ||
-    (selectedLanguage?.languageName.toLowerCase() === 'russian' &&
-      selectedPartOfSpeech?.name.toLowerCase() === 'существительное');
+      selectedPartOfSpeech?.name.toLowerCase() === 'nomen');
 
   useEffect(() => {
     const englishNoun =
@@ -225,23 +223,10 @@ const PopularWordForm = ({
       selectedLanguage?.languageName.toLowerCase() === 'german' &&
       selectedPartOfSpeech?.name.toLowerCase() === 'nomen';
 
-    const russianNoun =
-      selectedLanguage?.languageName.toLowerCase() === 'russian' &&
-      selectedPartOfSpeech?.name.toLowerCase() === 'существительное';
-
     if (!toggleGenderAndItsContent) {
       let defaultGenderName = '';
       if (englishNoun) defaultGenderName = 'none';
-      if (germanNomen) {
-        defaultGenderName = 'kein';
-      }
-      if (russianNoun) {
-        defaultGenderName = 'ни';
-        console.log(
-          'Russian gender values:',
-          filteredGenders.map((g) => g.genderName)
-        );
-      }
+      if (germanNomen) defaultGenderName = 'kein';
 
       const defaultGender = filteredGenders.find(
         (g) => g.genderName.toLowerCase() === defaultGenderName
@@ -546,8 +531,6 @@ const PopularWordForm = ({
                                 gender.genderName.toLowerCase() === 'none';
                               const isKein =
                                 gender.genderName.toLowerCase() === 'kein';
-                              const isNi =
-                                gender.genderName.toLowerCase() === 'Ни';
 
                               const isEnglishNoun =
                                 selectedLanguage?.languageName.toLowerCase() ===
@@ -561,16 +544,9 @@ const PopularWordForm = ({
                                 selectedPartOfSpeech?.name.toLowerCase() ===
                                   'nomen';
 
-                              const isRussianNoun =
-                                selectedLanguage?.languageName.toLowerCase() ===
-                                  'russian' &&
-                                selectedPartOfSpeech?.name.toLowerCase() ===
-                                  'существительное';
-
                               const shouldDisable =
                                 (isEnglishNoun && !isNone) ||
-                                (isGermanNomen && !isKein) ||
-                                (isRussianNoun && !isNi);
+                                (isGermanNomen && !isKein);
 
                               return (
                                 <SelectItem
