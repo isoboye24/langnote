@@ -52,6 +52,7 @@ export const upsertPopularListWordSchema = z.object({
   meaning: z.string().optional().or(z.literal('')),
   popularCategoryId: z.string(),
   languageId: z.string(),
+  genderId: z.string(),
 });
 
 export const upsertGendersSchema = z.object({

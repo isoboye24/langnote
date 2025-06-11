@@ -58,4 +58,5 @@ export const popularListWordDefaultValues = {
   meaning: '',
   popularCategoryId: '',
   languageId: '',
+  genderId: '',
 };

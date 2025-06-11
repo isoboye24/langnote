@@ -37,6 +37,7 @@ import {
 } from '@/lib/actions/admin/popular-lists-words';
 import { Textarea } from '@/components/ui/textarea';
 import { Checkbox } from '@/components/ui/checkbox';
+import { getAllGenders } from '@/lib/actions/admin/gender.actions';
 
 const PopularWordForm = ({
   type,
@@ -63,6 +64,7 @@ const PopularWordForm = ({
           antonym: popularWord?.antonym ?? '',
           meaning: popularWord?.meaning ?? '',
           popularCategoryId: popularWord.popularCategoryId,
+          genderId: popularWord.genderId,
         }
       : popularListWordDefaultValues,
   });
@@ -83,6 +85,10 @@ const PopularWordForm = ({
     { id: string; popularCategory: string; languageId: string }[]
   >([]);
 
+  const [genders, setGenders] = useState<
+    { id: string; genderName: string; languageId: string }[]
+  >([]);
+
   // Reset form values when category prop changes
   useEffect(() => {
     if (popularWord && type === 'Update') {
@@ -98,6 +104,7 @@ const PopularWordForm = ({
         antonym: popularWord?.antonym ?? '',
         meaning: popularWord?.meaning ?? '',
         popularCategoryId: popularWord.popularCategoryId,
+        genderId: popularWord.genderId,
       });
     }
   }, [popularWord, type, form]);
@@ -105,13 +112,19 @@ const PopularWordForm = ({
   useEffect(() => {
     const fetchPopularWord = async () => {
       try {
-        const [langRes, partsOfSpeechRes, wordCasesRes, categoriesRes] =
-          await Promise.all([
-            getAllLanguages(),
-            getAllPartsOfSpeech(),
-            getAllWordCases(),
-            getAllPopularCategories(),
-          ]);
+        const [
+          langRes,
+          partsOfSpeechRes,
+          wordCasesRes,
+          categoriesRes,
+          genderRes,
+        ] = await Promise.all([
+          getAllLanguages(),
+          getAllPartsOfSpeech(),
+          getAllWordCases(),
+          getAllPopularCategories(),
+          getAllGenders(),
+        ]);
 
         if (
           langRes.success &&
@@ -121,12 +134,14 @@ const PopularWordForm = ({
           Array.isArray(langRes.data) &&
           Array.isArray(partsOfSpeechRes.data) &&
           Array.isArray(wordCasesRes.data) &&
-          Array.isArray(categoriesRes.data)
+          Array.isArray(categoriesRes.data) &&
+          Array.isArray(genderRes.data)
         ) {
           setLanguages(langRes.data);
           setPartsOfSpeech(partsOfSpeechRes.data);
           setWordCases(wordCasesRes.data);
           setCategories(categoriesRes.data);
+          setGenders(genderRes.data);
         } else {
           throw new Error();
         }
@@ -135,6 +150,7 @@ const PopularWordForm = ({
         setPartsOfSpeech([]);
         setWordCases([]);
         setCategories([]);
+        setGenders([]);
         toast.error(`Failed to fetch languages or related data, ${error}`);
       }
     };
@@ -176,6 +192,9 @@ const PopularWordForm = ({
     (pos) => pos.languageId === selectedLanguageId
   );
   const filteredCategories = categories.filter(
+    (pos) => pos.languageId === selectedLanguageId
+  );
+  const filteredGenders = genders.filter(
     (pos) => pos.languageId === selectedLanguageId
   );
 
@@ -329,7 +348,7 @@ const PopularWordForm = ({
                 )}
               />
             </div>
-            <div className="">
+            <div className="flex justify-between">
               <FormField
                 control={form.control}
                 name="known"
@@ -347,8 +366,7 @@ const PopularWordForm = ({
                   </FormItem>
                 )}
               />
-            </div>
-            <div className="">
+
               <FormField
                 control={form.control}
                 name="favorite"
@@ -435,6 +453,38 @@ const PopularWordForm = ({
                               value={category.id.toString()}
                             >
                               {category.popularCategory}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+            <div className="">
+              <FormField
+                control={form.control}
+                name="genderId"
+                render={({ field }) => (
+                  <FormItem className="w-full">
+                    <FormLabel>Gender</FormLabel>
+                    <FormControl>
+                      <Select
+                        value={field.value?.toString() || ''}
+                        onValueChange={(val) => field.onChange(val)}
+                      >
+                        <SelectTrigger className="w-full ">
+                          <SelectValue placeholder="Select Gender" />
+                        </SelectTrigger>
+                        <SelectContent className="w-full">
+                          {filteredGenders.map((gender) => (
+                            <SelectItem
+                              key={gender.id}
+                              value={gender.id.toString()}
+                            >
+                              {gender.genderName}
                             </SelectItem>
                           ))}
                         </SelectContent>

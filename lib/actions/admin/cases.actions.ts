@@ -4,7 +4,7 @@ import { prisma } from '@/db/prisma';
 import { upsertCasesSchema } from '../../validator';
 import { revalidatePath } from 'next/cache';
 import { z } from 'zod';
-import { formatError } from '../../utils';
+import { formatError } from '@/lib/utils';
 
 export const upsertWordCase = async (
   data: z.infer<typeof upsertCasesSchema>
