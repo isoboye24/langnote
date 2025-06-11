@@ -186,6 +186,7 @@ const PopularWordForm = ({
 
   const selectedLanguageId = form.watch('languageId');
 
+  // Filter other dropdowns when language option is chosen
   const filteredPartsOfSpeech = partsOfSpeech.filter(
     (pos) => pos.languageId === selectedLanguageId
   );
@@ -198,6 +199,65 @@ const PopularWordForm = ({
   const filteredGenders = genders.filter(
     (pos) => pos.languageId === selectedLanguageId
   );
+
+  // Toggle Gender and also its content depending on parts of speech option.
+  const selectedPartOfSpeechId = form.watch('partOfSpeechId');
+
+  const selectedLanguage = languages.find((l) => l.id === selectedLanguageId);
+  const selectedPartOfSpeech = partsOfSpeech.find(
+    (p) => p.id === selectedPartOfSpeechId
+  );
+
+  const toggleGenderAndItsContent =
+    (selectedLanguage?.languageName.toLowerCase() === 'english' &&
+      selectedPartOfSpeech?.name.toLowerCase() === 'noun') ||
+    (selectedLanguage?.languageName.toLowerCase() === 'german' &&
+      selectedPartOfSpeech?.name.toLowerCase() === 'nomen') ||
+    (selectedLanguage?.languageName.toLowerCase() === 'russian' &&
+      selectedPartOfSpeech?.name.toLowerCase() === 'существительное');
+
+  useEffect(() => {
+    const englishNoun =
+      selectedLanguage?.languageName.toLowerCase() === 'english' &&
+      selectedPartOfSpeech?.name.toLowerCase() === 'noun';
+
+    const germanNomen =
+      selectedLanguage?.languageName.toLowerCase() === 'german' &&
+      selectedPartOfSpeech?.name.toLowerCase() === 'nomen';
+
+    const russianNoun =
+      selectedLanguage?.languageName.toLowerCase() === 'russian' &&
+      selectedPartOfSpeech?.name.toLowerCase() === 'существительное';
+
+    if (!toggleGenderAndItsContent) {
+      let defaultGenderName = '';
+      if (englishNoun) defaultGenderName = 'none';
+      if (germanNomen) {
+        defaultGenderName = 'kein';
+      }
+      if (russianNoun) {
+        defaultGenderName = 'ни';
+        console.log(
+          'Russian gender values:',
+          filteredGenders.map((g) => g.genderName)
+        );
+      }
+
+      const defaultGender = filteredGenders.find(
+        (g) => g.genderName.toLowerCase() === defaultGenderName
+      );
+
+      if (defaultGender) {
+        form.setValue('genderId', defaultGender.id);
+      }
+    }
+  }, [
+    toggleGenderAndItsContent,
+    filteredGenders,
+    selectedLanguage,
+    selectedPartOfSpeech,
+    form,
+  ]);
 
   return (
     <div className="">
@@ -464,38 +524,73 @@ const PopularWordForm = ({
                 )}
               />
             </div>
-            <div className="">
-              <FormField
-                control={form.control}
-                name="genderId"
-                render={({ field }) => (
-                  <FormItem className="w-full">
-                    <FormLabel>Gender</FormLabel>
-                    <FormControl>
-                      <Select
-                        value={field.value?.toString() || ''}
-                        onValueChange={(val) => field.onChange(val)}
-                      >
-                        <SelectTrigger className="w-full ">
-                          <SelectValue placeholder="Select Gender" />
-                        </SelectTrigger>
-                        <SelectContent className="w-full">
-                          {filteredGenders.map((gender) => (
-                            <SelectItem
-                              key={gender.id}
-                              value={gender.id.toString()}
-                            >
-                              {gender.genderName}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
+            {toggleGenderAndItsContent && (
+              <div className="">
+                <FormField
+                  control={form.control}
+                  name="genderId"
+                  render={({ field }) => (
+                    <FormItem className="w-full">
+                      <FormLabel>Gender</FormLabel>
+                      <FormControl>
+                        <Select
+                          value={field.value?.toString() || ''}
+                          onValueChange={(val) => field.onChange(val)}
+                        >
+                          <SelectTrigger className="w-full ">
+                            <SelectValue placeholder="Select Gender" />
+                          </SelectTrigger>
+                          <SelectContent className="w-full">
+                            {filteredGenders.map((gender) => {
+                              const isNone =
+                                gender.genderName.toLowerCase() === 'none';
+                              const isKein =
+                                gender.genderName.toLowerCase() === 'kein';
+                              const isNi =
+                                gender.genderName.toLowerCase() === 'Ни';
+
+                              const isEnglishNoun =
+                                selectedLanguage?.languageName.toLowerCase() ===
+                                  'english' &&
+                                selectedPartOfSpeech?.name.toLowerCase() ===
+                                  'noun';
+
+                              const isGermanNomen =
+                                selectedLanguage?.languageName.toLowerCase() ===
+                                  'german' &&
+                                selectedPartOfSpeech?.name.toLowerCase() ===
+                                  'nomen';
+
+                              const isRussianNoun =
+                                selectedLanguage?.languageName.toLowerCase() ===
+                                  'russian' &&
+                                selectedPartOfSpeech?.name.toLowerCase() ===
+                                  'существительное';
+
+                              const shouldDisable =
+                                (isEnglishNoun && !isNone) ||
+                                (isGermanNomen && !isKein) ||
+                                (isRussianNoun && !isNi);
+
+                              return (
+                                <SelectItem
+                                  key={gender.id}
+                                  value={gender.id.toString()}
+                                  disabled={shouldDisable}
+                                >
+                                  {gender.genderName}
+                                </SelectItem>
+                              );
+                            })}
+                          </SelectContent>
+                        </Select>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+            )}
           </div>
           <div className="col-start-1 col-end-3 lg:col-start-2 lg:col-end-3">
             <Button
