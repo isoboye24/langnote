@@ -153,3 +153,26 @@ export const getTotalLanguages = async () => {
     return { success: false, message: 'Failed to count languages' };
   }
 };
+
+export const getAllLanguagesToSelect = async () => {
+  try {
+    const [languages, total] = await Promise.all([
+      prisma.language.findMany({
+        orderBy: { languageName: 'asc' },
+      }),
+      prisma.language.count(),
+    ]);
+
+    return {
+      success: true,
+      data: languages,
+      total,
+    };
+  } catch (error) {
+    console.error('Error fetching word languages:', error);
+    return {
+      success: false,
+      message: 'Failed to fetch word languages',
+    };
+  }
+};

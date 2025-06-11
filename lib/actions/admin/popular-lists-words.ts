@@ -31,6 +31,7 @@ export const upsertPopularListsWord = async (
     meaning,
     popularCategoryId,
     languageId,
+    genderId,
   } = parsed.data;
 
   try {
@@ -51,6 +52,7 @@ export const upsertPopularListsWord = async (
           meaning,
           popularCategoryId,
           languageId,
+          genderId,
         },
         create: {
           word,
@@ -63,6 +65,7 @@ export const upsertPopularListsWord = async (
           meaning,
           popularCategoryId,
           languageId,
+          genderId,
         },
       });
     } else {
@@ -78,6 +81,7 @@ export const upsertPopularListsWord = async (
           meaning,
           popularCategoryId,
           languageId,
+          genderId,
         },
       });
     }
@@ -200,5 +204,28 @@ export const getTotalPopularListWord = async () => {
   } catch (error) {
     console.error('Error calculating total words:', error);
     return { success: false, message: 'Failed to count words' };
+  }
+};
+
+export const getAllPopularListWordsToSelect = async () => {
+  try {
+    const [words, total] = await Promise.all([
+      prisma.popularListWord.findMany({
+        orderBy: [{ createdAt: 'desc' }, { word: 'asc' }],
+      }),
+      prisma.popularListWord.count(),
+    ]);
+
+    return {
+      success: true,
+      data: words,
+      total,
+    };
+  } catch (error) {
+    console.error('Error fetching words:', error);
+    return {
+      success: false,
+      message: 'Failed to fetch words.',
+    };
   }
 };

@@ -159,3 +159,26 @@ export const getTotalPartsOfSpeech = async () => {
     return { success: false, message: 'Failed to count parts of speech' };
   }
 };
+
+export const getAllPartsOfSpeechToSelect = async () => {
+  try {
+    const [partsOfSpeech, total] = await Promise.all([
+      prisma.partOfSpeech.findMany({
+        orderBy: { name: 'asc' },
+      }),
+      prisma.partOfSpeech.count(),
+    ]);
+
+    return {
+      success: true,
+      data: partsOfSpeech,
+      total,
+    };
+  } catch (error) {
+    console.error('Error fetching word parts of speech:', error);
+    return {
+      success: false,
+      message: 'Failed to fetch word parts of speech',
+    };
+  }
+};

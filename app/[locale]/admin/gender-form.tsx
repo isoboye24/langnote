@@ -123,9 +123,9 @@ const GenderForm = ({
                   name="genderName"
                   render={({ field }) => (
                     <FormItem className="w-full">
-                      <FormLabel>Part of Speech</FormLabel>
+                      <FormLabel>Gender</FormLabel>
                       <FormControl>
-                        <Input placeholder="Enter Part of Speech" {...field} />
+                        <Input placeholder="Enter Gender Name" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -139,7 +139,7 @@ const GenderForm = ({
                   name="languageId"
                   render={({ field }) => (
                     <FormItem className="w-full">
-                      <FormLabel>Language of Part of Speech</FormLabel>
+                      <FormLabel>Language of Gender</FormLabel>
                       <FormControl>
                         <Select
                           value={field.value?.toString() || ''}
@@ -176,7 +176,7 @@ const GenderForm = ({
               >
                 {form.formState.isSubmitting
                   ? 'Submitting...'
-                  : `${type} Part of speech`}
+                  : `${type} Gender`}
               </Button>
             </div>
           </div>

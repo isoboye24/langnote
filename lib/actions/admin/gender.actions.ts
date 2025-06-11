@@ -159,3 +159,26 @@ export const getTotalGender = async () => {
     return { success: false, message: 'Failed to count gender' };
   }
 };
+
+export const getAllGendersToSelect = async () => {
+  try {
+    const [genders, total] = await Promise.all([
+      prisma.gender.findMany({
+        orderBy: { genderName: 'asc' },
+      }),
+      prisma.gender.count(),
+    ]);
+
+    return {
+      success: true,
+      data: genders,
+      total,
+    };
+  } catch (error) {
+    console.error('Error fetching genders:', error);
+    return {
+      success: false,
+      message: 'Failed to fetch genders',
+    };
+  }
+};

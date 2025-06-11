@@ -159,3 +159,26 @@ export const getTotalPopularCategory = async () => {
     return { success: false, message: 'Failed to count categories' };
   }
 };
+
+export const getAllPopularCategoriesToSelect = async () => {
+  try {
+    const [categories, total] = await Promise.all([
+      prisma.popularListCategory.findMany({
+        orderBy: { popularCategory: 'asc' },
+      }),
+      prisma.popularListCategory.count(),
+    ]);
+
+    return {
+      success: true,
+      data: categories,
+      total,
+    };
+  } catch (error) {
+    console.error('Error fetching word categories:', error);
+    return {
+      success: false,
+      message: 'Failed to fetch word categories',
+    };
+  }
+};

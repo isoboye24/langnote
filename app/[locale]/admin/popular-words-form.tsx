@@ -27,17 +27,17 @@ import {
   SelectItem,
 } from '@/components/ui/select';
 import { PopularListWord } from '@prisma/client';
-import { getAllLanguages } from '@/lib/actions/admin/language.actions';
-import { getAllPopularCategories } from '@/lib/actions/admin/popular-list-category.actions';
-import { getAllPartsOfSpeech } from '@/lib/actions/admin/parts-of-speech.actions';
-import { getAllWordCases } from '@/lib/actions/admin/cases.actions';
+import { getAllLanguagesToSelect } from '@/lib/actions/admin/language.actions';
+import { getAllPopularCategoriesToSelect } from '@/lib/actions/admin/popular-list-category.actions';
+import { getAllPartsOfSpeechToSelect } from '@/lib/actions/admin/parts-of-speech.actions';
+import { getAllWordCasesToSelect } from '@/lib/actions/admin/cases.actions';
 import {
   checkIfPopularListsWordExists,
   upsertPopularListsWord,
 } from '@/lib/actions/admin/popular-lists-words';
 import { Textarea } from '@/components/ui/textarea';
 import { Checkbox } from '@/components/ui/checkbox';
-import { getAllGenders } from '@/lib/actions/admin/gender.actions';
+import { getAllGendersToSelect } from '@/lib/actions/admin/gender.actions';
 
 const PopularWordForm = ({
   type,
@@ -119,11 +119,11 @@ const PopularWordForm = ({
           categoriesRes,
           genderRes,
         ] = await Promise.all([
-          getAllLanguages(),
-          getAllPartsOfSpeech(),
-          getAllWordCases(),
-          getAllPopularCategories(),
-          getAllGenders(),
+          getAllLanguagesToSelect(),
+          getAllPartsOfSpeechToSelect(),
+          getAllWordCasesToSelect(),
+          getAllPopularCategoriesToSelect(),
+          getAllGendersToSelect(),
         ]);
 
         if (
@@ -131,6 +131,7 @@ const PopularWordForm = ({
           partsOfSpeechRes.success &&
           wordCasesRes.success &&
           categoriesRes.success &&
+          genderRes.success &&
           Array.isArray(langRes.data) &&
           Array.isArray(partsOfSpeechRes.data) &&
           Array.isArray(wordCasesRes.data) &&

@@ -160,3 +160,26 @@ export const getTotalWordCase = async () => {
     return { success: false, message: 'Failed to count word case' };
   }
 };
+
+export const getAllWordCasesToSelect = async () => {
+  try {
+    const [cases, total] = await Promise.all([
+      prisma.wordCase.findMany({
+        orderBy: { caseName: 'asc' },
+      }),
+      prisma.wordCase.count(),
+    ]);
+
+    return {
+      success: true,
+      data: cases,
+      total,
+    };
+  } catch (error) {
+    console.error('Error fetching word cases:', error);
+    return {
+      success: false,
+      message: 'Failed to fetch word cases',
+    };
+  }
+};
