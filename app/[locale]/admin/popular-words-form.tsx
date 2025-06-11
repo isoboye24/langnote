@@ -212,7 +212,8 @@ const PopularWordForm = ({
     (selectedLanguage?.languageName.toLowerCase() === 'english' &&
       selectedPartOfSpeech?.name.toLowerCase() === 'noun') ||
     (selectedLanguage?.languageName.toLowerCase() === 'german' &&
-      selectedPartOfSpeech?.name.toLowerCase() === 'nomen');
+      selectedPartOfSpeech?.name.toLowerCase() === 'nomen') ||
+    selectedLanguage?.languageName.toLowerCase() === 'russian';
 
   useEffect(() => {
     const englishNoun =
@@ -544,9 +545,14 @@ const PopularWordForm = ({
                                 selectedPartOfSpeech?.name.toLowerCase() ===
                                   'nomen';
 
+                              const isRussian =
+                                selectedLanguage?.languageName.toLowerCase() ===
+                                'russian';
+
                               const shouldDisable =
-                                (isEnglishNoun && !isNone) ||
-                                (isGermanNomen && !isKein);
+                                !isRussian &&
+                                ((isEnglishNoun && !isNone) ||
+                                  (isGermanNomen && !isKein));
 
                               return (
                                 <SelectItem
