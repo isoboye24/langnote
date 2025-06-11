@@ -12,6 +12,7 @@ import {
   Radiation,
   Boxes,
   Earth,
+  Transgender,
 } from 'lucide-react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -57,6 +58,11 @@ export default function AdminSidebar() {
       label: t('Cases'),
       href: '/admin/cases',
       icon: <Boxes size={20} />,
+    },
+    {
+      label: t('Gender'),
+      href: '/admin/genders',
+      icon: <Transgender size={20} />,
     },
   ];
 

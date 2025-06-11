@@ -27,6 +27,7 @@ model PartOfSpeech {
 model Language {
   id                  String                @id @default(uuid()) @db.Uuid
   languageName        String
+  Gender              Gender[]
   PartOfSpeech        PartOfSpeech[]
   PopularListCategory PopularListCategory[]
   PopularListWord     PopularListWord[]
@@ -60,6 +61,8 @@ model PopularListWord {
   meaning           String?
   popularCategoryId String              @db.Uuid
   languageId        String              @db.Uuid
+  genderId          String              @db.Uuid
+  gender            Gender              @relation(fields: [genderId], references: [id])
   Language          Language            @relation(fields: [languageId], references: [id])
   partOfSpeech      PartOfSpeech        @relation(fields: [partOfSpeechId], references: [id], onDelete: Cascade)
   popularCategory   PopularListCategory @relation(fields: [popularCategoryId], references: [id], onDelete: Cascade)
@@ -78,6 +81,17 @@ model WordCase {
   PopularListWord PopularListWord[]
   Word            Word[]
   Language        Language          @relation(fields: [languageId], references: [id])
+
+  @@index([languageId])
+}
+
+model Gender {
+  id              String            @id @default(uuid()) @db.Uuid
+  languageId      String            @db.Uuid
+  genderName      String
+  Language        Language          @relation(fields: [languageId], references: [id])
+  PopularListWord PopularListWord[]
+  Word            Word[]
 
   @@index([languageId])
 }
@@ -123,6 +137,8 @@ model Word {
   synonym        String?
   antonym        String?
   meaning        String?
+  genderId       String       @db.Uuid
+  gender         Gender       @relation(fields: [genderId], references: [id])
   group          Group        @relation(fields: [groupId], references: [id], onDelete: Cascade)
   partOfSpeech   PartOfSpeech @relation(fields: [partOfSpeechId], references: [id], onDelete: Cascade)
   user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)

@@ -53,3 +53,12 @@ export const upsertPopularListWordSchema = z.object({
   popularCategoryId: z.string(),
   languageId: z.string(),
 });
+
+export const upsertGendersSchema = z.object({
+  id: z
+    .string()
+    .min(1, 'If provided, Gender id is should be at least 1 character')
+    .optional(),
+  genderName: z.string().min(1, 'Gender is required'),
+  languageId: z.string().min(1, 'Language is required'),
+});

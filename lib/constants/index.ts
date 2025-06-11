@@ -42,6 +42,11 @@ export const casesDefaultValues = {
   languageId: '',
 };
 
+export const genderDefaultValues = {
+  genderName: '',
+  languageId: '',
+};
+
 export const popularListWordDefaultValues = {
   word: '',
   known: false,
