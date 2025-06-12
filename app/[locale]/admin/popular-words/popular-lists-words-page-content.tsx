@@ -99,7 +99,7 @@ const PopularListWordPageContent = () => {
                   <TableCell>{partOfSpeech?.name}</TableCell>
                   <TableCell>{wordCase?.caseName}</TableCell>
                   <TableCell className="flex gap-5">
-                    <Link href={`/admin/popular-lists-categories/${word.id}`}>
+                    <Link href={`/admin/popular-words/${word.id}`}>
                       <Button>Edit</Button>
                     </Link>
                     <DeleteDialog id={word.id} action={deletePopularListWord} />
@@ -116,7 +116,7 @@ const PopularListWordPageContent = () => {
         onPageChange={setPage}
       />
       <div className="mt-10 text-end pr-4 md:pr-8 text-green-500">
-        Total Categories: {totalCount}
+        Total Words: {totalCount}
       </div>
     </div>
   );
