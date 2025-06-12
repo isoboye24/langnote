@@ -1,11 +1,12 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import PopularList from './popular-list';
+import PopularList from '../../../../components/ui/popular-list';
 
 import { getAllPopularCategoriesToSelect } from '@/lib/actions/admin/popular-list-category.actions';
 import { getAllPopularListWordsToSelect } from '@/lib/actions/admin/popular-lists-words';
 import { PopularListCategory, PopularListWord } from '@prisma/client';
+import Link from 'next/link';
 
 const PopularLists = () => {
   const [categories, setCategories] = useState<PopularListCategory[]>([]);
@@ -24,6 +25,7 @@ const PopularLists = () => {
 
     fetchPartsOfSpeech();
   }, []);
+
   return (
     <div className="bg-blue-50 dark:bg-gray-900 p-10 rounded-md">
       <div className="text-center text-3xl mb-10 font-bold">Popular Lists</div>
@@ -35,14 +37,14 @@ const PopularLists = () => {
 
           return (
             <div className="" key={category.id}>
-              <div className="">
+              <Link href={`/home/Popular-lists/${category.id}`}>
                 <PopularList
                   lightIcon={category.lightImageIcon}
                   darkIcon={category.darkImageIcon}
                   category={category.popularCategory}
                   totalWords={totalWords.length}
                 />
-              </div>
+              </Link>
             </div>
           );
         })}
