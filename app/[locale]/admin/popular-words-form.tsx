@@ -245,6 +245,42 @@ const PopularWordForm = ({
     form,
   ]);
 
+  const word = form.watch('word');
+
+  useEffect(() => {
+    const trimmedWord = word?.trim();
+    const isGerman = selectedLanguage?.languageName.toLowerCase() === 'german';
+    const isNoun = selectedPartOfSpeech?.name.toLowerCase() === 'nomen';
+
+    if (trimmedWord && isGerman && isNoun) {
+      const lowerWord = trimmedWord.toLowerCase();
+      let targetGenderName = '';
+
+      if (lowerWord.startsWith('der ')) {
+        targetGenderName = 'maskulinum';
+      } else if (lowerWord.startsWith('die ')) {
+        targetGenderName = 'femininum';
+      } else if (lowerWord.startsWith('das ')) {
+        targetGenderName = 'neutrum';
+      }
+
+      if (targetGenderName) {
+        const matchingGender = filteredGenders.find(
+          (g) => g.genderName.toLowerCase() === targetGenderName
+        );
+        if (matchingGender) {
+          form.setValue('genderId', matchingGender.id);
+        }
+      }
+    }
+  }, [
+    word,
+    selectedLanguage?.languageName,
+    selectedPartOfSpeech?.name,
+    filteredGenders,
+    form,
+  ]);
+
   return (
     <div className="">
       <Form {...form}>
@@ -551,8 +587,8 @@ const PopularWordForm = ({
 
                               const shouldDisable =
                                 !isRussian &&
-                                ((isEnglishNoun && !isNone) ||
-                                  (isGermanNomen && !isKein));
+                                ((isEnglishNoun && isNone) ||
+                                  (isGermanNomen && isKein));
 
                               return (
                                 <SelectItem
