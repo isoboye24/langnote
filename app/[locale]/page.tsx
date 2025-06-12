@@ -1,7 +1,6 @@
 'use client';
 
 import PopularLists from '@/components/ui/popular-lists';
-
 import React from 'react';
 
 const LocalePage = () => {

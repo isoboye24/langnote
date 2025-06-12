@@ -229,3 +229,49 @@ export const getAllPopularListWordsToSelect = async () => {
     };
   }
 };
+
+export const getGroupOfPopularListWords = async () => {
+  try {
+    const words = await prisma.popularListWord.findMany({
+      include: {
+        popularCategory: true,
+      },
+      orderBy: [{ word: 'asc' }],
+    });
+
+    // Group words by category name
+    const grouped = words.reduce((acc, word) => {
+      const categoryName = word.popularCategory.popularCategory;
+      if (!acc[categoryName]) {
+        acc[categoryName] = [];
+      }
+      acc[categoryName].push(word);
+      return acc;
+    }, {} as Record<string, typeof words>);
+
+    const groupTotals = await prisma.popularListWord.groupBy({
+      by: ['popularCategoryId'],
+      _count: {
+        _all: true,
+      },
+      orderBy: {
+        popularCategoryId: 'asc',
+      },
+    });
+
+    return {
+      success: true,
+      data: grouped,
+      totals: groupTotals.map((group) => ({
+        popularCategoryId: group.popularCategoryId,
+        count: group._count._all,
+      })),
+    };
+  } catch (error) {
+    console.error('Error fetching grouped word data:', error);
+    return {
+      success: false,
+      message: 'Failed to fetch grouped word data.',
+    };
+  }
+};
