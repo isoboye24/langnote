@@ -29,20 +29,24 @@ const ListOfWords = ({ id }: { id: string }) => {
 
   return (
     <div className="wrapper">
-      <div className="text-2xl text-center mt-10 mb-20 font-bold">
-        {category?.popularCategory ?? 'Unknown Category'}
+      <div className="shadow mb-10 mt-10 bg-teal-100 dark:bg-teal-800 p-5 rounded-3xl">
+        <div className="text-2xl text-center font-bold">
+          {category?.popularCategory ?? 'Unknown Category'}
+        </div>
       </div>
-      {words
-        .filter((word) => word.popularCategoryId === category?.id)
-        .map((word) => (
-          <div key={word.id} className="mb-2">
-            <WordListsItems
-              word={word.word}
-              meaning={word?.meaning || ''}
-              star={word?.favorite || false}
-            />
-          </div>
-        ))}
+      <div className="shadow rounded-2xl bg-gray-50 dark:bg-gray-800 p-10 mt-10">
+        {words
+          .filter((word) => word.popularCategoryId === category?.id)
+          .map((word) => (
+            <div key={word.id} className="mb-2">
+              <WordListsItems
+                word={word.word}
+                meaning={word?.meaning || ''}
+                star={word?.favorite || false}
+              />
+            </div>
+          ))}
+      </div>
     </div>
   );
 };

@@ -17,10 +17,10 @@ const WordListsItems = ({
       <div className="flex flex-between">
         <div className="flex flex-col">
           <div className="flex gap-2">
-            <div className="">{word}</div>
+            <div className="text-teal-500 font-semibold text-base">{word}</div>
             <div className="">{gender}</div>
           </div>
-          <div className="">{meaning}</div>
+          <div className="text-sm italic">{meaning}</div>
         </div>
         <div className="">
           <Star
