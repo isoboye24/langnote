@@ -187,32 +187,31 @@ const PopularListsCategoryForm = ({
                               <Image
                                 key={field.value}
                                 src={field.value}
-                                alt="light image"
+                                alt="uploaded image"
                                 className="w-20 h-20 object-cover object-center rounded-sm"
                                 width={100}
                                 height={100}
                               />
                             )}
 
-                            {(!field.value || field.value.length === 0) && (
-                              <FormControl>
-                                <UploadButton<OurFileRouter, 'imageUploader'>
-                                  endpoint="imageUploader"
-                                  onClientUploadComplete={(res) => {
-                                    const uploadedUrl = res?.[0]?.ufsUrl;
-                                    if (uploadedUrl) {
-                                      field.onChange(uploadedUrl);
-                                    }
-                                  }}
-                                  onUploadError={(error: Error) => {
-                                    console.error('Upload failed:', error);
-                                  }}
-                                />
-                              </FormControl>
-                            )}
+                            <FormControl>
+                              <UploadButton<OurFileRouter, 'imageUploader'>
+                                endpoint="imageUploader"
+                                onClientUploadComplete={(res) => {
+                                  const uploadedUrl = res?.[0]?.ufsUrl;
+                                  if (uploadedUrl) {
+                                    field.onChange(uploadedUrl);
+                                  }
+                                }}
+                                onUploadError={(error: Error) => {
+                                  console.error('Upload failed:', error);
+                                }}
+                              />
+                            </FormControl>
                           </div>
                         </CardContent>
                       </Card>
+
                       <FormMessage />
                     </FormItem>
                   )}
@@ -230,40 +229,37 @@ const PopularListsCategoryForm = ({
                     <FormItem className="w-full">
                       <FormLabel>Dark Mode Image Icon</FormLabel>
                       <Card>
-                        <CardContent className="space-y-2 mt-2 min-h-30 text-black dark:text-gray-200">
-                          <div className="flex-start space-x-2 flex flex-wrap">
-                            {/* Render uploaded images */}
+                        <CardContent className="space-y-2 mt-2 min-h-[120px]">
+                          <div className="flex flex-wrap gap-2">
                             {field.value && (
                               <Image
                                 key={field.value}
                                 src={field.value}
-                                alt="dark image"
+                                alt="uploaded image"
                                 className="w-20 h-20 object-cover object-center rounded-sm"
                                 width={100}
                                 height={100}
                               />
                             )}
 
-                            {/* Upload Button */}
-                            {(!field.value || field.value.length === 0) && (
-                              <FormControl>
-                                <UploadButton<OurFileRouter, 'imageUploader'>
-                                  endpoint="imageUploader"
-                                  onClientUploadComplete={(res) => {
-                                    const uploadedUrl = res?.[0]?.ufsUrl;
-                                    if (uploadedUrl) {
-                                      field.onChange(uploadedUrl);
-                                    }
-                                  }}
-                                  onUploadError={(error: Error) => {
-                                    console.error('Upload failed:', error);
-                                  }}
-                                />
-                              </FormControl>
-                            )}
+                            <FormControl>
+                              <UploadButton<OurFileRouter, 'imageUploader'>
+                                endpoint="imageUploader"
+                                onClientUploadComplete={(res) => {
+                                  const uploadedUrl = res?.[0]?.ufsUrl;
+                                  if (uploadedUrl) {
+                                    field.onChange(uploadedUrl);
+                                  }
+                                }}
+                                onUploadError={(error: Error) => {
+                                  console.error('Upload failed:', error);
+                                }}
+                              />
+                            </FormControl>
                           </div>
                         </CardContent>
                       </Card>
+
                       <FormMessage />
                     </FormItem>
                   )}

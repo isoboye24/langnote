@@ -16,7 +16,7 @@ const PopularList = ({
 }) => {
   return (
     <div className="bg-white dark:bg-gray-800 p-3 grid grid-cols-[1fr_3fr] gap-4 rounded-xl">
-      <div className="flex items-center justify-center bg-amber-400">
+      <div className="flex items-center justify-center">
         <div className="relative">
           <Image
             src={lightIcon}
@@ -36,7 +36,7 @@ const PopularList = ({
         </div>
       </div>
       <div className="grid grid-rows-2">
-        <div className="font-bold text-xl">{category}</div>
+        <div className="font-bold text-base md:text-xl">{category}</div>
         <div className="text-sm text-gray-500 dark:text-gray-400">
           {totalWords} {`Begriff${totalWords > 1 ? 'e' : ''}`}
         </div>
