@@ -42,7 +42,7 @@ const PopularListWordPageContent = () => {
       const categoryRes = await getAllPopularCategories();
       const partsOfSpeechRes = await getAllPartsOfSpeech();
       const wordCasesRes = await getAllWordCases();
-      const response = await getAllPopularListWords();
+      const response = await getAllPopularListWords(page, pageSize);
 
       if (response.success) {
         setWords(response?.data as PopularListWord[]);
