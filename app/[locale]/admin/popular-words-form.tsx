@@ -89,6 +89,8 @@ const PopularWordForm = ({
     { id: string; genderName: string; languageId: string }[]
   >([]);
 
+  const [preserveState, setPreserveState] = useState(false);
+
   // Reset form values when category prop changes
   useEffect(() => {
     if (popularWord && type === 'Update') {
@@ -179,8 +181,25 @@ const PopularWordForm = ({
     if (!res.success) {
       toast.error(res.message);
     } else {
-      toast.success(res.message);
-      router.push('/admin/popular-words');
+      if (res.success) {
+        toast.success(res.message);
+
+        if (type === 'Update') {
+          router.push('/admin/popular-words');
+        } else {
+          if (preserveState) {
+            form.reset({
+              ...form.getValues(),
+              word: '',
+              meaning: '',
+              synonym: '',
+              antonym: '',
+            });
+          } else {
+            form.reset(popularListWordDefaultValues);
+          }
+        }
+      }
     }
   };
 
@@ -289,6 +308,18 @@ const PopularWordForm = ({
           onSubmit={form.handleSubmit(onSubmit)}
           className="space-y-8"
         >
+          <div className="flex justify-end">
+            <Button
+              type="button"
+              className={preserveState ? 'bg-green-600' : 'bg-red-700'}
+              onClick={() => setPreserveState((prev) => !prev)}
+            >
+              {preserveState
+                ? 'Preserve Form State: ON'
+                : 'Preserve Form State: OFF'}
+            </Button>
+          </div>
+
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-5 mb-10">
             <div className="">
               <FormField
