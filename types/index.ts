@@ -1,3 +1,5 @@
+import { StaticImageData } from 'next/image';
+
 export type PaginationProps = {
   currentPage: number;
   totalPages: number;
@@ -14,8 +16,9 @@ export type BackgroundWithStaticImageOrVideoProps = {
   isVideo?: boolean;
   children: React.ReactNode;
 };
+
 export type BackgroundWithDynamicImageOrVideoProps = {
-  backgroundUrls?: string[]; // Accept an array of image URLs
+  backgroundUrls?: StaticImageData[] | string[]; // Accept an array of image URLs
   isVideo?: boolean;
   children: React.ReactNode;
   slideInterval?: number; // interval in ms

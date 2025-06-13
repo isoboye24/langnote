@@ -27,7 +27,7 @@ const WordListsItems = ({
             className={`w-6 h-6 mr-2  transition-colors ${
               star === true
                 ? 'text-yellow-400 fill-yellow-400'
-                : 'text-gray-400'
+                : 'text-teal-400'
             }`}
           />
         </div>
