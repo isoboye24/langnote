@@ -36,8 +36,13 @@ const PopularList = ({
         </div>
       </div>
       <div className="grid grid-rows-2">
-        <div className="font-bold text-base md:text-xl">{category}</div>
-        <div className="text-sm text-gray-500 dark:text-gray-400">
+        <div className="font-bold text-base md:text-xl" translate="no">
+          {category}
+        </div>
+        <div
+          className="text-sm text-gray-500 dark:text-gray-400"
+          translate="no"
+        >
           {totalWords} {`Begriff${totalWords > 1 ? 'e' : ''}`}
         </div>
       </div>
