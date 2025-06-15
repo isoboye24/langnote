@@ -7,12 +7,27 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Group {
-  id        String @id @default(uuid()) @db.Uuid
-  groupName String
-  userId    String @db.Uuid
-  user      User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  Word      Word[]
+model Book {
+  id         String   @id @default(uuid()) @db.Uuid
+  title      String
+  color      String
+  userId     String   @db.Uuid
+  languageId String   @db.Uuid
+  language   Language @relation(fields: [languageId], references: [id], onDelete: Cascade)
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  Topic      Topic[]
+  Word       Word[]
+
+  @@index([languageId])
+  @@index([userId])
+}
+
+model Topic {
+  id     String @id @default(uuid()) @db.Uuid
+  topic  String
+  bookId String @db.Uuid
+  book   Book   @relation(fields: [bookId], references: [id], onDelete: Cascade)
+  Word   Word[]
 }
 
 model PartOfSpeech {
@@ -27,6 +42,7 @@ model PartOfSpeech {
 model Language {
   id                  String                @id @default(uuid()) @db.Uuid
   languageName        String
+  Book                Book[]
   Gender              Gender[]
   PartOfSpeech        PartOfSpeech[]
   PopularListCategory PopularListCategory[]
@@ -106,14 +122,13 @@ model User {
   password      String
   role          Role      @default(user)
   createdAt     DateTime  @default(now()) @db.Timestamp(6)
-  languageId    String    @db.Uuid
-  Group         Group[]
+  languageId    String?   @db.Uuid
+  updatedAt     DateTime  @updatedAt
+  book          Book[]
   Review        Review[]
   sessions      Session[]
-  language      Language  @relation(fields: [languageId], references: [id], onDelete: Cascade)
+  Language      Language? @relation(fields: [languageId], references: [id])
   Word          Word[]
-
-  @@index([languageId])
 }
 
 model Session {
@@ -128,7 +143,6 @@ model Word {
   word           String
   known          Boolean
   favorite       Boolean
-  groupId        String       @db.Uuid
   userId         String       @db.Uuid
   wordCaseId     String       @db.Uuid
   partOfSpeechId String       @db.Uuid
@@ -138,15 +152,18 @@ model Word {
   antonym        String?
   meaning        String?
   genderId       String       @db.Uuid
+  bookId         String       @db.Uuid
+  topicId        String       @db.Uuid
+  book           Book         @relation(fields: [bookId], references: [id])
   gender         Gender       @relation(fields: [genderId], references: [id])
-  group          Group        @relation(fields: [groupId], references: [id], onDelete: Cascade)
   partOfSpeech   PartOfSpeech @relation(fields: [partOfSpeechId], references: [id], onDelete: Cascade)
+  topic          Topic        @relation(fields: [topicId], references: [id])
   user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
   wordCase       WordCase     @relation(fields: [wordCaseId], references: [id], onDelete: Cascade)
 
   @@unique([userId, word])
   @@index([userId])
-  @@index([groupId])
+  @@index([bookId])
   @@index([partOfSpeechId])
   @@index([wordCaseId])
 }

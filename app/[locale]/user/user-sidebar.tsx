@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { Home, Users } from 'lucide-react';
+import { Book, Home } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { usePathname } from 'next/navigation';
 import clsx from 'clsx';
@@ -15,7 +15,7 @@ export default function UserSidebar() {
       href: 'user/dashboard',
       icon: <Home size={20} />,
     },
-    { label: t('Group'), href: 'user/group', icon: <Users size={20} /> },
+    { label: t('Book'), href: 'user/book', icon: <Book size={20} /> },
   ];
 
   const pathname = usePathname();

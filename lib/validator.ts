@@ -63,3 +63,24 @@ export const upsertGendersSchema = z.object({
   genderName: z.string().min(1, 'Gender is required'),
   languageId: z.string().min(1, 'Language is required'),
 });
+
+export const upsertUserSchema = z.object({
+  id: z
+    .string()
+    .min(1, 'If provided, word id is should be at least 1 character')
+    .optional(),
+  userName: z.string().min(1, 'username is required'),
+  firstName: z.string().min(1, 'username is required'),
+  lastName: z.string().min(1, 'username is required'),
+  email: z.string().min(1, 'username is required'),
+  known: z.boolean(),
+  favorite: z.boolean(),
+  wordCaseId: z.string(),
+  partOfSpeechId: z.string(),
+  synonym: z.string().optional().or(z.literal('')),
+  antonym: z.string().optional().or(z.literal('')),
+  meaning: z.string().optional().or(z.literal('')),
+  popularCategoryId: z.string(),
+  languageId: z.string(),
+  genderId: z.string(),
+});

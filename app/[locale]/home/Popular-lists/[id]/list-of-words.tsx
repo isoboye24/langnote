@@ -31,7 +31,7 @@ const ListOfWords = ({ id }: { id: string }) => {
     <div className="wrapper">
       <div className="shadow mb-10 mt-10 bg-teal-100 dark:bg-teal-800 p-5 rounded-3xl">
         <div className="text-2xl text-center font-bold" translate="no">
-          {category?.popularCategory ?? 'Unknown Category'}
+          {category?.popularCategory ?? ''}
         </div>
       </div>
       <div className="shadow rounded-2xl bg-gray-50 dark:bg-gray-800 p-10 mt-10">
