@@ -47,7 +47,6 @@ model Language {
   PartOfSpeech        PartOfSpeech[]
   PopularListCategory PopularListCategory[]
   PopularListWord     PopularListWord[]
-  User                User[]
   WordCase            WordCase[]
 }
 
@@ -113,22 +112,19 @@ model Gender {
 }
 
 model User {
-  id            String    @id @default(uuid()) @db.Uuid
-  userName      String    @unique(map: "user_userName_idx")
-  firstName     String    @default("NO_NAME")
-  lastName      String    @default("NO_NAME")
-  email         String    @default("NO_Email")
-  emailVerified DateTime? @db.Timestamp(6)
-  password      String
-  role          Role      @default(user)
-  createdAt     DateTime  @default(now()) @db.Timestamp(6)
-  languageId    String?   @db.Uuid
-  updatedAt     DateTime  @updatedAt
-  book          Book[]
-  Review        Review[]
-  sessions      Session[]
-  Language      Language? @relation(fields: [languageId], references: [id])
-  Word          Word[]
+  id        String    @id @default(uuid()) @db.Uuid
+  userName  String    @unique(map: "user_userName_idx")
+  firstName String    @default("NO_NAME")
+  lastName  String    @default("NO_NAME")
+  email     String    @default("NO_Email")
+  password  String
+  createdAt DateTime  @default(now()) @db.Timestamp(6)
+  updatedAt DateTime  @updatedAt
+  role      String    @default("user")
+  book      Book[]
+  Review    Review[]
+  sessions  Session[]
+  Word      Word[]
 }
 
 model Session {

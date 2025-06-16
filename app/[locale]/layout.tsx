@@ -12,7 +12,8 @@ export default function LocaleLayout({ children }: { children: ReactNode }) {
   // Hide layout for admin and account routes
   const hideLayout =
     pathname?.startsWith(`/${pathname.split('/')[1]}/admin`) ||
-    pathname?.startsWith(`/${pathname.split('/')[1]}/user`);
+    pathname?.startsWith(`/${pathname.split('/')[1]}/user`) ||
+    pathname?.startsWith(`/${pathname.split('/')[1]}/(auth)`);
 
   return (
     <>

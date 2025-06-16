@@ -64,23 +64,31 @@ export const upsertGendersSchema = z.object({
   languageId: z.string().min(1, 'Language is required'),
 });
 
-export const upsertUserSchema = z.object({
-  id: z
+export const signUpFormSchema = z
+  .object({
+    id: z
+      .string()
+      .min(1, 'If provided, word id is should be at least 1 character')
+      .optional(),
+    userName: z.string().min(1, 'Username is required'),
+    firstName: z.string().min(1, 'First name is required'),
+    lastName: z.string().min(1, 'Last name is required'),
+    email: z.string().min(3, 'Email is required'),
+    password: z.string().min(8, 'Password is required'),
+    role: z.string(),
+    confirmPassword: z
+      .string()
+      .min(3, 'Confirm password must be at least 3 characters'),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords don't match",
+    path: ['confirmPassword'],
+  });
+
+export const signInFormSchema = z.object({
+  email: z
     .string()
-    .min(1, 'If provided, word id is should be at least 1 character')
-    .optional(),
-  userName: z.string().min(1, 'username is required'),
-  firstName: z.string().min(1, 'username is required'),
-  lastName: z.string().min(1, 'username is required'),
-  email: z.string().min(1, 'username is required'),
-  known: z.boolean(),
-  favorite: z.boolean(),
-  wordCaseId: z.string(),
-  partOfSpeechId: z.string(),
-  synonym: z.string().optional().or(z.literal('')),
-  antonym: z.string().optional().or(z.literal('')),
-  meaning: z.string().optional().or(z.literal('')),
-  popularCategoryId: z.string(),
-  languageId: z.string(),
-  genderId: z.string(),
+    .email('Invalid email address')
+    .min(3, 'Email must be at least 3 characters'),
+  password: z.string().min(6, 'Password must be at least 6 characters'),
 });

@@ -6,21 +6,6 @@ export const SERVER_URL =
   process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000';
 export const PAGE_SIZE = Number(process.env.PAGE_SIZE) || 10;
 
-export const signInDefaultValues = {
-  email: '',
-  password: '',
-};
-
-export const signUpDefaultValues = {
-  username: '',
-  firstName: '',
-  lastName: '',
-  email: '',
-  password: '',
-  confirmPassword: '',
-  image: '',
-};
-
 export const languageDefaultValues = {
   languageName: '',
 };
@@ -60,3 +45,19 @@ export const popularListWordDefaultValues = {
   languageId: '',
   genderId: '',
 };
+
+export const signUpDefaultValues = {
+  userName: '',
+  firstName: '',
+  lastName: '',
+  email: '',
+  password: '',
+  role: '',
+};
+
+export const signInDefaultValues = {
+  email: '',
+  password: '',
+};
+
+export const roles = ['user', 'admin'] as const;
