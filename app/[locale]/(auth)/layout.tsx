@@ -1,11 +1,13 @@
-const AuthLayout = ({
+import { ReactNode } from 'react';
+
+export default async function AuthLayout({
   children,
   params,
 }: {
-  children: React.ReactNode;
+  children: ReactNode;
   params: { locale: string };
-}) => {
-  const { locale } = params;
+}) {
+  const { locale } = await params;
 
   return (
     <div className="flex-center min-h-screen w-full">
@@ -15,6 +17,4 @@ const AuthLayout = ({
       {children}
     </div>
   );
-};
-
-export default AuthLayout;
+}

@@ -20,7 +20,7 @@ import { useRouter } from 'next/navigation';
 import { roles, signUpDefaultValues } from '@/lib/constants';
 import { Card, CardContent } from '@/components/ui/card';
 import {
-  SignOutUser,
+  // SignOutUser,
   checkIfUserExists,
   createUser,
 } from '@/lib/actions/admin/user.actions';
@@ -31,8 +31,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { usePathname } from 'next/navigation';
 
 const SignUpForm = () => {
+  const pathname = usePathname();
+  const segments = pathname.split('/').filter(Boolean);
+  const locale = segments[0] ?? 'en';
   const router = useRouter();
 
   const form = useForm<z.infer<typeof signUpFormSchema>>({
@@ -51,7 +55,7 @@ const SignUpForm = () => {
 
     const payload = { ...values };
 
-    const res = await createUser(payload);
+    const res = await createUser(payload, locale);
 
     if (!res.success) {
       toast.error(res.message);
@@ -59,14 +63,14 @@ const SignUpForm = () => {
       toast.success(res.message);
 
       form.reset();
-      await SignOutUser();
-      router.push('/sign-in');
+      // await SignOutUser();
+      router.push(`/${locale}/sign-in`);
     }
   };
 
   return (
     <div className="mb-25 flex justify-center items-center">
-      <Card className="w-full max-w-lg">
+      <Card className="w-full">
         <CardContent>
           <Form {...form}>
             <form
@@ -75,7 +79,7 @@ const SignUpForm = () => {
               className="space-y-8"
             >
               <div>
-                <div className="space-y-4 grid grid-cols-1 gap-3 mb-6 xl:mb-10">
+                <div className="space-y-4 grid grid-cols-1 md:grid-cols-2 gap-3 mb-6 xl:mb-10">
                   <div>
                     <FormField
                       control={form.control}

@@ -1,4 +1,3 @@
-// components/user-button-client.tsx
 'use client';
 
 import Image from 'next/image';
@@ -12,24 +11,27 @@ import {
   DropdownMenuTrigger,
 } from './dropdown-menu';
 import { Button } from './button';
-// import { useSession } from 'next-auth/react';
-// import { SignOutUser } from '@/lib/actions/user.actions';
+import { usePathname } from 'next/navigation';
+import { useSession } from 'next-auth/react';
+import { SignOutUser } from '@/lib/actions/admin/user.actions';
 
 const UserButtonClient = () => {
-  // const { data: session } = useSession();
+  const pathname = usePathname();
+  const segments = pathname.split('/').filter(Boolean);
+  const locale = segments[0] ?? 'en';
+  const { data: session } = useSession();
 
-  // if (!session) {
-  //   return (
-  //     <Link href="/sign-in">
-  //       <Button>Sign In</Button>
-  //     </Link>
-  //   );
-  // }
+  if (!session) {
+    return (
+      <Link href="/sign-in">
+        <Button>Sign In</Button>
+      </Link>
+    );
+  }
 
-  // const userImage = session.user?.image || Picture;
-  // const name = session.user?.name || 'Name';
-  // const email = session.user?.email || 'Email';
-  // const role = session.user?.role ?? '';
+  const name = session.user?.name || 'Name';
+  const email = session.user?.email || 'Email';
+  // const role = session.user?.role || '';
 
   return (
     <div className="flex gap-2 items-center">
@@ -48,28 +50,31 @@ const UserButtonClient = () => {
         <DropdownMenuContent className="w-50 mr-2" align="center" forceMount>
           <DropdownMenuLabel className="font-normal">
             <div className="flex flex-col space-y-1">
-              <p className="text-sm font-medium leading-none">Name</p>
+              <p className="text-sm font-medium leading-none">{name}</p>
               <p className="text-xs leading-none text-muted-foreground">
-                Email
+                {email}
               </p>
             </div>
           </DropdownMenuLabel>
 
+          <DropdownMenuItem asChild>
+            <Link className="w-full" href={`/${locale}/user/dashboard`}>
+              My Account
+            </Link>
+          </DropdownMenuItem>
+
+          {/* Uncomment and adjust role check if you implement roles */}
           {/* {role === 'admin' && (
             <DropdownMenuItem asChild>
-              <Link className="w-full" href="/user/dashboard">
+              <Link className="w-full" href={`/${locale}/admin/dashboard`}>
                 Admin
               </Link>
             </DropdownMenuItem>
           )} */}
 
+          {/* Temporary always show admin link */}
           <DropdownMenuItem asChild>
-            <Link className="w-full" href="/user/dashboard">
-              My Account
-            </Link>
-          </DropdownMenuItem>
-          <DropdownMenuItem asChild>
-            <Link className="w-full" href="/admin/dashboard">
+            <Link className="w-full" href={`/${locale}/admin/dashboard`}>
               Admin
             </Link>
           </DropdownMenuItem>
@@ -78,7 +83,7 @@ const UserButtonClient = () => {
             <Button
               className="w-full py-4 px-2 h-4 justify-start"
               variant="ghost"
-              // onClick={() => SignOutUser()}
+              onClick={() => SignOutUser()}
             >
               Sign Out
             </Button>

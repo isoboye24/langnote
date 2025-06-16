@@ -1,13 +1,19 @@
+// app/(actions)/create-user.ts
+'use server';
+
 import { signInFormSchema, signUpFormSchema } from '@/lib/validator';
-import { isRedirectError } from 'next/dist/client/components/redirect-error';
-import { signIn, signOut } from 'next-auth/react';
 import { z } from 'zod';
 import { revalidatePath } from 'next/cache';
 import { formatError } from '@/lib/utils';
 import { prisma } from '@/db/prisma';
 import { hashSync } from 'bcryptjs';
+import { signIn, signOut } from '@/auth';
+import { isRedirectError } from 'next/dist/client/components/redirect-error';
 
-export const createUser = async (data: z.infer<typeof signUpFormSchema>) => {
+export const createUser = async (
+  data: z.infer<typeof signUpFormSchema>,
+  locale: string
+) => {
   const parsed = signUpFormSchema.safeParse(data);
   if (!parsed.success) {
     return {
@@ -32,7 +38,8 @@ export const createUser = async (data: z.infer<typeof signUpFormSchema>) => {
       },
     });
 
-    revalidatePath('/sign-in');
+    revalidatePath(`/${locale}/sign-in`);
+
     return { success: true, message: 'User created', data: user };
   } catch (error) {
     return { success: false, message: formatError(error) };

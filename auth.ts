@@ -64,7 +64,7 @@ export const config = {
       };
 
       if (trigger === 'update') {
-        session.user.name = user.name;
+        session.user.name = `${user.firstName} ${user.lastName}`;
       }
 
       return session;
