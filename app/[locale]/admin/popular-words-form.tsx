@@ -324,21 +324,6 @@ const PopularWordForm = ({
             <div className="">
               <FormField
                 control={form.control}
-                name="word"
-                render={({ field }) => (
-                  <FormItem className="w-full">
-                    <FormLabel>Popular Word</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Enter Word" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-            <div className="">
-              <FormField
-                control={form.control}
                 name="languageId"
                 render={({ field }) => (
                   <FormItem className="w-full">
@@ -399,6 +384,21 @@ const PopularWordForm = ({
                           ))}
                         </SelectContent>
                       </Select>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+            <div className="">
+              <FormField
+                control={form.control}
+                name="word"
+                render={({ field }) => (
+                  <FormItem className="w-full">
+                    <FormLabel>Popular Word</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Enter Word" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
