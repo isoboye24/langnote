@@ -230,45 +230,52 @@ export const getAllPopularListWordsToSelect = async () => {
   }
 };
 
-export const getGroupOfPopularListWords = async () => {
+export const getGroupOfPopularListWords = async (
+  page: number = 1,
+  pageSize: number = 10
+) => {
   try {
-    const words = await prisma.popularListWord.findMany({
-      include: {
-        popularCategory: true,
-      },
-      orderBy: [{ word: 'asc' }],
-    });
+    // Step 1: Get all categories
+    const categories = await prisma.popularListCategory.findMany();
 
-    // Group words by category name
-    const grouped = words.reduce((acc, word) => {
-      const categoryName = word.popularCategory.popularCategory;
-      if (!acc[categoryName]) {
-        acc[categoryName] = [];
-      }
-      acc[categoryName].push(word);
-      return acc;
-    }, {} as Record<string, typeof words>);
+    // Step 2: For each category, fetch paginated words
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const grouped: Record<string, any[]> = {};
 
-    const groupTotals = await prisma.popularListWord.groupBy({
+    for (const category of categories) {
+      const words = await prisma.popularListWord.findMany({
+        where: {
+          popularCategoryId: category.id,
+        },
+        orderBy: [{ word: 'asc' }],
+        skip: (page - 1) * pageSize,
+        take: pageSize,
+        include: {
+          popularCategory: true,
+        },
+      });
+
+      grouped[category.popularCategory] = words;
+    }
+
+    // Step 3: Total word count per category
+    const totals = await prisma.popularListWord.groupBy({
       by: ['popularCategoryId'],
       _count: {
         _all: true,
-      },
-      orderBy: {
-        popularCategoryId: 'asc',
       },
     });
 
     return {
       success: true,
       data: grouped,
-      totals: groupTotals.map((group) => ({
+      totals: totals.map((group) => ({
         popularCategoryId: group.popularCategoryId,
         count: group._count._all,
       })),
     };
   } catch (error) {
-    console.error('Error fetching grouped word data:', error);
+    console.error('Error fetching grouped and paginated word data:', error);
     return {
       success: false,
       message: 'Failed to fetch grouped word data.',

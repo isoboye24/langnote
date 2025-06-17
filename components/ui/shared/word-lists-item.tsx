@@ -6,11 +6,13 @@ const WordListsItems = ({
   meaning,
   star,
   gender,
+  viewMeaning,
 }: {
   word: string;
   meaning: string;
   star: boolean;
   gender?: string;
+  viewMeaning: boolean;
 }) => {
   return (
     <div className="">
@@ -25,7 +27,7 @@ const WordListsItems = ({
             </div>
             <div className="">{gender}</div>
           </div>
-          <div className="text-sm italic">{meaning}</div>
+          {viewMeaning && <div className="text-sm italic">{meaning}</div>}
         </div>
         <div className="">
           <Star
