@@ -577,69 +577,69 @@ const PopularWordForm = ({
                 )}
               />
             </div>
-            {toggleGenderAndItsContent && (
-              <div className="">
-                <FormField
-                  control={form.control}
-                  name="genderId"
-                  render={({ field }) => (
-                    <FormItem className="w-full">
-                      <FormLabel>Gender</FormLabel>
-                      <FormControl>
-                        <Select
-                          value={field.value?.toString() || ''}
-                          onValueChange={(val) => field.onChange(val)}
-                        >
-                          <SelectTrigger className="w-full ">
-                            <SelectValue placeholder="Select Gender" />
-                          </SelectTrigger>
-                          <SelectContent className="w-full">
-                            {filteredGenders.map((gender) => {
-                              const isNone =
-                                gender.genderName.toLowerCase() === 'none';
-                              const isKein =
-                                gender.genderName.toLowerCase() === 'kein';
+            {/* {toggleGenderAndItsContent && ( */}
+            <div className="">
+              <FormField
+                control={form.control}
+                name="genderId"
+                render={({ field }) => (
+                  <FormItem className="w-full">
+                    <FormLabel>Gender</FormLabel>
+                    <FormControl>
+                      <Select
+                        value={field.value?.toString() || ''}
+                        onValueChange={(val) => field.onChange(val)}
+                      >
+                        <SelectTrigger className="w-full ">
+                          <SelectValue placeholder="Select Gender" />
+                        </SelectTrigger>
+                        <SelectContent className="w-full">
+                          {filteredGenders.map((gender) => {
+                            const isNone =
+                              gender.genderName.toLowerCase() === 'none';
+                            const isKein =
+                              gender.genderName.toLowerCase() === 'kein';
 
-                              const isEnglishNoun =
-                                selectedLanguage?.languageName.toLowerCase() ===
-                                  'english' &&
-                                selectedPartOfSpeech?.name.toLowerCase() ===
-                                  'noun';
+                            const isEnglishNoun =
+                              selectedLanguage?.languageName.toLowerCase() ===
+                                'english' &&
+                              selectedPartOfSpeech?.name.toLowerCase() ===
+                                'noun';
 
-                              const isGermanNomen =
-                                selectedLanguage?.languageName.toLowerCase() ===
-                                  'german' &&
-                                selectedPartOfSpeech?.name.toLowerCase() ===
-                                  'nomen';
+                            const isGermanNomen =
+                              selectedLanguage?.languageName.toLowerCase() ===
+                                'german' &&
+                              selectedPartOfSpeech?.name.toLowerCase() ===
+                                'nomen';
 
-                              const isRussian =
-                                selectedLanguage?.languageName.toLowerCase() ===
-                                'russian';
+                            const isRussian =
+                              selectedLanguage?.languageName.toLowerCase() ===
+                              'russian';
 
-                              const shouldDisable =
-                                !isRussian &&
-                                ((isEnglishNoun && isNone) ||
-                                  (isGermanNomen && isKein));
+                            const shouldDisable =
+                              !isRussian &&
+                              ((isEnglishNoun && isNone) ||
+                                (isGermanNomen && isKein));
 
-                              return (
-                                <SelectItem
-                                  key={gender.id}
-                                  value={gender.id.toString()}
-                                  disabled={shouldDisable}
-                                >
-                                  {gender.genderName}
-                                </SelectItem>
-                              );
-                            })}
-                          </SelectContent>
-                        </Select>
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-            )}
+                            return (
+                              <SelectItem
+                                key={gender.id}
+                                value={gender.id.toString()}
+                                disabled={shouldDisable}
+                              >
+                                {gender.genderName}
+                              </SelectItem>
+                            );
+                          })}
+                        </SelectContent>
+                      </Select>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+            {/* )} */}
           </div>
           <div className="col-start-1 col-end-3 lg:col-start-2 lg:col-end-3">
             <Button
