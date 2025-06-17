@@ -63,7 +63,6 @@ const UserButtonClient = () => {
             </Link>
           </DropdownMenuItem>
 
-          {/* Uncomment and adjust role check if you implement roles */}
           {/* {role === 'admin' && (
             <DropdownMenuItem asChild>
               <Link className="w-full" href={`/${locale}/admin/dashboard`}>

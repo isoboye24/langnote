@@ -14,6 +14,7 @@ import {
 
 import { Button } from '../button';
 import { toast } from 'sonner';
+import { Trash2 } from 'lucide-react';
 
 export default function DeleteDialog({
   id,
@@ -43,7 +44,7 @@ export default function DeleteDialog({
     <AlertDialog open={open} onOpenChange={setOpen}>
       <AlertDialogTrigger asChild>
         <Button size="sm" variant="destructive" className="ml-2">
-          Delete
+          <Trash2 />
         </Button>
       </AlertDialogTrigger>
       <AlertDialogContent>

@@ -12,97 +12,79 @@ import {
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import DeleteDialog from '@/components/ui/shared/delete-dialog';
-import { getAllPopularCategories } from '@/lib/actions/admin/popular-list-category.actions';
-import {
-  PartOfSpeech,
-  PopularListCategory,
-  PopularListWord,
-  WordCase,
-} from '@prisma/client';
+import { User } from '@prisma/client';
 import Pagination from '@/components/ui/shared/pagination';
-import { getAllPartsOfSpeech } from '@/lib/actions/admin/parts-of-speech.actions';
-import { getAllWordCases } from '@/lib/actions/admin/cases.actions';
-import {
-  deletePopularListWord,
-  getAllPopularListWords,
-} from '@/lib/actions/admin/popular-lists-words';
+import { deleteUser, getAllUsers } from '@/lib/actions/admin/user.actions';
+import { Eye, Pen } from 'lucide-react';
 
 const UserPageContent = () => {
-  const [words, setWords] = useState<PopularListWord[]>([]);
-  const [wordCases, setWordCases] = useState<WordCase[]>([]);
-  const [partsOfSpeech, setPartsOfSpeech] = useState<PartOfSpeech[]>([]);
-  const [Categories, setPartCategories] = useState<PopularListCategory[]>([]);
+  const [users, setUsers] = useState<User[]>([]);
+
   const [totalCount, setTotalCount] = useState(0);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const pageSize = 10;
 
   useEffect(() => {
-    const fetchPopularWords = async () => {
-      const categoryRes = await getAllPopularCategories();
-      const partsOfSpeechRes = await getAllPartsOfSpeech();
-      const wordCasesRes = await getAllWordCases();
-      const response = await getAllPopularListWords(page, pageSize);
+    const fetchUsers = async () => {
+      const response = await getAllUsers(page, pageSize);
 
       if (response.success) {
-        setWords(response?.data as PopularListWord[]);
-        setWordCases(wordCasesRes?.data as WordCase[]);
-        setPartsOfSpeech(partsOfSpeechRes?.data as PartOfSpeech[]);
-        setPartCategories(categoryRes?.data as PopularListCategory[]);
+        setUsers(response?.data as User[]);
         setTotalCount(Number(response.total));
         setTotalPages(Math.ceil(Number(response.total) / pageSize));
       }
     };
 
-    fetchPopularWords();
+    fetchUsers();
   }, [page]);
 
   return (
     <div className="space-y-2">
       <div className="flex-between">
         <div className="flex gap-3">
-          <h2 className="hidden md:block h2-bold text-center">
-            List of Popular Words
-          </h2>
+          <h2 className="hidden md:block h2-bold text-center">List of Users</h2>
         </div>
-        <Link href="/admin/popular-words/create">
-          <Button variant="default">Create Popular Word</Button>
+        <Link href="/admin/users/create">
+          <Button variant="default">Create User</Button>
         </Link>
       </div>
       <div className="mt-7 md:mt-15">
         <Table>
           <TableHeader className="text-base md:text-xl">
             <TableRow>
-              <TableHead>Word</TableHead>
-              <TableHead>Category</TableHead>
-              <TableHead>P. of Speech</TableHead>
-              <TableHead>Case</TableHead>
+              <TableHead>Username</TableHead>
+              <TableHead>Email</TableHead>
+              <TableHead>Role</TableHead>
               <TableHead className="w-[200px]">ACTIONS</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            {words?.map((word) => {
-              const category = Categories?.find(
-                (category) => category.id === word.popularCategoryId
-              );
-              const partOfSpeech = partsOfSpeech?.find(
-                (partOfSpeech) => partOfSpeech.id === word.partOfSpeechId
-              );
-              const wordCase = wordCases?.find(
-                (wordCase) => wordCase.id === word.wordCaseId
-              );
-
+            {users?.map((user) => {
               return (
-                <TableRow key={word.id}>
-                  <TableCell>{word.word}</TableCell>
-                  <TableCell>{category?.popularCategory}</TableCell>
-                  <TableCell>{partOfSpeech?.name}</TableCell>
-                  <TableCell>{wordCase?.caseName}</TableCell>
+                <TableRow key={user.id}>
+                  <TableCell>{user.userName}</TableCell>
+                  <TableCell>{user.email}</TableCell>
+                  {user.role === 'admin' ? (
+                    <TableCell className="text-amber-500">
+                      {user.role}
+                    </TableCell>
+                  ) : (
+                    <TableCell>{user.role}</TableCell>
+                  )}
+
                   <TableCell className="flex gap-5">
-                    <Link href={`/admin/popular-words/${word.id}`}>
-                      <Button>Edit</Button>
+                    <Link href={`/admin/users/${user.id}`}>
+                      <Button>
+                        <Pen />{' '}
+                      </Button>
                     </Link>
-                    <DeleteDialog id={word.id} action={deletePopularListWord} />
+                    <Link href={`/admin/users/${user.id}`}>
+                      <Button>
+                        <Eye />{' '}
+                      </Button>
+                    </Link>
+                    <DeleteDialog id={user.id} action={deleteUser} />
                   </TableCell>
                 </TableRow>
               );

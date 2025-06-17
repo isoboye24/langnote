@@ -63,6 +63,8 @@ export const config = {
         name: token.name ?? '',
       };
 
+      console.log(token);
+
       if (trigger === 'update') {
         session.user.name = `${user.firstName} ${user.lastName}`;
       }
@@ -75,8 +77,8 @@ export const config = {
         token.role = user.role;
         token.id = user.id;
 
-        if (user.name === 'NO_NAME') {
-          token.name = user.email!.split('@')[0];
+        if (user.role === 'NO_ROLE') {
+          // token.name = user.email!.split('@')[0];
 
           await prisma.user.update({
             where: { id: user.id },
@@ -85,7 +87,7 @@ export const config = {
               lastName: user.lastName,
               firstName: user.firstName,
               email: user.email,
-              role: user.role,
+              role: token.role,
             },
           });
         }
