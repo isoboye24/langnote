@@ -26,6 +26,7 @@ import {
   deletePopularListWord,
   getAllPopularListWords,
 } from '@/lib/actions/admin/popular-lists-words';
+import SearchInput from '@/components/ui/search-input';
 
 const PopularListWordPageContent = () => {
   const [words, setWords] = useState<PopularListWord[]>([]);
@@ -36,6 +37,8 @@ const PopularListWordPageContent = () => {
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const pageSize = 10;
+  const [searchQuery, setSearchQuery] = useState('');
+  const [filteredWords, setFilteredWords] = useState<PopularListWord[]>([]);
 
   useEffect(() => {
     const fetchPopularWords = async () => {
@@ -45,7 +48,9 @@ const PopularListWordPageContent = () => {
       const response = await getAllPopularListWords(page, pageSize);
 
       if (response.success) {
-        setWords(response?.data as PopularListWord[]);
+        const allWords = response?.data as PopularListWord[];
+        setWords(allWords);
+        setFilteredWords(allWords);
         setWordCases(wordCasesRes?.data as WordCase[]);
         setPartsOfSpeech(partsOfSpeechRes?.data as PartOfSpeech[]);
         setPartCategories(categoryRes?.data as PopularListCategory[]);
@@ -55,7 +60,21 @@ const PopularListWordPageContent = () => {
     };
 
     fetchPopularWords();
-  }, [page]);
+  }, [page, searchQuery]);
+
+  const onSearch = (query: string) => {
+    setSearchQuery(query);
+    if (!query.trim()) {
+      setFilteredWords(words); // Reset if empty
+      return;
+    }
+
+    const lower = query.toLowerCase();
+    const results = words.filter((word) =>
+      word.word.toLowerCase().includes(lower)
+    );
+    setFilteredWords(results);
+  };
 
   return (
     <div className="space-y-2">
@@ -69,7 +88,10 @@ const PopularListWordPageContent = () => {
           <Button variant="default">Create Popular Word</Button>
         </Link>
       </div>
-      <div className="mt-7 md:mt-15">
+      <div className="mt-10 justify-items-center">
+        <SearchInput onSearch={onSearch} />
+      </div>
+      <div className="mt-7 md:mt-10">
         <Table>
           <TableHeader className="text-base md:text-xl">
             <TableRow>
@@ -81,16 +103,14 @@ const PopularListWordPageContent = () => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {words?.map((word) => {
+            {filteredWords?.map((word) => {
               const category = Categories?.find(
-                (category) => category.id === word.popularCategoryId
+                (c) => c.id === word.popularCategoryId
               );
               const partOfSpeech = partsOfSpeech?.find(
-                (partOfSpeech) => partOfSpeech.id === word.partOfSpeechId
+                (p) => p.id === word.partOfSpeechId
               );
-              const wordCase = wordCases?.find(
-                (wordCase) => wordCase.id === word.wordCaseId
-              );
+              const wordCase = wordCases?.find((w) => w.id === word.wordCaseId);
 
               return (
                 <TableRow key={word.id}>
