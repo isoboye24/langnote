@@ -15,7 +15,7 @@ export default function UserSidebar() {
       href: 'user/dashboard',
       icon: <Home size={20} />,
     },
-    { label: t('Book'), href: 'user/book', icon: <Book size={20} /> },
+    { label: t('Books'), href: 'user/books', icon: <Book size={20} /> },
   ];
 
   const pathname = usePathname();

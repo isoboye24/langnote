@@ -282,3 +282,57 @@ export const getGroupOfPopularListWords = async (
     };
   }
 };
+
+export const getSearchAllPopularWords = async (word: string) => {
+  try {
+    const words = prisma.popularListWord.findMany({
+      where: {
+        word,
+      },
+      orderBy: [{ word: 'asc' }],
+    });
+
+    return {
+      success: true,
+      data: words,
+    };
+  } catch (error) {
+    console.error('Error fetching words:', error);
+    return {
+      success: false,
+      message: 'Failed to fetch words.',
+    };
+  }
+};
+
+// export const getAllSearchedPopularWord = async (
+//   // page: number = 1,
+//   // pageSize: number = 10,
+//   categoryId: string
+// ) => {
+//   try {
+//     const [words, total] = await Promise.all([
+//       prisma.popularListWord.findMany({
+//         where: { popularCategoryId: categoryId },
+//         orderBy: [{ createdAt: 'desc' }, { word: 'asc' }],
+//         // skip: (page - 1) * pageSize,
+//         // take: pageSize,
+//       }),
+//       prisma.popularListWord.count({
+//         where: { popularCategoryId: categoryId },
+//       }),
+//     ]);
+
+//     return {
+//       success: true,
+//       data: words,
+//       total,
+//     };
+//   } catch (error) {
+//     console.error('Error fetching words:', error);
+//     return {
+//       success: false,
+//       message: 'Failed to fetch words.',
+//     };
+//   }
+// };

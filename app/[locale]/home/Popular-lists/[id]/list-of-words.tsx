@@ -7,6 +7,7 @@ import { PopularListCategory } from '@prisma/client';
 import WordListsItems from '@/components/ui/shared/word-lists-item';
 import { Button } from '@/components/ui/button';
 import Pagination from '@/components/ui/shared/pagination';
+import SearchInput from '@/components/ui/search-input';
 
 const ListOfWords = ({ id }: { id: string }) => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -17,6 +18,9 @@ const ListOfWords = ({ id }: { id: string }) => {
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const pageSize = 10;
+  // const [searchQuery, setSearchQuery] = useState();
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // const [filteredWords, setFilteredWords] = useState<Record<string, any[]>>();
 
   useEffect(() => {
     const fetchPartsOfSpeech = async () => {
@@ -42,6 +46,8 @@ const ListOfWords = ({ id }: { id: string }) => {
     fetchPartsOfSpeech();
   }, [id, page]);
 
+  const onSearch = () => {};
+
   return (
     <div className="wrapper">
       <div className="shadow mb-10 mt-10 bg-teal-100 dark:bg-teal-800 p-5 rounded-3xl">
@@ -50,17 +56,22 @@ const ListOfWords = ({ id }: { id: string }) => {
         </div>
       </div>
       <div className="shadow rounded-2xl bg-gray-50 dark:bg-gray-800 p-10 mt-10">
-        <div className="flex justify-end mb-10 ">
-          <Button
-            className={
-              viewMeaning
-                ? 'bg-teal-500 text-gray-100'
-                : 'bg-red-500 text-gray-100'
-            }
-            onClick={() => setViewMeaning(!viewMeaning)}
-          >
-            {viewMeaning ? 'Hide Meaning' : 'Show meaning'}
-          </Button>
+        <div className="grid grid-cols-1 gap-5 md:grid-cols-[3fr_1fr] mb-10 justify-items-center md:justify-items-start">
+          <div className="">
+            <SearchInput onSearch={onSearch} />
+          </div>
+          <div className="justify-items-end">
+            <Button
+              className={
+                viewMeaning
+                  ? 'bg-teal-500 text-gray-100'
+                  : 'bg-red-500 text-gray-100'
+              }
+              onClick={() => setViewMeaning(!viewMeaning)}
+            >
+              {viewMeaning ? 'Hide Meaning' : 'Show meaning'}
+            </Button>
+          </div>
         </div>
         <div className="">
           {category &&
