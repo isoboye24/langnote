@@ -92,3 +92,18 @@ export const signInFormSchema = z.object({
     .min(3, 'Email must be at least 3 characters'),
   password: z.string().min(6, 'Password must be at least 6 characters'),
 });
+
+export const upsertBookSchema = z.object({
+  id: z
+    .string()
+    .min(1, 'If provided, Book id is should be at least 1 character')
+    .optional(),
+  title: z
+    .string()
+    .min(1, 'title is required')
+    .max(30, 'title must not be longer than 30 characters.'),
+  userId: z.string().min(1, 'User is required'),
+  language: z.string().min(1, 'Language is required'),
+  color1: z.string().min(1, 'color1 is required'),
+  color2: z.string().min(1, 'color2 is required'),
+});

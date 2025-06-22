@@ -8,26 +8,29 @@ datasource db {
 }
 
 model Book {
-  id         String   @id @default(uuid()) @db.Uuid
-  title      String
-  color      String
-  userId     String   @db.Uuid
-  languageId String   @db.Uuid
-  language   Language @relation(fields: [languageId], references: [id], onDelete: Cascade)
-  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  Topic      Topic[]
-  Word       Word[]
+  id        String      @id @default(uuid()) @db.Uuid
+  title     String
+  userId    String      @db.Uuid
+  color1    String
+  color2    String
+  language  String
+  createdAt DateTime    @default(now()) @db.Timestamp(6)
+  updatedAt DateTime    @updatedAt @db.Timestamp(6)
+  user      User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  Word      Word[]
+  Topic     WordGroup[]
 
-  @@index([languageId])
   @@index([userId])
 }
 
-model Topic {
-  id     String @id @default(uuid()) @db.Uuid
-  topic  String
-  bookId String @db.Uuid
-  book   Book   @relation(fields: [bookId], references: [id], onDelete: Cascade)
-  Word   Word[]
+model WordGroup {
+  id        String   @id @default(uuid()) @db.Uuid
+  groupName String
+  bookId    String   @db.Uuid
+  createdAt DateTime @default(now()) @db.Timestamp(6)
+  updatedAt DateTime @updatedAt @db.Timestamp(6)
+  Word      Word[]
+  book      Book     @relation(fields: [bookId], references: [id], onDelete: Cascade)
 }
 
 model PartOfSpeech {
@@ -42,7 +45,6 @@ model PartOfSpeech {
 model Language {
   id                  String                @id @default(uuid()) @db.Uuid
   languageName        String
-  Book                Book[]
   Gender              Gender[]
   PartOfSpeech        PartOfSpeech[]
   PopularListCategory PopularListCategory[]
@@ -153,7 +155,7 @@ model Word {
   book           Book         @relation(fields: [bookId], references: [id])
   gender         Gender       @relation(fields: [genderId], references: [id])
   partOfSpeech   PartOfSpeech @relation(fields: [partOfSpeechId], references: [id], onDelete: Cascade)
-  topic          Topic        @relation(fields: [topicId], references: [id])
+  wordGroup      WordGroup    @relation(fields: [topicId], references: [id])
   user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
   wordCase       WordCase     @relation(fields: [wordCaseId], references: [id], onDelete: Cascade)
 

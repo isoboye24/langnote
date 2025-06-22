@@ -61,3 +61,11 @@ export const signInDefaultValues = {
 };
 
 export const roles = ['user', 'admin'] as const;
+
+export const bookDefaultValues = {
+  title: '',
+  userId: '',
+  language: '',
+  color1: '',
+  color2: '',
+};
