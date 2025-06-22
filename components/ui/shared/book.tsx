@@ -1,45 +1,61 @@
-import Link from 'next/link';
+'use client';
+
 import React from 'react';
-import { Button } from '../button';
+import Link from 'next/link';
 import { Pen, Trash2 } from 'lucide-react';
+import { Button } from '../button';
 
 const Book = ({
   title,
   language,
   topics,
-  color = 'from-indigo-500 to-purple-600',
+  color1 = '#4f46e5',
+  color2 = '#9333ea',
 }: {
   title: string;
   language: string;
   topics: number;
-  color?: string;
+  color1?: string;
+  color2?: string;
 }) => {
-  // const editBook = () => {};
-  // const deleteBook = () => {};
   return (
-    <Link
-      href={`/user/books/book`}
-      className={`w-35 h-50 md:w-35 md:h-50 lg:w-50 lg:h-60 xl:w-60 xl:h-80 bg-gradient-to-br ${color} text-white rounded-2xl shadow-lg p-4 flex flex-col justify-between`}
+    <div
+      className="relative w-[200px] h-[300px] rounded-md overflow-hidden shadow-xl border"
+      style={{
+        background: `linear-gradient(135deg, ${color1}, ${color2})`,
+      }}
     >
-      <div>
-        <h2 className="text-md font-bold break-words mb-2">{title}</h2>
-        <p className="text-xs italic mb-3">Lang: {language}</p>
-        <p className="text-xs">Pages: {topics}</p>
+      {/* Top Title */}
+      <div className="absolute top-4 left-4 right-4 text-white text-lg font-bold tracking-wide">
+        {title}
       </div>
 
-      <div className=" flex-between">
-        <Button className="bg-transparent">
-          <Link href={`/user/books/update`}>
-            <Pen />
-          </Link>
-        </Button>
-        <Button className="bg-transparent">
-          <Link href={`/user/books/delete`}>
-            <Trash2 />
-          </Link>
-        </Button>
+      {/* Subtext (Language) */}
+      <div className="absolute top-12 left-4 right-4 text-white text-sm italic">
+        {language}
       </div>
-    </Link>
+
+      {/* Center Decorative Section */}
+      <div className="absolute top-1/3 left-1/2 transform -translate-x-1/2 text-center">
+        <div className="bg-white text-gray-700 rounded-full px-6 py-4 shadow-md text-sm font-semibold">
+          Pages: {topics}
+        </div>
+      </div>
+
+      {/* Bottom Buttons */}
+      <div className="absolute bottom-4 left-4 right-4 flex justify-between">
+        <Link href={`/user/books/update`}>
+          <Button className="bg-white text-gray-800 hover:bg-gray-100">
+            <Pen size={16} />
+          </Button>
+        </Link>
+        <Link href={`/user/books/delete`}>
+          <Button className="bg-white text-gray-800 hover:bg-gray-100">
+            <Trash2 size={16} />
+          </Button>
+        </Link>
+      </div>
+    </div>
   );
 };
 

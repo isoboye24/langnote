@@ -9,15 +9,11 @@ const BookList = () => {
         title="German"
         language="German"
         topics={5}
-        color="from-blue-500 to-teal-600"
+        color1="#00c6ff"
+        color2="#0072ff"
       />
       <Book title="Russian" language="Russian" topics={10} />
-      <Book
-        title="English"
-        language="German"
-        topics={5}
-        color="from-red-500 to-pink-300"
-      />
+      <Book title="English" language="German" topics={5} />
     </div>
   );
 };
