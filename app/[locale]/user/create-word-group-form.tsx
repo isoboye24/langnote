@@ -43,11 +43,14 @@ const WordGroupForm = ({
       ? {
           groupName: group?.groupName ?? '',
           color: group?.color ?? '',
-          bookId: bookId,
+          bookId: group.bookId ?? bookId,
         }
-      : wordGroupDefaultValues,
+      : {
+          ...wordGroupDefaultValues,
+          bookId: bookId, // <-- explicitly set bookId here
+        },
   });
-  console.log('Book ID:', bookId);
+
   // Reset form values when group prop changes
   useEffect(() => {
     if (group && type === 'Update') {

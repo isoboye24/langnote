@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   title: 'Books',
 };
 
-const GenderList = () => {
+const ListOfBooks = () => {
   return (
     <>
       <div className="flex-between mb-10">
@@ -24,4 +24,4 @@ const GenderList = () => {
   );
 };
 
-export default GenderList;
+export default ListOfBooks;

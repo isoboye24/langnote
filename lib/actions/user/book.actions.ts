@@ -188,3 +188,27 @@ export const getTotalBooks = async () => {
     return { success: false, message: 'Failed to count book' };
   }
 };
+
+export const getAllBooksToSelect = async (id: string) => {
+  try {
+    const [books, total] = await Promise.all([
+      prisma.book.findMany({
+        where: { id },
+        orderBy: { createdAt: 'desc' },
+      }),
+      prisma.book.count(),
+    ]);
+
+    return {
+      success: true,
+      data: books,
+      total,
+    };
+  } catch (error) {
+    console.error('Error fetching books:', error);
+    return {
+      success: false,
+      message: 'Failed to fetch books',
+    };
+  }
+};

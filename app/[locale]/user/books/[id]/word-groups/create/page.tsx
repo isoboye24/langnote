@@ -6,8 +6,14 @@ export const metadata: Metadata = {
   title: 'Create Group',
 };
 
-const CreateBook = ({ params }: { params: { id: string } }) => {
-  const bookId = params.id;
+const CreateWordGroup = async ({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) => {
+  const awaitedParams = await params;
+  const bookId = awaitedParams.id;
+
   return (
     <div className="">
       <h2 className="h2-bold text-center">Create Word Group</h2>
@@ -20,4 +26,4 @@ const CreateBook = ({ params }: { params: { id: string } }) => {
   );
 };
 
-export default CreateBook;
+export default CreateWordGroup;

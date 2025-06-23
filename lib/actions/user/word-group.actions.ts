@@ -102,16 +102,18 @@ export const checkIfWordGroupExists = async (
 
 export const getAllWordGroups = async (
   page: number = 1,
-  pageSize: number = 10
+  pageSize: number = 10,
+  bookId: string
 ) => {
   try {
     const [groups, total] = await Promise.all([
       prisma.wordGroup.findMany({
+        where: { bookId },
         orderBy: { createdAt: 'desc' },
         skip: (page - 1) * pageSize,
         take: pageSize,
       }),
-      prisma.wordGroup.count(),
+      prisma.wordGroup.count({ where: { bookId } }),
     ]);
 
     return {

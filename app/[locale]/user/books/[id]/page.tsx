@@ -25,7 +25,7 @@ const GroupList = async (props: {
         </Button>
       </div>
       <div className="">
-        <GroupContent />
+        <GroupContent bookId={id} />
       </div>
     </>
   );
