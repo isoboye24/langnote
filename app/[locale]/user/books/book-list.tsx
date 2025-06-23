@@ -32,7 +32,7 @@ const BookList = () => {
   }, [page]);
   return (
     <div className="">
-      <div className="flex gap-4 flex-wrap justify-center items-center md:justify-start md:items-start">
+      <div className="flex gap-4 flex-wrap justify-center items-center md:justify-start md:items-start mb-20">
         {books.map((book) => {
           // const group = wordGroup.find(
           //   (lang) => lang.id === gender.languageId

@@ -29,6 +29,7 @@ model WordGroup {
   bookId    String   @db.Uuid
   createdAt DateTime @default(now()) @db.Timestamp(6)
   updatedAt DateTime @updatedAt @db.Timestamp(6)
+  color     String
   Word      Word[]
   book      Book     @relation(fields: [bookId], references: [id], onDelete: Cascade)
 }

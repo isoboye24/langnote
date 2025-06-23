@@ -69,3 +69,9 @@ export const bookDefaultValues = {
   color1: '',
   color2: '',
 };
+
+export const wordGroupDefaultValues = {
+  groupName: '',
+  bookId: '',
+  color: '',
+};

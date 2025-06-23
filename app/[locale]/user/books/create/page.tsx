@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   title: 'Create Book',
 };
 
-const CreateBook = () => {
+const CreateBook = async () => {
   return (
     <div className="">
       <h2 className="h2-bold text-center">Create Book</h2>

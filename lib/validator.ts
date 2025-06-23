@@ -101,9 +101,22 @@ export const upsertBookSchema = z.object({
   title: z
     .string()
     .min(1, 'title is required')
-    .max(24, 'title must not be longer than 30 characters.'),
+    .max(24, 'title must not be longer than 24 characters.'),
   userId: z.string().min(1, 'User is required'),
   language: z.string().min(1, 'Language is required'),
   color1: z.string().min(1, 'color1 is required'),
   color2: z.string().min(1, 'color2 is required'),
+});
+
+export const upsertWordGroupSchema = z.object({
+  id: z
+    .string()
+    .min(1, 'If provided, group id is should be at least 1 character')
+    .optional(),
+  groupName: z
+    .string()
+    .min(1, 'group is required')
+    .max(60, 'group must not be longer than 60 characters.'),
+  bookId: z.string().min(1, 'User is required'),
+  color: z.string().min(1, 'color is required'),
 });
