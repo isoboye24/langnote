@@ -45,6 +45,7 @@ const BookList = () => {
                 groups={0}
                 color1={book.color1}
                 color2={book.color2}
+                id={book.id}
               />
             </div>
           );

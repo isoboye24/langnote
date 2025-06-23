@@ -31,7 +31,7 @@ import { checkIfBookExists, upsertBook } from '@/lib/actions/user/book.actions';
 import ColorPicker from '@/components/ui/shared/color-picker';
 import { useSession } from 'next-auth/react';
 
-const CreateBookForm = ({
+const BookForm = ({
   type,
   book,
   id,
@@ -238,4 +238,4 @@ const CreateBookForm = ({
   );
 };
 
-export default CreateBookForm;
+export default BookForm;

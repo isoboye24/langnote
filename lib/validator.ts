@@ -101,7 +101,7 @@ export const upsertBookSchema = z.object({
   title: z
     .string()
     .min(1, 'title is required')
-    .max(30, 'title must not be longer than 30 characters.'),
+    .max(24, 'title must not be longer than 30 characters.'),
   userId: z.string().min(1, 'User is required'),
   language: z.string().min(1, 'Language is required'),
   color1: z.string().min(1, 'color1 is required'),
