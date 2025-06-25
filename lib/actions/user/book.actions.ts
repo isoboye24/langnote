@@ -56,19 +56,23 @@ export const upsertBook = async (data: z.infer<typeof upsertBookSchema>) => {
         book = await prisma.book.create({
           data: { title, userId, language, color1, color2 },
         });
+
+        return {
+          success: true,
+          message: id
+            ? 'Book updated successfully'
+            : 'Book created successfully',
+          data: book,
+        };
       } else {
         return {
           success: false,
-          message: 'Book with the same title and language exists',
+          message: `The book '${existing.title}' already exists in '${
+            existing.language
+          }'. It was created on ${existing.createdAt.getDay()}.${existing.createdAt.getMonth()}.${existing.createdAt.getFullYear()}.`,
         };
       }
     }
-
-    return {
-      success: true,
-      message: id ? 'Book updated successfully' : 'Book created successfully',
-      data: book,
-    };
   } catch (error) {
     console.error('Upsert book error:', error);
     return {
@@ -107,15 +111,22 @@ export const checkIfBookExists = async (
   }
 };
 
-export const getAllBooks = async (page: number = 1, pageSize: number = 10) => {
+export const getAllBooks = async (
+  page: number = 1,
+  pageSize: number = 10,
+  userId: string
+) => {
   try {
     const [books, total] = await Promise.all([
       prisma.book.findMany({
+        where: { userId: userId },
         orderBy: { createdAt: 'desc' },
         skip: (page - 1) * pageSize,
         take: pageSize,
       }),
-      prisma.book.count(),
+      prisma.book.count({
+        where: { userId: userId },
+      }),
     ]);
 
     return {
@@ -179,9 +190,11 @@ export async function deleteBook(id: string) {
   }
 }
 
-export const getTotalBooks = async () => {
+export const getTotalBooks = async (userId: string) => {
   try {
-    const total = await prisma.book.count();
+    const total = await prisma.book.count({
+      where: { userId: userId },
+    });
     return { success: true, data: total };
   } catch (error) {
     console.error('Error calculating total book:', error);
@@ -189,14 +202,14 @@ export const getTotalBooks = async () => {
   }
 };
 
-export const getAllBooksToSelect = async (id: string) => {
+export const getAllBooksToSelect = async (id: string, userId: string) => {
   try {
     const [books, total] = await Promise.all([
       prisma.book.findMany({
-        where: { id },
+        where: { id, userId: userId },
         orderBy: { createdAt: 'desc' },
       }),
-      prisma.book.count(),
+      prisma.book.count({ where: { userId: userId } }),
     ]);
 
     return {

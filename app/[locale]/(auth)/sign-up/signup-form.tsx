@@ -200,14 +200,14 @@ const SignUpForm = () => {
                       name="firstLanguage"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Language</FormLabel>
+                          <FormLabel>First Language</FormLabel>
                           <Select
                             onValueChange={field.onChange}
                             defaultValue={field.value}
                           >
                             <FormControl>
                               <SelectTrigger>
-                                <SelectValue placeholder="Select a language" />
+                                <SelectValue placeholder="Select Your First Language" />
                               </SelectTrigger>
                             </FormControl>
                             <SelectContent>

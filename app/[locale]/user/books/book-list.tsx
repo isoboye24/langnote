@@ -5,9 +5,11 @@ import SingleBook from '@/components/ui/shared/book';
 import { Book } from '@prisma/client';
 import { getAllBooks } from '@/lib/actions/user/book.actions';
 import Pagination from '@/components/ui/shared/pagination';
+import { useSession } from 'next-auth/react';
 // import { getTotalWordGroup } from '@/lib/actions/user/word-group.actions';
 
 const BookList = () => {
+  const { data: session } = useSession();
   const [books, setBooks] = useState<Book[]>([]);
   // const [WordGroups, setWordGroups] = useState<WordGroup[]>([]);
   const [totalCount, setTotalCount] = useState(0);
@@ -16,9 +18,13 @@ const BookList = () => {
   const pageSize = 10;
   // const [totalGroup, setTotalGroup] = useState(0);
 
+  const userId = session?.user?.id;
+
   useEffect(() => {
+    if (!userId) return;
+
     const fetchCases = async () => {
-      const response = await getAllBooks(page, pageSize);
+      const response = await getAllBooks(page, pageSize, userId);
 
       if (response.success) {
         setBooks(response?.data as Book[]);
@@ -29,7 +35,7 @@ const BookList = () => {
     };
 
     fetchCases();
-  }, [page]);
+  }, [userId, page]);
   return (
     <div className="">
       <div className="flex gap-4 flex-wrap justify-center items-center md:justify-start md:items-start mb-20">

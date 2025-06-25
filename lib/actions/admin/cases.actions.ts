@@ -48,7 +48,7 @@ export const upsertWordCase = async (
         });
         return {
           success: false,
-          message: `This case ${caseExists.caseName} already exists in ${getLanguage?.languageName}.`,
+          message: `This case ${caseExists.caseName} already exists in ${getLanguage?.languageName}. `,
         };
       } else {
         cases = await prisma.wordCase.create({

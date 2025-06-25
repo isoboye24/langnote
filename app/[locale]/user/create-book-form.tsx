@@ -27,7 +27,7 @@ import {
   SelectItem,
 } from '@/components/ui/select';
 import { Book } from '@prisma/client';
-import { checkIfBookExists, upsertBook } from '@/lib/actions/user/book.actions';
+import { upsertBook } from '@/lib/actions/user/book.actions';
 import ColorPicker from '@/components/ui/shared/color-picker';
 import { useSession } from 'next-auth/react';
 
@@ -81,23 +81,12 @@ const BookForm = ({
   const onSubmit: SubmitHandler<z.infer<typeof upsertBookSchema>> = async (
     values
   ) => {
-    if (type === 'Create') {
-      const exists = await checkIfBookExists(
-        values.userId,
-        values.language,
-        values.title
-      );
-      if (exists) {
-        toast.error('Book with this title and language already exists.');
-        return;
-      }
-    }
     const payload = { ...values, id: type === 'Update' && id ? id : undefined };
 
     const res = await upsertBook(payload);
 
-    if (!res.success) {
-      toast.error(res.message);
+    if (!res?.success) {
+      toast.error(res?.message);
     } else {
       toast.success(res.message);
       router.push('/user/books');

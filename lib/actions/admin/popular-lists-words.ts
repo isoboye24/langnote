@@ -6,196 +6,7 @@ import { revalidatePath } from 'next/cache';
 import { z } from 'zod';
 import { formatError } from '../../utils';
 
-// export const upsertPopularListsWord = async (
-//   data: z.infer<typeof upsertPopularListWordSchema>
-// ) => {
-//   const parsed = upsertPopularListWordSchema.safeParse(data);
-
-//   if (!parsed.success) {
-//     return {
-//       success: false,
-//       message: 'Invalid popular word',
-//       errors: parsed.error.flatten().fieldErrors,
-//     };
-//   }
-
-//   const {
-//     id,
-//     word,
-//     known,
-//     favorite,
-//     wordCaseId,
-//     partOfSpeechId,
-//     synonym,
-//     antonym,
-//     meaning,
-//     popularCategoryId,
-//     languageId,
-//     genderId,
-//   } = parsed.data;
-
-//   try {
-//     let popularWord;
-
-//     // Upsert the popular word
-//     if (id) {
-//       popularWord = await prisma.popularListWord.upsert({
-//         where: { id },
-//         update: {
-//           word,
-//           known,
-//           favorite,
-//           wordCaseId,
-//           partOfSpeechId,
-//           synonym,
-//           antonym,
-//           meaning,
-//           popularCategoryId,
-//           languageId,
-//           genderId,
-//         },
-//         create: {
-//           word,
-//           known,
-//           favorite,
-//           wordCaseId,
-//           partOfSpeechId,
-//           synonym,
-//           antonym,
-//           meaning,
-//           popularCategoryId,
-//           languageId,
-//           genderId,
-//         },
-//       });
-//     } else {
-//       const getLanguage = await prisma.language.findFirst({
-//         where: { id: languageId },
-//       });
-
-//       const wordExists = await prisma.popularListWord.findFirst({
-//         where: { languageId: getLanguage?.id },
-//       });
-
-//       if (wordExists?.word.length === 0) {
-//         const getCategory = await prisma.popularListCategory.findFirst({
-//           where: { id: wordExists?.popularCategoryId },
-//         });
-//         return `This word was saved on ${wordExists.createdAt} in ${getCategory?.popularCategory} category`;
-//       } else {
-//         popularWord = await prisma.popularListWord.create({
-//           data: {
-//             word,
-//             known,
-//             favorite,
-//             wordCaseId,
-//             partOfSpeechId,
-//             synonym,
-//             antonym,
-//             meaning,
-//             popularCategoryId,
-//             languageId,
-//             genderId,
-//           },
-//         });
-//       }
-//     }
-
-//     return {
-//       success: true,
-//       message: id ? 'Word updated successfully' : 'Word created successfully',
-//       data: popularWord,
-//     };
-//   } catch (error) {
-//     console.error('Upsert word error:', error);
-//     return {
-//       success: false,
-//       message: 'Failed to upsert word',
-//     };
-//   }
-// };
-
-export const createPopularListsWord = async (
-  data: z.infer<typeof upsertPopularListWordSchema>
-) => {
-  const parsed = upsertPopularListWordSchema.safeParse(data);
-
-  if (!parsed.success) {
-    return {
-      success: false,
-      message: 'Invalid popular word',
-      errors: parsed.error.flatten().fieldErrors,
-    };
-  }
-
-  const {
-    word,
-    known,
-    favorite,
-    wordCaseId,
-    partOfSpeechId,
-    synonym,
-    antonym,
-    meaning,
-    popularCategoryId,
-    languageId,
-    genderId,
-  } = parsed.data;
-
-  try {
-    const wordExists = await prisma.popularListWord.findFirst({
-      where: {
-        word: {
-          equals: word.trim(),
-          mode: 'insensitive',
-        },
-        languageId: languageId,
-      },
-    });
-
-    if (wordExists) {
-      const category = await prisma.popularListCategory.findFirst({
-        where: { id: wordExists.popularCategoryId },
-      });
-
-      return {
-        success: false,
-        message: `This word already exists (saved on ${wordExists.createdAt}) in the '${category?.popularCategory}' category.`,
-      };
-    } else {
-      const trimmedWord = word.trim();
-      const newWord = await prisma.popularListWord.create({
-        data: {
-          word: trimmedWord,
-          known,
-          favorite,
-          wordCaseId,
-          partOfSpeechId,
-          synonym,
-          antonym,
-          meaning,
-          popularCategoryId,
-          languageId,
-          genderId,
-        },
-      });
-
-      return {
-        success: true,
-        message: 'Word created successfully',
-        data: newWord,
-      };
-    }
-  } catch (error) {
-    console.error('Create word error:', error);
-    return {
-      success: false,
-      message: 'Failed to create word',
-    };
-  }
-};
-
-export const updatePopularListsWord = async (
+export const upsertPopularListsWord = async (
   data: z.infer<typeof upsertPopularListWordSchema>
 ) => {
   const parsed = upsertPopularListWordSchema.safeParse(data);
@@ -223,50 +34,247 @@ export const updatePopularListsWord = async (
     genderId,
   } = parsed.data;
 
-  if (!id) {
-    return {
-      success: false,
-      message: 'Word ID is required for update',
-    };
-  }
-
   try {
-    const updatedWord = await prisma.popularListWord.update({
-      where: { id },
-      data: {
-        word,
-        known,
-        favorite,
-        wordCaseId,
-        partOfSpeechId,
-        synonym,
-        antonym,
-        meaning,
-        popularCategoryId,
-        languageId,
-        genderId,
-      },
-    });
+    let popularWord;
+
+    // Upsert the popular word
+    if (id) {
+      popularWord = await prisma.popularListWord.upsert({
+        where: { id },
+        update: {
+          word,
+          known,
+          favorite,
+          wordCaseId,
+          partOfSpeechId,
+          synonym,
+          antonym,
+          meaning,
+          popularCategoryId,
+          languageId,
+          genderId,
+        },
+        create: {
+          word,
+          known,
+          favorite,
+          wordCaseId,
+          partOfSpeechId,
+          synonym,
+          antonym,
+          meaning,
+          popularCategoryId,
+          languageId,
+          genderId,
+        },
+      });
+    } else {
+      const wordExists = await prisma.popularListWord.findFirst({
+        where: {
+          word: {
+            equals: word.trim(),
+            mode: 'insensitive',
+          },
+          languageId: languageId,
+        },
+      });
+
+      if (wordExists) {
+        const category = await prisma.popularListCategory.findFirst({
+          where: { id: wordExists.popularCategoryId },
+        });
+
+        return {
+          success: false,
+          message: `This word '${wordExists.word}' already exists in '${
+            category?.popularCategory
+          }'. It was saved on ${wordExists.createdAt.getDay()}.${wordExists.createdAt.getMonth()}.${wordExists.createdAt.getFullYear()}.`,
+        };
+      } else {
+        popularWord = await prisma.popularListWord.create({
+          data: {
+            word,
+            known,
+            favorite,
+            wordCaseId,
+            partOfSpeechId,
+            synonym,
+            antonym,
+            meaning,
+            popularCategoryId,
+            languageId,
+            genderId,
+          },
+        });
+      }
+    }
 
     return {
       success: true,
-      message: 'Word updated successfully',
-      data: updatedWord,
+      message: id ? 'Word updated successfully' : 'Word created successfully',
+      data: popularWord,
     };
   } catch (error) {
-    console.error('Update word error:', error);
+    console.error('Upsert word error:', error);
     return {
       success: false,
-      message: 'Failed to update word',
+      message: 'Failed to upsert word',
     };
   }
 };
 
-export const upsertPopularListsWord = async (
-  data: z.infer<typeof upsertPopularListWordSchema>
-) => {
-  return data.id ? updatePopularListsWord(data) : createPopularListsWord(data);
-};
+// export const createPopularListsWord = async (
+//   data: z.infer<typeof upsertPopularListWordSchema>
+// ) => {
+//   const parsed = upsertPopularListWordSchema.safeParse(data);
+
+//   if (!parsed.success) {
+//     return {
+//       success: false,
+//       message: 'Invalid popular word',
+//       errors: parsed.error.flatten().fieldErrors,
+//     };
+//   }
+
+//   const {
+//     word,
+//     known,
+//     favorite,
+//     wordCaseId,
+//     partOfSpeechId,
+//     synonym,
+//     antonym,
+//     meaning,
+//     popularCategoryId,
+//     languageId,
+//     genderId,
+//   } = parsed.data;
+
+//   try {
+//     const wordExists = await prisma.popularListWord.findFirst({
+//       where: {
+//         word: {
+//           equals: word.trim(),
+//           mode: 'insensitive',
+//         },
+//         languageId: languageId,
+//       },
+//     });
+
+//     if (wordExists) {
+//       const category = await prisma.popularListCategory.findFirst({
+//         where: { id: wordExists.popularCategoryId },
+//       });
+
+//       return {
+//         success: false,
+//         message: `This word already exists (saved on ${wordExists.createdAt}) in the '${category?.popularCategory}' category.`,
+//       };
+//     } else {
+//       const trimmedWord = word.trim();
+//       const newWord = await prisma.popularListWord.create({
+//         data: {
+//           word: trimmedWord,
+//           known,
+//           favorite,
+//           wordCaseId,
+//           partOfSpeechId,
+//           synonym,
+//           antonym,
+//           meaning,
+//           popularCategoryId,
+//           languageId,
+//           genderId,
+//         },
+//       });
+
+//       return {
+//         success: true,
+//         message: 'Word created successfully',
+//         data: newWord,
+//       };
+//     }
+//   } catch (error) {
+//     console.error('Create word error:', error);
+//     return {
+//       success: false,
+//       message: 'Failed to create word',
+//     };
+//   }
+// };
+
+// export const updatePopularListsWord = async (
+//   data: z.infer<typeof upsertPopularListWordSchema>
+// ) => {
+//   const parsed = upsertPopularListWordSchema.safeParse(data);
+
+//   if (!parsed.success) {
+//     return {
+//       success: false,
+//       message: 'Invalid popular word',
+//       errors: parsed.error.flatten().fieldErrors,
+//     };
+//   }
+
+//   const {
+//     id,
+//     word,
+//     known,
+//     favorite,
+//     wordCaseId,
+//     partOfSpeechId,
+//     synonym,
+//     antonym,
+//     meaning,
+//     popularCategoryId,
+//     languageId,
+//     genderId,
+//   } = parsed.data;
+
+//   if (!id) {
+//     return {
+//       success: false,
+//       message: 'Word ID is required for update',
+//     };
+//   }
+
+//   try {
+//     const updatedWord = await prisma.popularListWord.update({
+//       where: { id },
+//       data: {
+//         word,
+//         known,
+//         favorite,
+//         wordCaseId,
+//         partOfSpeechId,
+//         synonym,
+//         antonym,
+//         meaning,
+//         popularCategoryId,
+//         languageId,
+//         genderId,
+//       },
+//     });
+
+//     return {
+//       success: true,
+//       message: 'Word updated successfully',
+//       data: updatedWord,
+//     };
+//   } catch (error) {
+//     console.error('Update word error:', error);
+//     return {
+//       success: false,
+//       message: 'Failed to update word',
+//     };
+//   }
+// };
+
+// export const upsertPopularListsWord = async (
+//   data: z.infer<typeof upsertPopularListWordSchema>
+// ) => {
+//   return data.id ? updatePopularListsWord(data) : createPopularListsWord(data);
+// };
 
 export const checkIfPopularListsWordExists = async (
   word: string,
@@ -473,34 +481,34 @@ export const getSearchAllPopularWords = async (word: string) => {
   }
 };
 
-// export const getAllSearchedPopularWord = async (
-//   // page: number = 1,
-//   // pageSize: number = 10,
-//   categoryId: string
-// ) => {
-//   try {
-//     const [words, total] = await Promise.all([
-//       prisma.popularListWord.findMany({
-//         where: { popularCategoryId: categoryId },
-//         orderBy: [{ createdAt: 'desc' }, { word: 'asc' }],
-//         // skip: (page - 1) * pageSize,
-//         // take: pageSize,
-//       }),
-//       prisma.popularListWord.count({
-//         where: { popularCategoryId: categoryId },
-//       }),
-//     ]);
+export const getAllSearchedPopularWord = async (
+  // page: number = 1,
+  // pageSize: number = 10,
+  categoryId: string
+) => {
+  try {
+    const [words, total] = await Promise.all([
+      prisma.popularListWord.findMany({
+        where: { popularCategoryId: categoryId },
+        orderBy: [{ createdAt: 'desc' }, { word: 'asc' }],
+        // skip: (page - 1) * pageSize,
+        // take: pageSize,
+      }),
+      prisma.popularListWord.count({
+        where: { popularCategoryId: categoryId },
+      }),
+    ]);
 
-//     return {
-//       success: true,
-//       data: words,
-//       total,
-//     };
-//   } catch (error) {
-//     console.error('Error fetching words:', error);
-//     return {
-//       success: false,
-//       message: 'Failed to fetch words.',
-//     };
-//   }
-// };
+    return {
+      success: true,
+      data: words,
+      total,
+    };
+  } catch (error) {
+    console.error('Error fetching words:', error);
+    return {
+      success: false,
+      message: 'Failed to fetch words.',
+    };
+  }
+};
