@@ -177,10 +177,14 @@ export async function deleteWordGroup(id: string, bookId: string) {
   }
 }
 
-export const getTotalWordGroup = async () => {
+export const getTotalWordGroup = async (bookId: string) => {
   try {
-    const total = await prisma.wordGroup.count();
-    return { success: true, data: total };
+    const total = await prisma.wordGroup.count({ where: { bookId } });
+    if (total > 0) {
+      return total;
+    } else {
+      return 0;
+    }
   } catch (error) {
     console.error('Error calculating total group:', error);
     return { success: false, message: 'Failed to count group' };
