@@ -1,8 +1,6 @@
 'use client';
 
-import Image from 'next/image';
 import Link from 'next/link';
-import Picture from '@/public/images/vincent.jpg';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -50,18 +48,19 @@ const UserButtonClient = () => {
     (userNow) => userNow.email === session?.user?.email
   );
 
+  const firstInitial = currentUser?.userName.charAt(0).toUpperCase() ?? '';
+
   return (
     <div className="flex gap-2 items-center">
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <div className="flex items-center cursor-pointer">
-            <Image
-              src={Picture}
-              alt="User Icon"
-              className="w-6 h-6 rounded-full object-cover"
-              width={24}
-              height={24}
-            />
+          <div className="flex items-center">
+            <Button
+              variant="ghost"
+              className="relative w-8 h-8 rounded-full ml-2 flex items-center justify-center bg-gray-300 dark:bg-gray-800 dark:text-gray-400"
+            >
+              {firstInitial}
+            </Button>
           </div>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-50 mr-2" align="center" forceMount>
