@@ -1,7 +1,7 @@
 import React from 'react';
 
-const WordGroups = () => {
-  return <div>Create Word Group</div>;
+const WordsInGroups = () => {
+  return <div>Get Words of a group</div>;
 };
 
-export default WordGroups;
+export default WordsInGroups;
