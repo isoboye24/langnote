@@ -31,10 +31,7 @@ import { getAllLanguagesToSelect } from '@/lib/actions/admin/language.actions';
 import { getAllPopularCategoriesToSelect } from '@/lib/actions/admin/popular-list-category.actions';
 import { getAllPartsOfSpeechToSelect } from '@/lib/actions/admin/parts-of-speech.actions';
 import { getAllWordCasesToSelect } from '@/lib/actions/admin/cases.actions';
-import {
-  checkIfPopularListsWordExists,
-  upsertPopularListsWord,
-} from '@/lib/actions/admin/popular-lists-words';
+import { upsertPopularListsWord } from '@/lib/actions/admin/popular-lists-words';
 import { Textarea } from '@/components/ui/textarea';
 import { Checkbox } from '@/components/ui/checkbox';
 import { getAllGendersToSelect } from '@/lib/actions/admin/gender.actions';
@@ -164,16 +161,6 @@ const PopularWordForm = ({
   const onSubmit: SubmitHandler<
     z.infer<typeof upsertPopularListWordSchema>
   > = async (values) => {
-    if (type === 'Create') {
-      const exists = await checkIfPopularListsWordExists(
-        values.word,
-        values.languageId
-      );
-      if (exists) {
-        toast.error('Word with this name and language already exists.');
-        return;
-      }
-    }
     const payload = { ...values, id: type === 'Update' && id ? id : undefined };
 
     const res = await upsertPopularListsWord(payload);
