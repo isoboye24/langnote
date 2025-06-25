@@ -59,7 +59,7 @@ export const config = {
       session.user = {
         ...session.user,
         id: token.id ?? null, // <-- use token.id here, NOT token.sub
-        role: token.role ?? 'user',
+        role: token.role ?? user?.role ?? 'user',
         name: token.name ?? '',
       };
 

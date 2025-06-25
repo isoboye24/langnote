@@ -13,13 +13,30 @@ import {
 import { Button } from './button';
 import { usePathname } from 'next/navigation';
 import { useSession } from 'next-auth/react';
-import { SignOutUser } from '@/lib/actions/admin/user.actions';
+import { getAllUsers, SignOutUser } from '@/lib/actions/admin/user.actions';
+import { useEffect, useState } from 'react';
+import { User } from '@prisma/client';
 
 const UserButtonClient = () => {
   const pathname = usePathname();
   const segments = pathname.split('/').filter(Boolean);
   const locale = segments[0] ?? 'en';
   const { data: session } = useSession();
+  const [role, setRole] = useState<User[]>([]);
+
+  const name = session?.user?.name;
+  const email = session?.user?.email;
+
+  useEffect(() => {
+    const fetchEmail = async () => {
+      const response = await getAllUsers();
+      if (response.success) {
+        setRole(response.data as User[]);
+      }
+    };
+
+    fetchEmail();
+  }, []);
 
   if (!session) {
     return (
@@ -29,9 +46,9 @@ const UserButtonClient = () => {
     );
   }
 
-  const name = session.user?.name || 'Name';
-  const email = session.user?.email || 'Email';
-  // const role = session.user?.role || '';
+  const currentUser = role.find(
+    (userNow) => userNow.email === session?.user?.email
+  );
 
   return (
     <div className="flex gap-2 items-center">
@@ -63,20 +80,13 @@ const UserButtonClient = () => {
             </Link>
           </DropdownMenuItem>
 
-          {/* {role === 'admin' && (
+          {currentUser?.role.toLowerCase() === 'admin' && (
             <DropdownMenuItem asChild>
               <Link className="w-full" href={`/${locale}/admin/dashboard`}>
                 Admin
               </Link>
             </DropdownMenuItem>
-          )} */}
-
-          {/* Temporary always show admin link */}
-          <DropdownMenuItem asChild>
-            <Link className="w-full" href={`/${locale}/admin/dashboard`}>
-              Admin
-            </Link>
-          </DropdownMenuItem>
+          )}
 
           <DropdownMenuItem className="p-0 mb-1">
             <Button

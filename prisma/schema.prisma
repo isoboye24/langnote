@@ -124,7 +124,7 @@ model User {
   createdAt     DateTime  @default(now()) @db.Timestamp(6)
   updatedAt     DateTime  @updatedAt
   role          String    @default("user")
-  firstLanguage String?
+  firstLanguage String
   book          Book[]
   Review        Review[]
   sessions      Session[]
