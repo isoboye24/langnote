@@ -23,7 +23,15 @@ export const createUser = async (
     };
   }
 
-  const { userName, firstName, lastName, email, password, role } = parsed.data;
+  const {
+    userName,
+    firstName,
+    lastName,
+    email,
+    password,
+    role,
+    firstLanguage,
+  } = parsed.data;
   const hashedPassword = hashSync(password, 8);
 
   try {
@@ -35,6 +43,7 @@ export const createUser = async (
         email,
         password: hashedPassword,
         role,
+        firstLanguage,
       },
     });
 

@@ -53,6 +53,7 @@ export const signUpDefaultValues = {
   email: '',
   password: '',
   role: '',
+  firstLanguage: '',
 };
 
 export const signInDefaultValues = {

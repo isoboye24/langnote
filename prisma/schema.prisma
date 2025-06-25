@@ -115,19 +115,20 @@ model Gender {
 }
 
 model User {
-  id        String    @id @default(uuid()) @db.Uuid
-  userName  String    @unique(map: "user_userName_idx")
-  firstName String    @default("NO_NAME")
-  lastName  String    @default("NO_NAME")
-  email     String    @default("NO_Email")
-  password  String
-  createdAt DateTime  @default(now()) @db.Timestamp(6)
-  updatedAt DateTime  @updatedAt
-  role      String    @default("user")
-  book      Book[]
-  Review    Review[]
-  sessions  Session[]
-  Word      Word[]
+  id            String    @id @default(uuid()) @db.Uuid
+  userName      String    @unique(map: "user_userName_idx")
+  firstName     String    @default("NO_NAME")
+  lastName      String    @default("NO_NAME")
+  email         String    @default("NO_Email")
+  password      String
+  createdAt     DateTime  @default(now()) @db.Timestamp(6)
+  updatedAt     DateTime  @updatedAt
+  role          String    @default("user")
+  firstLanguage String?
+  book          Book[]
+  Review        Review[]
+  sessions      Session[]
+  Word          Word[]
 }
 
 model Session {

@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Form,
   FormControl,
@@ -24,17 +24,31 @@ import {
   createUser,
 } from '@/lib/actions/admin/user.actions';
 import { usePathname } from 'next/navigation';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 
 const SignUpForm = () => {
   const pathname = usePathname();
   const segments = pathname.split('/').filter(Boolean);
   const locale = segments[0] ?? 'en';
   const router = useRouter();
+  const [languages, setLanguages] = useState<string[]>([]);
 
   const form = useForm<z.infer<typeof signUpFormSchema>>({
     resolver: zodResolver(signUpFormSchema),
     defaultValues: signUpDefaultValues,
   });
+
+  useEffect(() => {
+    fetch('/api/languages')
+      .then((res) => res.json())
+      .then((data) => setLanguages(data));
+  }, []);
 
   const onSubmit: SubmitHandler<z.infer<typeof signUpFormSchema>> = async (
     values
@@ -127,6 +141,27 @@ const SignUpForm = () => {
                       )}
                     />
                   </div>
+
+                  <div>
+                    <FormField
+                      control={form.control}
+                      name="confirmPassword"
+                      render={({ field }) => (
+                        <FormItem className="w-full">
+                          <FormLabel>Confirm Password</FormLabel>
+                          <FormControl>
+                            <Input
+                              type="password"
+                              placeholder="Enter confirm password"
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+
                   <div>
                     <FormField
                       control={form.control}
@@ -142,6 +177,7 @@ const SignUpForm = () => {
                       )}
                     />
                   </div>
+
                   <div>
                     <FormField
                       control={form.control}
@@ -158,20 +194,30 @@ const SignUpForm = () => {
                     />
                   </div>
 
-                  <div>
+                  <div className="">
                     <FormField
                       control={form.control}
-                      name="confirmPassword"
+                      name="firstLanguage"
                       render={({ field }) => (
-                        <FormItem className="w-full">
-                          <FormLabel>Confirm Password</FormLabel>
-                          <FormControl>
-                            <Input
-                              type="password"
-                              placeholder="Enter confirm password"
-                              {...field}
-                            />
-                          </FormControl>
+                        <FormItem>
+                          <FormLabel>Language</FormLabel>
+                          <Select
+                            onValueChange={field.onChange}
+                            defaultValue={field.value}
+                          >
+                            <FormControl>
+                              <SelectTrigger>
+                                <SelectValue placeholder="Select a language" />
+                              </SelectTrigger>
+                            </FormControl>
+                            <SelectContent>
+                              {languages.map((lang) => (
+                                <SelectItem key={lang} value={lang}>
+                                  {lang}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
                           <FormMessage />
                         </FormItem>
                       )}

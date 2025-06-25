@@ -74,6 +74,7 @@ export const signUpFormSchema = z
     firstName: z.string().min(1, 'First name is required'),
     lastName: z.string().min(1, 'Last name is required'),
     email: z.string().min(3, 'Email is required'),
+    firstLanguage: z.string().min(3, 'First Language is required'),
     password: z.string().min(8, 'Password is required'),
     role: z.string(),
     confirmPassword: z
