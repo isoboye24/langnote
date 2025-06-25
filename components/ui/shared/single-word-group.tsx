@@ -19,22 +19,27 @@ const SingleWordGroup = ({
   //   };
 
   return (
-    <div className="grid grid-cols-[12px_12fr] w-30 h-20 md:w-40 md:h-20 shadow-md ">
-      <div className="" style={{ backgroundColor: `${color}` }}></div>
-      <div className="grid grid-rows-[6fr_2fr] gap-0 ">
-        <div className="bg-amber-700 rounded-tr-2xl pl-1 py-3 pr-3 dark:bg-amber-100 text-gray-200 dark:text-gray-800 text-sm md:text-base font-semibold overflow-hidden text-wrap">
-          {groupName}
-        </div>
-        <div className="flex-between px-2 bg-amber-300 dark:bg-amber-200">
-          <Button className="bg-transparent">
-            <Pen className="text-gray-900" />
-          </Button>
-          <Button className="bg-transparent">
-            <Trash2 className="text-red-500" />
-          </Button>
+    <>
+      <div
+        className="flex flex-col-[12px_1fr] w-full h-full rounded shadow-md overflow-hidden"
+        // style={{ minHeight: '100px' }}
+      >
+        <div className="w-2 h-full" style={{ backgroundColor: color }} />
+        <div className="flex-1 flex flex-col">
+          <div className="bg-gray-800 dark:bg-amber-100 text-gray-200 dark:text-gray-800 text-sm md:text-base font-semibold p-2 truncate">
+            {groupName}
+          </div>
+          <div className="flex justify-between items-center px-2 py-1 bg-amber-300 dark:bg-amber-200">
+            <Button className="bg-transparent p-1">
+              <Pen className="text-gray-900 w-4 h-4" />
+            </Button>
+            <Button className="bg-transparent p-1">
+              <Trash2 className="text-red-500 w-4 h-4" />
+            </Button>
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

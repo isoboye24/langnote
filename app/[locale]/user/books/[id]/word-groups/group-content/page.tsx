@@ -29,7 +29,7 @@ const GroupList = ({ bookId }: { bookId: string }) => {
   }, [bookId, page]);
   return (
     <div className="">
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 xl:grid-cols-8 gap-2 md:gap-4 mb-30">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-2 md:gap-4 mb-30">
         {groups.map((group) => {
           return (
             <div key={group.id}>
