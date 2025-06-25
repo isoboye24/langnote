@@ -33,9 +33,29 @@ export const upsertPopularCategory = async (
         create: { popularCategory, lightImageIcon, darkImageIcon, languageId },
       });
     } else {
-      category = await prisma.popularListCategory.create({
-        data: { popularCategory, lightImageIcon, darkImageIcon, languageId },
+      const categoryExists = await prisma.popularListCategory.findFirst({
+        where: {
+          popularCategory: {
+            equals: popularCategory.trim(),
+            mode: 'insensitive',
+          },
+          languageId: languageId,
+        },
       });
+
+      if (categoryExists) {
+        const getLanguage = await prisma.language.findFirst({
+          where: { id: categoryExists.languageId },
+        });
+        return {
+          success: false,
+          message: `The category ${categoryExists.popularCategory} already exists in ${getLanguage?.languageName}.`,
+        };
+      } else {
+        category = await prisma.popularListCategory.create({
+          data: { popularCategory, lightImageIcon, darkImageIcon, languageId },
+        });
+      }
     }
 
     return {

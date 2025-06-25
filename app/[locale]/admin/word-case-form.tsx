@@ -29,10 +29,7 @@ import {
 import { WordCase } from '@prisma/client';
 import { getAllLanguages } from '@/lib/actions/admin/language.actions';
 
-import {
-  checkIfWordCaseExists,
-  upsertWordCase,
-} from '@/lib/actions/admin/cases.actions';
+import { upsertWordCase } from '@/lib/actions/admin/cases.actions';
 
 const WordCaseForm = ({
   type,
@@ -86,16 +83,6 @@ const WordCaseForm = ({
   const onSubmit: SubmitHandler<z.infer<typeof upsertCasesSchema>> = async (
     values
   ) => {
-    if (type === 'Create') {
-      const exists = await checkIfWordCaseExists(
-        values.caseName,
-        values.languageId
-      );
-      if (exists) {
-        toast.error('Word case with this name and language already exists.');
-        return;
-      }
-    }
     const payload = { ...values, id: type === 'Update' && id ? id : undefined };
 
     const res = await upsertWordCase(payload);

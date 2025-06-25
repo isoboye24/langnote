@@ -19,10 +19,7 @@ import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
 import { languageDefaultValues } from '@/lib/constants';
 import { Language } from '@prisma/client';
-import {
-  upsertLanguage,
-  checkIfLanguageExists,
-} from '@/lib/actions/admin/language.actions';
+import { upsertLanguage } from '@/lib/actions/admin/language.actions';
 
 const LanguageForm = ({
   type,
@@ -53,13 +50,6 @@ const LanguageForm = ({
   const onSubmit: SubmitHandler<z.infer<typeof upsertLanguageSchema>> = async (
     values
   ) => {
-    if (type === 'Create') {
-      const exists = await checkIfLanguageExists(values.languageName);
-      if (exists) {
-        toast.error('Language with this name already exists.');
-        return;
-      }
-    }
     const payload = { ...values, id: type === 'Update' && id ? id : undefined };
 
     const res = await upsertLanguage(payload);

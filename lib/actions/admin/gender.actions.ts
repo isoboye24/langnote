@@ -32,9 +32,29 @@ export const upsertGender = async (
         create: { genderName, languageId },
       });
     } else {
-      gender = await prisma.gender.create({
-        data: { genderName, languageId },
+      const genderExists = await prisma.gender.findFirst({
+        where: {
+          genderName: {
+            equals: genderName.trim(),
+            mode: 'insensitive',
+          },
+          languageId: languageId,
+        },
       });
+
+      if (genderExists) {
+        const getLanguage = await prisma.language.findFirst({
+          where: { id: genderExists.languageId },
+        });
+        return {
+          success: false,
+          message: `This gender ${genderExists.genderName} already exists in ${getLanguage?.languageName}.`,
+        };
+      } else {
+        gender = await prisma.gender.create({
+          data: { genderName, languageId },
+        });
+      }
     }
 
     return {

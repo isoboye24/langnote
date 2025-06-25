@@ -28,10 +28,7 @@ import {
 } from '@/components/ui/select';
 import { PartOfSpeech } from '@prisma/client';
 import { getAllLanguages } from '@/lib/actions/admin/language.actions';
-import {
-  checkIfPartsOfSpeechExists,
-  upsertPartsOfSpeech,
-} from '@/lib/actions/admin/parts-of-speech.actions';
+import { upsertPartsOfSpeech } from '@/lib/actions/admin/parts-of-speech.actions';
 
 const PartsOfSpeechForm = ({
   type,
@@ -85,18 +82,6 @@ const PartsOfSpeechForm = ({
   const onSubmit: SubmitHandler<
     z.infer<typeof upsertPartsOfSpeechSchema>
   > = async (values) => {
-    if (type === 'Create') {
-      const exists = await checkIfPartsOfSpeechExists(
-        values.name,
-        values.languageId
-      );
-      if (exists) {
-        toast.error(
-          'Part of speech with this name and language already exists.'
-        );
-        return;
-      }
-    }
     const payload = { ...values, id: type === 'Update' && id ? id : undefined };
 
     const res = await upsertPartsOfSpeech(payload);

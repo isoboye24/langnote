@@ -17,10 +17,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
 import { casesDefaultValues } from '@/lib/constants';
-import {
-  checkIfGenderExists,
-  upsertGender,
-} from '../../../lib/actions/admin/gender.actions';
+import { upsertGender } from '../../../lib/actions/admin/gender.actions';
 import { upsertGendersSchema } from '../../../lib/validator';
 
 import {
@@ -85,16 +82,6 @@ const GenderForm = ({
   const onSubmit: SubmitHandler<z.infer<typeof upsertGendersSchema>> = async (
     values
   ) => {
-    if (type === 'Create') {
-      const exists = await checkIfGenderExists(
-        values.genderName,
-        values.languageId
-      );
-      if (exists) {
-        toast.error('Gender with this name and language already exists.');
-        return;
-      }
-    }
     const payload = { ...values, id: type === 'Update' && id ? id : undefined };
 
     const res = await upsertGender(payload);

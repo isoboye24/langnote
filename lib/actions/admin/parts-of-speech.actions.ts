@@ -32,9 +32,29 @@ export const upsertPartsOfSpeech = async (
         create: { name, languageId },
       });
     } else {
-      partOfSpeech = await prisma.partOfSpeech.create({
-        data: { name, languageId },
+      const partOfSpeechExists = await prisma.partOfSpeech.findFirst({
+        where: {
+          name: {
+            equals: name.trim(),
+            mode: 'insensitive',
+          },
+          languageId: languageId,
+        },
       });
+
+      if (partOfSpeechExists) {
+        const getLanguage = await prisma.language.findFirst({
+          where: { id: partOfSpeechExists.languageId },
+        });
+        return {
+          success: false,
+          message: `This part of speech ${partOfSpeechExists.name} already exists in ${getLanguage?.languageName}.`,
+        };
+      } else {
+        partOfSpeech = await prisma.partOfSpeech.create({
+          data: { name, languageId },
+        });
+      }
     }
 
     return {

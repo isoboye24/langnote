@@ -32,9 +32,29 @@ export const upsertWordCase = async (
         create: { caseName, languageId },
       });
     } else {
-      cases = await prisma.wordCase.create({
-        data: { caseName, languageId },
+      const caseExists = await prisma.wordCase.findFirst({
+        where: {
+          caseName: {
+            equals: caseName.trim(),
+            mode: 'insensitive',
+          },
+          languageId: languageId,
+        },
       });
+
+      if (caseExists) {
+        const getLanguage = await prisma.language.findFirst({
+          where: { id: caseExists.languageId },
+        });
+        return {
+          success: false,
+          message: `This case ${caseExists.caseName} already exists in ${getLanguage?.languageName}.`,
+        };
+      } else {
+        cases = await prisma.wordCase.create({
+          data: { caseName, languageId },
+        });
+      }
     }
 
     return {

@@ -32,7 +32,23 @@ export const upsertLanguage = async (
         create: { languageName },
       });
     } else {
-      language = await prisma.language.create({ data: { languageName } });
+      const languageExists = await prisma.language.findFirst({
+        where: {
+          languageName: {
+            equals: languageName.trim(),
+            mode: 'insensitive',
+          },
+        },
+      });
+
+      if (languageExists) {
+        return {
+          success: false,
+          message: `This case ${languageExists.languageName} already exists.`,
+        };
+      } else {
+        language = await prisma.language.create({ data: { languageName } });
+      }
     }
 
     return {

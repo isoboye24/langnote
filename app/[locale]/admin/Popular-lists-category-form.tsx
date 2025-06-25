@@ -31,10 +31,7 @@ import { UploadButton } from '@uploadthing/react';
 import { OurFileRouter } from '@/lib/uploadthing';
 import { PopularListCategory } from '@prisma/client';
 import { getAllLanguages } from '@/lib/actions/admin/language.actions';
-import {
-  checkIfPopularCategoryExists,
-  upsertPopularCategory,
-} from '@/lib/actions/admin/popular-list-category.actions';
+import { upsertPopularCategory } from '@/lib/actions/admin/popular-list-category.actions';
 
 const PopularListsCategoryForm = ({
   type,
@@ -93,16 +90,6 @@ const PopularListsCategoryForm = ({
   const onSubmit: SubmitHandler<
     z.infer<typeof upsertPopularListCategorySchema>
   > = async (values) => {
-    if (type === 'Create') {
-      const exists = await checkIfPopularCategoryExists(
-        values.popularCategory,
-        values.languageId
-      );
-      if (exists) {
-        toast.error('Category with this name and language already exists.');
-        return;
-      }
-    }
     const payload = { ...values, id: type === 'Update' && id ? id : undefined };
 
     const res = await upsertPopularCategory(payload);
