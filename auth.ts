@@ -56,17 +56,14 @@ export const config = {
     ...authConfig.callbacks,
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     async session({ session, user, trigger, token }: any) {
-      session.user = {
-        ...session.user,
-        id: token.id ?? null, // <-- use token.id here, NOT token.sub
-        role: token.role ?? user?.role ?? 'user',
-        name: token.name ?? '',
-      };
+      session.user.id = token.sub;
+      session.user.role = token.role;
+      session.user.userName = token.userName;
 
       console.log(token);
 
       if (trigger === 'update') {
-        session.user.name = `${user.firstName} ${user.lastName}`;
+        session.user.userName = `${user.UserName}`;
       }
 
       return session;
@@ -77,8 +74,8 @@ export const config = {
         token.role = user.role;
         token.id = user.id;
 
-        if (user.role === 'NO_ROLE') {
-          // token.name = user.email!.split('@')[0];
+        if (user.userName === 'NO_UserName') {
+          token.userName = user.email!.split('@')[0];
 
           await prisma.user.update({
             where: { id: user.id },
@@ -93,8 +90,8 @@ export const config = {
         }
       }
 
-      if (session?.user.name && trigger === 'update') {
-        token.name = `${user.firstName} ${user.lastName}`;
+      if (session?.user.userName && trigger === 'update') {
+        token.userName = `${user.userName}`;
         token.id = session.user.id;
       }
 

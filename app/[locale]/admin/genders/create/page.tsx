@@ -1,12 +1,14 @@
 import { Metadata } from 'next';
 import React from 'react';
 import GenderForm from '../../gender-form';
+import { requireAdmin } from '@/lib/auth.guard';
 
 export const metadata: Metadata = {
   title: 'Create Gender',
 };
 
-const CreateGender = () => {
+const CreateGender = async () => {
+  await requireAdmin();
   return (
     <div className="">
       <h2 className="h2-bold text-center">Create Gender</h2>

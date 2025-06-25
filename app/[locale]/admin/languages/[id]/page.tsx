@@ -2,6 +2,7 @@ import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import LanguageForm from '../../language-form';
 import { getLanguageById } from '@/lib/actions/admin/language.actions';
+import { requireAdmin } from '@/lib/auth.guard';
 
 export const metadata: Metadata = {
   title: 'Update Language',
@@ -12,6 +13,7 @@ const UpdateLanguage = async (props: {
     id: string;
   }>;
 }) => {
+  await requireAdmin();
   const { id } = await props.params;
   const language = await getLanguageById(id);
 

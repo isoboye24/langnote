@@ -2,6 +2,7 @@ import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { getWordCaseById } from '@/lib/actions/admin/cases.actions';
 import WordCaseForm from '../../word-case-form';
+import { requireAdmin } from '@/lib/auth.guard';
 
 export const metadata: Metadata = {
   title: 'Update Word Case',
@@ -12,6 +13,7 @@ const UpdateWordCase = async (props: {
     id: string;
   }>;
 }) => {
+  await requireAdmin();
   const { id } = await props.params;
   const wordCase = await getWordCaseById(id);
 

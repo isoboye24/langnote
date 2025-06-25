@@ -1,12 +1,14 @@
 import { Metadata } from 'next';
 import React from 'react';
 import PopularWordForm from '../../popular-words-form';
+import { requireAdmin } from '@/lib/auth.guard';
 
 export const metadata: Metadata = {
   title: 'Create Popular Words',
 };
 
-const CreatePopularCategory = () => {
+const CreatePopularCategory = async () => {
+  await requireAdmin();
   return (
     <div className="">
       <h2 className="h2-bold text-center">Create Popular Word</h2>

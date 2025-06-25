@@ -2,6 +2,7 @@ import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { getPartsOfSpeechById } from '@/lib/actions/admin/parts-of-speech.actions';
 import PartsOfSpeechForm from '../../parts-of-speech-form';
+import { requireAdmin } from '@/lib/auth.guard';
 
 export const metadata: Metadata = {
   title: 'Update Parts of Speech',
@@ -12,6 +13,7 @@ const UpdatePartsOfSpeech = async (props: {
     id: string;
   }>;
 }) => {
+  await requireAdmin();
   const { id } = await props.params;
   const partOfSpeech = await getPartsOfSpeechById(id);
 

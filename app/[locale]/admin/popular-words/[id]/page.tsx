@@ -2,6 +2,7 @@ import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { getPopularListWordById } from '@/lib/actions/admin/popular-lists-words';
 import PopularWordForm from '../../popular-words-form';
+import { requireAdmin } from '@/lib/auth.guard';
 
 export const metadata: Metadata = {
   title: 'Update Popular Word',
@@ -12,6 +13,7 @@ const UpdatePopularWord = async (props: {
     id: string;
   }>;
 }) => {
+  await requireAdmin();
   const { id } = await props.params;
   const word = await getPopularListWordById(id);
 

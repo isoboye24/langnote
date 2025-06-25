@@ -2,6 +2,7 @@ import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { getPopularCategoryById } from '@/lib/actions/admin/popular-list-category.actions';
 import PopularListCategoryForm from '../../Popular-lists-category-form';
+import { requireAdmin } from '@/lib/auth.guard';
 
 export const metadata: Metadata = {
   title: 'Update Popular Category',
@@ -12,6 +13,7 @@ const UpdatePopularCategory = async (props: {
     id: string;
   }>;
 }) => {
+  await requireAdmin();
   const { id } = await props.params;
   const category = await getPopularCategoryById(id);
 

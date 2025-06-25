@@ -1,12 +1,14 @@
 import { Metadata } from 'next';
 import React from 'react';
 import PartsOfSpeechForm from '../../parts-of-speech-form';
+import { requireAdmin } from '@/lib/auth.guard';
 
 export const metadata: Metadata = {
   title: 'Create Parts of Speech',
 };
 
-const CreatePartsOfSpeech = () => {
+const CreatePartsOfSpeech = async () => {
+  await requireAdmin();
   return (
     <div className="">
       <h2 className="h2-bold text-center">Create Parts of Speech</h2>
