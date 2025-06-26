@@ -3,7 +3,7 @@ import React from 'react';
 import { Button } from '../button';
 import { Pen, Trash2 } from 'lucide-react';
 
-// import { useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 
 const SingleWordGroup = ({
   groupName,
@@ -12,14 +12,14 @@ const SingleWordGroup = ({
   groupName: string;
   color: string;
 }) => {
-  //   const router = useRouter();
+  const router = useRouter();
 
-  //   const handleCardClick = () => {
-  //     router.push(`/user/books/${id}`);
-  //   };
+  const handleCardClick = () => {
+    router.push(`/user/books/words`);
+  };
 
   return (
-    <>
+    <div className="" onClick={handleCardClick}>
       <div className="grid grid-cols-[12px_1fr] w-full h-full rounded shadow-md ">
         <div className="w-full h-full" style={{ backgroundColor: color }} />
         <div className="grid grid-cols-[1fr_80px] bg-gray-200 dark:bg-gray-800">
@@ -40,7 +40,7 @@ const SingleWordGroup = ({
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

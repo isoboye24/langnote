@@ -2,7 +2,7 @@ import React from 'react';
 import { Metadata } from 'next';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import GroupContent from './word-groups/group-content/page';
+import GroupContent from './word-groups/page';
 
 export const metadata: Metadata = {
   title: 'Word Groups',

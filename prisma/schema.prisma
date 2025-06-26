@@ -17,7 +17,6 @@ model Book {
   createdAt DateTime    @default(now()) @db.Timestamp(6)
   updatedAt DateTime    @updatedAt @db.Timestamp(6)
   user      User        @relation(fields: [userId], references: [id], onDelete: Cascade)
-  Word      Word[]
   Topic     WordGroup[]
 
   @@index([userId])
@@ -128,7 +127,6 @@ model User {
   book          Book[]
   Review        Review[]
   sessions      Session[]
-  Word          Word[]
 }
 
 model Session {
@@ -143,7 +141,6 @@ model Word {
   word           String
   known          Boolean
   favorite       Boolean
-  userId         String       @db.Uuid
   wordCaseId     String       @db.Uuid
   partOfSpeechId String       @db.Uuid
   createdAt      DateTime     @default(now()) @db.Timestamp(6)
@@ -152,20 +149,16 @@ model Word {
   antonym        String?
   meaning        String?
   genderId       String       @db.Uuid
-  bookId         String       @db.Uuid
-  topicId        String       @db.Uuid
-  book           Book         @relation(fields: [bookId], references: [id])
+  wordGroupId    String       @db.Uuid
   gender         Gender       @relation(fields: [genderId], references: [id])
   partOfSpeech   PartOfSpeech @relation(fields: [partOfSpeechId], references: [id], onDelete: Cascade)
-  wordGroup      WordGroup    @relation(fields: [topicId], references: [id])
-  user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
   wordCase       WordCase     @relation(fields: [wordCaseId], references: [id], onDelete: Cascade)
+  wordGroup      WordGroup    @relation(fields: [wordGroupId], references: [id])
 
-  @@unique([userId, word])
-  @@index([userId])
-  @@index([bookId])
   @@index([partOfSpeechId])
   @@index([wordCaseId])
+  @@index([genderId])
+  @@index([wordGroupId])
 }
 
 model VerificationToken {
