@@ -4,6 +4,7 @@ import { Button } from '../button';
 import { Pen, Trash2 } from 'lucide-react';
 
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 const SingleWordGroup = ({
   groupName,
@@ -32,9 +33,14 @@ const SingleWordGroup = ({
           </div>
           <div className="justify-items-end flex ">
             <div className="flex-1">
-              <Button className="bg-transparent p-1 hover:bg-gray-400 dark:hover:bg-gray-600">
-                <Pen className="text-gray-900 dark:text-gray-300 w-4 h-4" />
-              </Button>
+              <Link
+                href={`/user/books/${bookId}/update/${groupId}`}
+                onClick={(e) => e.stopPropagation()}
+              >
+                <Button className="bg-transparent p-1 hover:bg-gray-400 dark:hover:bg-gray-600">
+                  <Pen className="text-gray-900 dark:text-gray-300 w-4 h-4" />
+                </Button>
+              </Link>
             </div>
             <div className="flex-1">
               <Button className="bg-transparent p-1 hover:bg-gray-400 dark:hover:bg-gray-600">

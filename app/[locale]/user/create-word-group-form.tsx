@@ -33,7 +33,7 @@ const WordGroupForm = ({
   type: 'Create' | 'Update';
   group?: WordGroup;
   id?: string;
-  bookId: string;
+  bookId?: string;
 }) => {
   const router = useRouter();
 

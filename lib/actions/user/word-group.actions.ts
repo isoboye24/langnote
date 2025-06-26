@@ -132,7 +132,7 @@ export const getAllWordGroups = async (
 
 export const getWordGroupById = async (id: string) => {
   try {
-    const group = await prisma.wordGroup.findFirst({
+    const group = await prisma.wordGroup.findUnique({
       where: { id },
     });
 
