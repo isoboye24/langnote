@@ -8,14 +8,18 @@ import { useRouter } from 'next/navigation';
 const SingleWordGroup = ({
   groupName,
   color,
+  bookId,
+  groupId,
 }: {
   groupName: string;
   color: string;
+  bookId: string;
+  groupId: string;
 }) => {
   const router = useRouter();
 
   const handleCardClick = () => {
-    router.push(`/user/books/words`);
+    router.push(`/user/books/${bookId}/${groupId}`);
   };
 
   return (

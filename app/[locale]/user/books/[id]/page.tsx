@@ -2,7 +2,7 @@ import React from 'react';
 import { Metadata } from 'next';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import GroupContent from './word-groups/page';
+import GroupContent from './word-group-list';
 
 export const metadata: Metadata = {
   title: 'Word Groups',
@@ -19,9 +19,7 @@ const GroupList = async (props: {
       <div className="flex-between mb-10">
         <div className="">Search for group...</div>
         <Button className="">
-          <Link href={`/user/books/${id}/word-groups/create`}>
-            Create Word Group
-          </Link>
+          <Link href={`/user/books/${id}/create-group`}>Create Word Group</Link>
         </Button>
       </div>
       <div className="">

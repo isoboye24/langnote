@@ -76,3 +76,18 @@ export const wordGroupDefaultValues = {
   bookId: '',
   color: '',
 };
+
+export const userWordDefaultValues = {
+  word: '',
+  known: false,
+  favorite: false,
+  wordCaseId: '',
+  partOfSpeechId: '',
+  synonym: '',
+  antonym: '',
+  meaning: '',
+  wordGroupId: '',
+  genderId: '',
+  language: '',
+  bookId: '',
+};

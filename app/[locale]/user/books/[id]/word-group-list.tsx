@@ -7,7 +7,7 @@ import { getAllWordGroups } from '@/lib/actions/user/word-group.actions';
 import SingleWordGroup from '@/components/ui/shared/single-word-group';
 import {} from '@/lib/actions/user/book.actions';
 
-const GroupList = ({ bookId }: { bookId: string }) => {
+const WordGroupList = ({ bookId }: { bookId: string }) => {
   const [groups, setGroups] = useState<WordGroup[]>([]);
   const [totalCount, setTotalCount] = useState(0);
   const [page, setPage] = useState(1);
@@ -36,6 +36,8 @@ const GroupList = ({ bookId }: { bookId: string }) => {
               <SingleWordGroup
                 groupName={group.groupName}
                 color={group.color}
+                bookId={bookId}
+                groupId={group.id}
               />
             </div>
           );
@@ -55,4 +57,4 @@ const GroupList = ({ bookId }: { bookId: string }) => {
   );
 };
 
-export default GroupList;
+export default WordGroupList;

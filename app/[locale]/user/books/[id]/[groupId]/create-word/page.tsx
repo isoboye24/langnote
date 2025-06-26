@@ -1,7 +1,7 @@
 import React from 'react';
 
 const CreateWord = () => {
-  return <div>Create Word</div>;
+  return <div>CreateWord</div>;
 };
 
 export default CreateWord;

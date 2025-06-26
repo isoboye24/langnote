@@ -17,6 +17,7 @@ model Book {
   createdAt DateTime    @default(now()) @db.Timestamp(6)
   updatedAt DateTime    @updatedAt @db.Timestamp(6)
   user      User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  Word      Word[]
   Topic     WordGroup[]
 
   @@index([userId])
@@ -150,6 +151,9 @@ model Word {
   meaning        String?
   genderId       String       @db.Uuid
   wordGroupId    String       @db.Uuid
+  bookId         String       @db.Uuid
+  language       String
+  book           Book         @relation(fields: [bookId], references: [id])
   gender         Gender       @relation(fields: [genderId], references: [id])
   partOfSpeech   PartOfSpeech @relation(fields: [partOfSpeechId], references: [id], onDelete: Cascade)
   wordCase       WordCase     @relation(fields: [wordCaseId], references: [id], onDelete: Cascade)

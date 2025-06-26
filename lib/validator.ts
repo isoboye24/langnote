@@ -121,3 +121,22 @@ export const upsertWordGroupSchema = z.object({
   bookId: z.string().min(1, 'User is required'),
   color: z.string().min(1, 'color is required'),
 });
+
+export const upsertUserWordSchema = z.object({
+  id: z
+    .string()
+    .min(1, 'If provided, word id is should be at least 1 character')
+    .optional(),
+  word: z.string().min(1, 'Case is required'),
+  known: z.boolean(),
+  favorite: z.boolean(),
+  wordCaseId: z.string(),
+  partOfSpeechId: z.string(),
+  synonym: z.string().optional().or(z.literal('')),
+  antonym: z.string().optional().or(z.literal('')),
+  meaning: z.string().optional().or(z.literal('')),
+  wordGroupId: z.string(),
+  language: z.string(),
+  genderId: z.string(),
+  bookId: z.string(),
+});
