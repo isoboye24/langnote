@@ -128,6 +128,7 @@ model User {
   book          Book[]
   Review        Review[]
   sessions      Session[]
+  Word          Word[]
 }
 
 model Session {
@@ -153,9 +154,11 @@ model Word {
   wordGroupId    String       @db.Uuid
   bookId         String       @db.Uuid
   language       String
+  userId         String       @db.Uuid
   book           Book         @relation(fields: [bookId], references: [id])
   gender         Gender       @relation(fields: [genderId], references: [id])
   partOfSpeech   PartOfSpeech @relation(fields: [partOfSpeechId], references: [id], onDelete: Cascade)
+  user           User         @relation(fields: [userId], references: [id])
   wordCase       WordCase     @relation(fields: [wordCaseId], references: [id], onDelete: Cascade)
   wordGroup      WordGroup    @relation(fields: [wordGroupId], references: [id])
 

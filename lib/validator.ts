@@ -139,4 +139,5 @@ export const upsertUserWordSchema = z.object({
   language: z.string(),
   genderId: z.string(),
   bookId: z.string(),
+  userId: z.string(),
 });

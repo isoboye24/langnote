@@ -1,6 +1,8 @@
+import { requireUserAndAdmin } from '@/lib/auth.guard';
 import React from 'react';
 
-const UserDashboard = () => {
+const UserDashboard = async () => {
+  await requireUserAndAdmin();
   return <div>UserDashboard</div>;
 };
 

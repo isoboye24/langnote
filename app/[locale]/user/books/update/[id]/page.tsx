@@ -2,6 +2,7 @@ import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { getBookById } from '@/lib/actions/user/book.actions';
 import BookForm from '../../../create-book-form';
+import { requireUserAndAdmin } from '@/lib/auth.guard';
 
 export const metadata: Metadata = {
   title: 'Update Book',
@@ -12,6 +13,7 @@ const UpdateBook = async (props: {
     id: string;
   }>;
 }) => {
+  await requireUserAndAdmin();
   const { id } = await props.params;
   const book = await getBookById(id);
 

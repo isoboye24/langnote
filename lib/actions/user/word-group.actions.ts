@@ -24,7 +24,7 @@ export const upsertWordGroup = async (
   try {
     let group;
 
-    // Upsert the book
+    // Upsert the group
     if (id) {
       const existing = await prisma.wordGroup.findUnique({ where: { id } });
       if (!existing) {

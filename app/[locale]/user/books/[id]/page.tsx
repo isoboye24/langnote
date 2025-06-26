@@ -3,6 +3,7 @@ import { Metadata } from 'next';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import GroupContent from './word-group-list';
+import { requireUserAndAdmin } from '@/lib/auth.guard';
 
 export const metadata: Metadata = {
   title: 'Word Groups',
@@ -13,6 +14,7 @@ const GroupList = async (props: {
     id: string;
   }>;
 }) => {
+  await requireUserAndAdmin();
   const { id } = await props.params;
   return (
     <>

@@ -1,5 +1,6 @@
 import WordGroupForm from '@/app/[locale]/user/create-word-group-form';
 import { getWordGroupById } from '@/lib/actions/user/word-group.actions';
+import { requireUserAndAdmin } from '@/lib/auth.guard';
 import { Metadata } from 'next';
 import React from 'react';
 
@@ -13,6 +14,7 @@ const UpdateGroup = async (props: {
     groupId: string;
   }>;
 }) => {
+  await requireUserAndAdmin();
   const { id, groupId } = await props.params;
   const group = await getWordGroupById(groupId);
 

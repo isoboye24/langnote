@@ -18,3 +18,20 @@ export async function requireAdmin() {
   }
   return session;
 }
+
+export async function requireUserAndAdmin() {
+  const session = await auth();
+
+  const user = await getAllUsers();
+
+  if (user.success) {
+    const currentUser = user.data?.find(
+      (userNow) => userNow.email === session?.user?.email
+    );
+
+    if (currentUser?.role !== 'admin' && currentUser?.role !== 'user') {
+      redirect('/unauthorized');
+    }
+  }
+  return session;
+}

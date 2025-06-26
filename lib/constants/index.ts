@@ -90,4 +90,5 @@ export const userWordDefaultValues = {
   genderId: '',
   language: '',
   bookId: '',
+  userId: '',
 };

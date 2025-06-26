@@ -5,10 +5,13 @@ import { upsertUserWordSchema } from '../../validator';
 import { revalidatePath } from 'next/cache';
 import { z } from 'zod';
 import { formatError } from '../../utils';
+import { auth } from '@/auth';
 
 export const upsertUserWord = async (
   data: z.infer<typeof upsertUserWordSchema>
 ) => {
+  const session = await auth();
+  const currentUserId = session?.user?.id;
   const parsed = upsertUserWordSchema.safeParse(data);
 
   if (!parsed.success) {
@@ -33,6 +36,7 @@ export const upsertUserWord = async (
     genderId,
     language,
     bookId,
+    userId,
   } = parsed.data;
 
   try {
@@ -63,6 +67,7 @@ export const upsertUserWord = async (
           genderId,
           language,
           bookId,
+          userId,
         },
         create: {
           word,
@@ -77,6 +82,7 @@ export const upsertUserWord = async (
           genderId,
           language,
           bookId,
+          userId,
         },
       });
     } else {
@@ -91,14 +97,41 @@ export const upsertUserWord = async (
       });
 
       if (!existing) {
-        // group = await prisma.word.create({
-        //   data: { groupName, bookId, color },
-        // });
+        userWord = await prisma.word.create({
+          data: {
+            word,
+            known,
+            favorite,
+            wordCaseId,
+            partOfSpeechId,
+            synonym,
+            antonym,
+            meaning,
+            wordGroupId,
+            genderId,
+            language,
+            bookId,
+            userId,
+          },
+        });
         return;
       } else {
+        const existingWordData = await prisma.word.findFirst({
+          where: {
+            word: existing.word,
+            language: existing.language,
+            userId: currentUserId,
+          },
+        });
+
+        const getGroup = await prisma.wordGroup.findFirst({
+          where: { id: existingWordData?.wordGroupId },
+        });
         return {
           success: false,
-          message: 'Word with the same name exists',
+          message: `${existingWordData?.word} exists in ${
+            getGroup?.groupName
+          }. It was created on ${existingWordData?.createdAt.getDay()}.${existingWordData?.createdAt.getMonth()}.${existingWordData?.createdAt.getFullYear()}.`,
         };
       }
     }
@@ -117,20 +150,20 @@ export const upsertUserWord = async (
   }
 };
 
-export const checkIfUserWordExists = async (
-  bookId: string,
-  groupName: string
-) => {
+export const checkIfUserWordExists = async (language: string, word: string) => {
+  const session = await auth();
+  const currentUserId = session?.user?.id;
   try {
-    const existing = await prisma.wordGroup.findFirst({
+    const existing = await prisma.word.findFirst({
       where: {
-        groupName: {
-          equals: groupName,
+        word: {
+          equals: word,
           mode: 'insensitive',
         },
-        bookId: {
-          equals: bookId,
+        language: {
+          equals: language,
         },
+        userId: currentUserId,
       },
     });
 
@@ -144,90 +177,134 @@ export const checkIfUserWordExists = async (
 export const getAllUserWords = async (
   page: number = 1,
   pageSize: number = 10,
-  bookId: string
+  bookId: string,
+  groupId: string
 ) => {
+  const session = await auth();
+  const currentUserId = session?.user?.id;
   try {
-    const [groups, total] = await Promise.all([
-      prisma.wordGroup.findMany({
-        where: { bookId },
+    const [words, total] = await Promise.all([
+      prisma.word.findMany({
+        where: { bookId: bookId, wordGroupId: groupId, userId: currentUserId },
         orderBy: { createdAt: 'desc' },
         skip: (page - 1) * pageSize,
         take: pageSize,
       }),
-      prisma.wordGroup.count({ where: { bookId } }),
+      prisma.word.count({
+        where: { bookId: bookId, wordGroupId: groupId, userId: currentUserId },
+      }),
     ]);
 
     return {
       success: true,
-      data: groups,
+      data: words,
       total,
     };
   } catch (error) {
-    console.error('Error fetching groups:', error);
+    console.error('Error fetching words:', error);
     return {
       success: false,
-      message: 'Failed to fetch groups',
+      message: 'Failed to fetch words',
     };
   }
 };
 
 export const getUserWordById = async (id: string) => {
   try {
-    const group = await prisma.wordGroup.findFirst({
+    const word = await prisma.word.findFirst({
       where: { id },
     });
 
-    if (!group) {
+    if (!word) {
       return {
         success: false,
-        message: 'Group not found',
+        message: 'Word not found',
       };
     }
 
     return {
       success: true,
-      data: group,
+      data: word,
     };
   } catch (error) {
-    console.error('Error fetching group:', error);
+    console.error('Error fetching word:', error);
     return {
       success: false,
-      message: 'Failed to fetch group',
+      message: 'Failed to fetch word',
     };
   }
 };
 
-export async function deleteUserWord(id: string, bookId: string) {
+export async function deleteUserWord(id: string) {
   try {
-    const groupExists = await prisma.wordGroup.findFirst({
+    const wordExists = await prisma.word.findFirst({
       where: { id },
     });
 
-    if (!groupExists) throw new Error('Group not found');
+    if (!wordExists) throw new Error('Word not found');
+
+    const deletedWord = wordExists;
 
     await prisma.wordGroup.delete({ where: { id } });
 
-    revalidatePath(`/user/books/${bookId}`);
+    revalidatePath(
+      `/user/books/${deletedWord.bookId}/${deletedWord.wordGroupId}`
+    );
 
     return {
       success: true,
-      message: 'Group deleted successfully',
+      message: 'word deleted successfully',
     };
   } catch (error) {
     return { success: false, message: formatError(error) };
   }
 }
 
-export const getTotalUserWord = async (bookId: string) => {
+export const getTotalUserWord = async (bookId: string, groupId: string) => {
+  const session = await auth();
+  const currentUserId = session?.user?.id;
   try {
-    const total = await prisma.wordGroup.count({ where: { bookId } });
+    const total = await prisma.word.count({
+      where: { bookId: bookId, wordGroupId: groupId, userId: currentUserId },
+    });
     if (total > 0) {
       return total;
     } else {
       return 0;
     }
   } catch (error) {
-    console.error('Error calculating total group:', error);
-    return { success: false, message: 'Failed to count group' };
+    console.error('Error calculating total word:', error);
+    return { success: false, message: 'Failed to count word' };
+  }
+};
+
+export const getAllUserWordsCompletely = async (
+  bookId: string,
+  groupId: string
+) => {
+  const session = await auth();
+  const currentUserId = session?.user?.id;
+  try {
+    const [words, total] = await Promise.all([
+      prisma.word.findMany({
+        where: { bookId: bookId, wordGroupId: groupId, userId: currentUserId },
+        orderBy: { createdAt: 'desc' },
+      }),
+      prisma.word.count({
+        where: { bookId: bookId, wordGroupId: groupId, userId: currentUserId },
+      }),
+    ]);
+
+    return {
+      success: true,
+      data: words,
+      total,
+    };
+  } catch (error) {
+    console.error('Error fetching words:', error);
+    return {
+      success: false,
+      message: 'Failed to fetch words',
+    };
   }
 };

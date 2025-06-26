@@ -3,6 +3,7 @@ import { Metadata } from 'next';
 import UserWordsContent from '@/components/ui/shared/user-words-content';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import { requireUserAndAdmin } from '@/lib/auth.guard';
 
 export const metadata: Metadata = {
   title: 'List of User Words',
@@ -14,6 +15,7 @@ const UserWords = async (props: {
     groupId: string;
   }>;
 }) => {
+  await requireUserAndAdmin();
   const { id, groupId } = await props.params;
   return (
     <>

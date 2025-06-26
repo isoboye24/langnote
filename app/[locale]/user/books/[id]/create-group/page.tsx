@@ -1,6 +1,7 @@
 import { Metadata } from 'next';
 import React from 'react';
 import WordGroupForm from '@/app/[locale]/user/create-word-group-form';
+import { requireUserAndAdmin } from '@/lib/auth.guard';
 
 export const metadata: Metadata = {
   title: 'Create Group',
@@ -11,6 +12,7 @@ const CreateWordGroup = async ({
 }: {
   params: Promise<{ id: string }>;
 }) => {
+  await requireUserAndAdmin();
   const awaitedParams = await params;
   const bookId = awaitedParams.id;
 
