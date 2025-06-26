@@ -16,11 +16,16 @@ import { User } from '@prisma/client';
 import Pagination from '@/components/ui/shared/pagination';
 import { deleteUser, getAllUsers } from '@/lib/actions/admin/user.actions';
 import { Eye, Pen } from 'lucide-react';
+import { getTotalUserWordForUser } from '@/lib/actions/user/word.actions';
 
 const UserPageContent = () => {
   const [users, setUsers] = useState<User[]>([]);
 
   const [totalCount, setTotalCount] = useState(0);
+  const [userWordCounts, setUserWordCounts] = useState<Record<string, number>>(
+    {}
+  );
+
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const pageSize = 10;
@@ -39,6 +44,23 @@ const UserPageContent = () => {
     fetchUsers();
   }, [page]);
 
+  useEffect(() => {
+    const fetchAllCounts = async () => {
+      const counts: Record<string, number> = {};
+      for (const user of users || []) {
+        const res = await getTotalUserWordForUser(user.id);
+        if (res.success) {
+          counts[user.id] = res.count;
+        } else {
+          counts[user.id] = 0; // or handle error case
+        }
+      }
+      setUserWordCounts(counts);
+    };
+
+    fetchAllCounts();
+  }, [users]);
+
   return (
     <div className="space-y-2">
       <div className="flex-between">
@@ -55,6 +77,7 @@ const UserPageContent = () => {
             <TableRow>
               <TableHead>Username</TableHead>
               <TableHead>Email</TableHead>
+              <TableHead>Tot. Words</TableHead>
               <TableHead>Role</TableHead>
               <TableHead className="w-[200px]">ACTIONS</TableHead>
             </TableRow>
@@ -65,6 +88,10 @@ const UserPageContent = () => {
                 <TableRow key={user.id}>
                   <TableCell>{user.userName}</TableCell>
                   <TableCell>{user.email}</TableCell>
+                  <TableCell>
+                    {userWordCounts[user.id] ?? 'Loading...'}
+                  </TableCell>
+
                   {user.role === 'admin' ? (
                     <TableCell className="text-amber-500">
                       {user.role}

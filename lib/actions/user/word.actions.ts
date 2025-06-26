@@ -7,6 +7,10 @@ import { z } from 'zod';
 import { formatError } from '../../utils';
 import { auth } from '@/auth';
 
+type WordCountResult =
+  | { success: true; count: number }
+  | { success: false; message: string };
+
 export const upsertUserWord = async (
   data: z.infer<typeof upsertUserWordSchema>
 ) => {
@@ -272,6 +276,21 @@ export const getTotalUserWord = async (bookId: string, groupId: string) => {
     } else {
       return 0;
     }
+  } catch (error) {
+    console.error('Error calculating total word:', error);
+    return { success: false, message: 'Failed to count word' };
+  }
+};
+
+export const getTotalUserWordForUser = async (
+  currentUserId: string
+): Promise<WordCountResult> => {
+  try {
+    const total = await prisma.word.count({
+      where: { userId: currentUserId },
+    });
+
+    return { success: true, count: total };
   } catch (error) {
     console.error('Error calculating total word:', error);
     return { success: false, message: 'Failed to count word' };
