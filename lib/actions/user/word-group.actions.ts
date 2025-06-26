@@ -156,7 +156,7 @@ export const getWordGroupById = async (id: string) => {
   }
 };
 
-export async function deleteWordGroup(id: string, bookId: string) {
+export async function deleteWordGroup(id: string) {
   try {
     const groupExists = await prisma.wordGroup.findFirst({
       where: { id },
@@ -166,7 +166,7 @@ export async function deleteWordGroup(id: string, bookId: string) {
 
     await prisma.wordGroup.delete({ where: { id } });
 
-    revalidatePath(`/user/books/${bookId}`);
+    revalidatePath(`/user/books`);
 
     return {
       success: true,
