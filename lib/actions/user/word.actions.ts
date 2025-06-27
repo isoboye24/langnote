@@ -186,13 +186,23 @@ export const getAllUserWords = async (
   try {
     const [words, total] = await Promise.all([
       prisma.word.findMany({
-        where: { bookId: bookId, wordGroupId: groupId, userId: currentUserId },
+        where: {
+          bookId: bookId,
+          wordGroupId: groupId,
+          userId: currentUserId,
+          known: false,
+        },
         orderBy: { createdAt: 'desc' },
         skip: (page - 1) * pageSize,
         take: pageSize,
       }),
       prisma.word.count({
-        where: { bookId: bookId, wordGroupId: groupId, userId: currentUserId },
+        where: {
+          bookId: bookId,
+          wordGroupId: groupId,
+          userId: currentUserId,
+          known: false,
+        },
       }),
     ]);
 

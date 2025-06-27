@@ -1,29 +1,15 @@
 'use client';
-
 import React, { useEffect, useState } from 'react';
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table';
-import { Button } from '@/components/ui/button';
-import Link from 'next/link';
-import DeleteDialog from '@/components/ui/shared/delete-dialog';
-import { PartOfSpeech, Word, WordCase } from '@prisma/client';
-import Pagination from '@/components/ui/shared/pagination';
-import { getAllPartsOfSpeech } from '@/lib/actions/admin/parts-of-speech.actions';
-import { getAllWordCases } from '@/lib/actions/admin/cases.actions';
-import SearchInput from '@/components/ui/search-input';
-import {
-  deleteUserWord,
-  getAllUserWords,
-} from '@/lib/actions/user/word.actions';
-import { Eye, Pen } from 'lucide-react';
 
-const UserWordListContent = ({
+import { Word, WordGroup } from '@prisma/client';
+import { Button } from '@/components/ui/button';
+import Pagination from '@/components/ui/shared/pagination';
+import SearchInput from '@/components/ui/search-input';
+import { getWordGroupById } from '@/lib/actions/user/word-group.actions';
+import { getAllUserWords } from '@/lib/actions/user/word.actions';
+import UserWordListsItems from './user-word-list-item';
+
+const ListOfWords = ({
   bookId,
   groupId,
 }: {
@@ -31,112 +17,81 @@ const UserWordListContent = ({
   groupId: string;
 }) => {
   const [words, setWords] = useState<Word[]>([]);
-  const [wordCases, setWordCases] = useState<WordCase[]>([]);
-  const [partsOfSpeech, setPartsOfSpeech] = useState<PartOfSpeech[]>([]);
+  const [wordGroup, setWordGroup] = useState<WordGroup | null>(null);
+  const [viewMeaning, setViewMeaning] = useState(false);
   const [totalCount, setTotalCount] = useState(0);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const pageSize = 10;
-  const [searchQuery, setSearchQuery] = useState('');
-  const [filteredWords, setFilteredWords] = useState<Word[]>([]);
 
   useEffect(() => {
-    const fetchPopularWords = async () => {
-      const partsOfSpeechRes = await getAllPartsOfSpeech();
-      const wordCasesRes = await getAllWordCases();
-      const response = await getAllUserWords(page, pageSize, bookId, groupId);
+    const fetchUserWord = async () => {
+      const wordGroupWithIdRes = await getWordGroupById(groupId);
+      const wordsRes = await getAllUserWords(page, pageSize, bookId, groupId);
 
-      if (response.success) {
-        const allWords = response?.data as Word[];
-        setWords(allWords);
-        setFilteredWords(allWords);
-        setWordCases(wordCasesRes?.data as WordCase[]);
-        setPartsOfSpeech(partsOfSpeechRes?.data as PartOfSpeech[]);
-        setTotalCount(Number(response.total));
-        setTotalPages(Math.ceil(Number(response.total) / pageSize));
+      if (wordsRes.success && wordGroupWithIdRes.success) {
+        setWords(wordsRes.data as Word[]);
+        setWordGroup(wordGroupWithIdRes.data as WordGroup);
+
+        const count = wordsRes.total ?? 0;
+        setTotalCount(count);
+        setTotalPages(Math.ceil(count / pageSize));
       }
     };
 
-    fetchPopularWords();
-  }, [page, bookId, groupId, searchQuery]);
+    fetchUserWord();
+  }, [bookId, groupId, page]);
 
-  const onSearch = (query: string) => {
-    setSearchQuery(query);
-    if (!query.trim()) {
-      setFilteredWords(words); // Reset if empty
-      return;
-    }
-
-    const lower = query.toLowerCase();
-    const results = words.filter((word) =>
-      word.word.toLowerCase().includes(lower)
-    );
-    setFilteredWords(results);
-  };
+  const onSearch = () => {};
 
   return (
-    <div className="space-y-2">
-      <div className="">
-        <h2 className="hidden md:block h2-bold text-center">List of Words</h2>
+    <div className="wrapper">
+      <div className="shadow mb-10 mt-10 bg-teal-100 dark:bg-teal-800 p-5 rounded-3xl">
+        <div className="text-2xl text-center font-bold" translate="no">
+          {wordGroup?.groupName ?? ''}
+        </div>
       </div>
-
-      <div className="mt-10 justify-items-center">
-        <SearchInput onSearch={onSearch} />
-      </div>
-      <div className="mt-7 md:mt-10">
-        <Table>
-          <TableHeader className="text-base md:text-xl">
-            <TableRow>
-              <TableHead>Word</TableHead>
-              <TableHead>P. of Speech</TableHead>
-              <TableHead>Case</TableHead>
-              <TableHead className="w-[200px]">ACTIONS</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {filteredWords?.map((word) => {
-              const partOfSpeech = partsOfSpeech?.find(
-                (p) => p.id === word.partOfSpeechId
-              );
-              const wordCase = wordCases?.find((w) => w.id === word.wordCaseId);
-
-              return (
-                <TableRow key={word.id}>
-                  <TableCell>{word.word}</TableCell>
-
-                  <TableCell>{partOfSpeech?.name}</TableCell>
-                  <TableCell>{wordCase?.caseName}</TableCell>
-                  <TableCell className="flex gap-5">
-                    <Link
-                      href={`/user/books/${bookId}/${groupId}/view/${word.id}`}
-                    >
-                      <Button>
-                        <Eye />
-                      </Button>
-                    </Link>
-                    <Link href={`/user/books/${bookId}/${groupId}/${word.id}`}>
-                      <Button>
-                        <Pen />
-                      </Button>
-                    </Link>
-                    <DeleteDialog id={word.id} action={deleteUserWord} />
-                  </TableCell>
-                </TableRow>
-              );
-            })}
-          </TableBody>
-        </Table>
-      </div>
-      <Pagination
-        currentPage={page}
-        totalPages={totalPages}
-        onPageChange={setPage}
-      />
-      <div className="mt-10 text-end pr-4 md:pr-8 text-green-500">
-        Total Words: {totalCount}
+      <div className="shadow rounded-2xl bg-gray-50 dark:bg-gray-800 p-10 mt-10">
+        <div className="grid grid-cols-1 gap-5 md:grid-cols-[3fr_1fr] mb-10 justify-items-center md:justify-items-start">
+          <div className="">
+            <SearchInput onSearch={onSearch} />
+          </div>
+          <div className="justify-items-end">
+            <Button
+              className={
+                viewMeaning
+                  ? 'bg-teal-500 text-gray-100'
+                  : 'bg-red-500 text-gray-100'
+              }
+              onClick={() => setViewMeaning(!viewMeaning)}
+            >
+              {viewMeaning ? 'Hide Meaning' : 'Show meaning'}
+            </Button>
+          </div>
+        </div>
+        <div className="">
+          {words.map((word) => (
+            <div key={word.id} className="mb-2">
+              <UserWordListsItems
+                word={word.word}
+                meaning={word.meaning || ''}
+                star={word.favorite || false}
+                viewMeaning={viewMeaning}
+              />
+            </div>
+          ))}
+        </div>
+        <Pagination
+          currentPage={page}
+          totalPages={totalPages}
+          onPageChange={setPage}
+        />
+        <div className="mt-10 text-end pr-4 md:pr-8 text-green-500">
+          Total: {totalCount}
+        </div>
       </div>
     </div>
   );
 };
 
-export default UserWordListContent;
+export default ListOfWords;
