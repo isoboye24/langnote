@@ -246,7 +246,7 @@ export async function deleteUserWord(id: string) {
 
     const deletedWord = wordExists;
 
-    await prisma.wordGroup.delete({ where: { id } });
+    await prisma.word.delete({ where: { id } });
 
     revalidatePath(
       `/user/books/${deletedWord.bookId}/${deletedWord.wordGroupId}`
