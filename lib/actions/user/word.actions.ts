@@ -116,7 +116,13 @@ export const upsertUserWord = async (
             userId,
           },
         });
-        return;
+        return {
+          success: true,
+          message: id
+            ? 'Word updated successfully'
+            : 'Word created successfully',
+          data: userWord,
+        };
       } else {
         const existingWordData = await prisma.word.findFirst({
           where: {
@@ -136,17 +142,11 @@ export const upsertUserWord = async (
         };
       }
     }
-
-    return {
-      success: true,
-      message: id ? 'Group updated successfully' : 'Group created successfully',
-      data: userWord,
-    };
   } catch (error) {
-    console.error('Upsert group error:', error);
+    console.error('Upsert word error:', error);
     return {
       success: false,
-      message: 'Failed to upsert group',
+      message: 'Failed to upsert word',
     };
   }
 };

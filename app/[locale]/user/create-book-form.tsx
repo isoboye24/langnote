@@ -30,7 +30,7 @@ import { Book } from '@prisma/client';
 import { upsertBook } from '@/lib/actions/user/book.actions';
 import ColorPicker from '@/components/ui/shared/color-picker';
 import { useSession } from 'next-auth/react';
-import { getAllLanguages } from '@/lib/actions/admin/language.actions';
+import { getAllLanguagesToSelect } from '@/lib/actions/admin/language.actions';
 
 const BookForm = ({
   type,
@@ -78,7 +78,7 @@ const BookForm = ({
 
   useEffect(() => {
     const fetchLanguages = async () => {
-      const res = await getAllLanguages();
+      const res = await getAllLanguagesToSelect();
       if (res.success && Array.isArray(res.data)) {
         setLanguages(res.data);
       } else {

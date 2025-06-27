@@ -18,9 +18,6 @@ const ListOfWords = ({ id }: { id: string }) => {
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const pageSize = 10;
-  // const [searchQuery, setSearchQuery] = useState();
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  // const [filteredWords, setFilteredWords] = useState<Record<string, any[]>>();
 
   useEffect(() => {
     const fetchPartsOfSpeech = async () => {
