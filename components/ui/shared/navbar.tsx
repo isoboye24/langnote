@@ -7,7 +7,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, Moon, Sun, X } from 'lucide-react';
 import Image from 'next/image';
 import { APP_NAME } from '@/lib/constants';
-import LanguageDropdown from './languages';
+// import LanguageDropdown from './languages';
 import UserButton from './user-button';
 import { useTranslation } from 'react-i18next';
 
@@ -70,7 +70,7 @@ export default function Navbar({ toggleDarkMode }: MainAdminNavProps) {
         </div>
 
         <div className="flex items-center gap-4 px-5">
-          <LanguageDropdown />
+          {/* <LanguageDropdown /> */}
           <button
             onClick={toggleDarkMode}
             className="p-1 rounded hover:bg-gray-100 hover:text-gray-800 dark:hover:text-gray-200 transition"

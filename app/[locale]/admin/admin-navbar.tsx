@@ -1,7 +1,7 @@
 'use client';
 
 import { Menu, Moon, Sun } from 'lucide-react';
-import LanguageDropdown from '@/components/ui/shared/languages';
+// import LanguageDropdown from '@/components/ui/shared/languages';
 import UserButton from '@/components/ui/shared/user-button';
 
 type MainAdminNavProps = {
@@ -32,7 +32,7 @@ export default function AdminNavbar({
         </a>
       </div>
       <div className="flex items-center gap-4 px-5">
-        <LanguageDropdown />
+        {/* <LanguageDropdown /> */}
         <button
           onClick={toggleDarkMode}
           className="p-1 rounded hover:bg-gray-100 hover:text-gray-800 dark:hover:text-gray-200 transition"
