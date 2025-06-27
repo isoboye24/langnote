@@ -1,9 +1,9 @@
 import { requireUserAndAdmin } from '@/lib/auth.guard';
 import React from 'react';
 
-const ViewWordPage = async () => {
+const ViewWord = async () => {
   await requireUserAndAdmin();
-  return <div>View Word Page</div>;
+  return <div>View Word</div>;
 };
 
-export default ViewWordPage;
+export default ViewWord;

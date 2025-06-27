@@ -354,7 +354,7 @@ const UserWordForm = ({
                 name="word"
                 render={({ field }) => (
                   <FormItem className="w-full">
-                    <FormLabel>Popular Word</FormLabel>
+                    <FormLabel>Word</FormLabel>
                     <FormControl>
                       <Input placeholder="Enter Word" {...field} />
                     </FormControl>
