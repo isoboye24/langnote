@@ -7,7 +7,7 @@ import { getAllBooks } from '@/lib/actions/user/book.actions';
 import Pagination from '@/components/ui/shared/pagination';
 import { useSession } from 'next-auth/react';
 import { getTotalWordGroup } from '@/lib/actions/user/word-group.actions';
-import { getAllLanguages } from '@/lib/actions/admin/language.actions';
+import { getAllLanguagesToSelect } from '@/lib/actions/admin/language.actions';
 const BookList = () => {
   const { data: session } = useSession();
   const [books, setBooks] = useState<Book[]>([]);
@@ -25,7 +25,7 @@ const BookList = () => {
 
     const fetchBooks = async () => {
       const response = await getAllBooks(page, pageSize, userId);
-      const langRes = await getAllLanguages();
+      const langRes = await getAllLanguagesToSelect();
 
       if (response.success) {
         setBooks(response?.data as Book[]);

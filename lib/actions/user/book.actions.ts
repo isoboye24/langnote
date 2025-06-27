@@ -59,9 +59,7 @@ export const upsertBook = async (data: z.infer<typeof upsertBookSchema>) => {
 
         return {
           success: true,
-          message: id
-            ? 'Book updated successfully'
-            : 'Book created successfully',
+          message: 'Book created successfully',
           data: book,
         };
       } else {
@@ -73,6 +71,11 @@ export const upsertBook = async (data: z.infer<typeof upsertBookSchema>) => {
         };
       }
     }
+    return {
+      success: true,
+      message: id ? 'Book updated successfully' : '',
+      data: book,
+    };
   } catch (error) {
     console.error('Upsert book error:', error);
     return {
