@@ -26,7 +26,7 @@ export default function UserSidebar() {
   return (
     <aside className="h-screen w-55 md:w-64 bg-teal-900 text-white p-4 flex flex-col border-r border-teal-800">
       <Link
-        href={`/${locale}/admin/dashboard`}
+        href={`/${locale}/user/dashboard`}
         className="text-4xl text-center font-bold mb-6 text-amber-500"
       >
         LN

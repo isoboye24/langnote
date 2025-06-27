@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import UserSidebar from './user-sidebar';
+// import UserSidebar from './user-sidebar';
 import UserNavbar from './user-navbar';
 
 export default function AdminLayout({
@@ -27,9 +27,9 @@ export default function AdminLayout({
   return (
     <div className="flex h-screen overflow-y-hidden">
       {/* Sidebar */}
-      <div className={`${isSidebarOpen ? 'block' : 'hidden'} md:block`}>
+      {/* <div className={`${isSidebarOpen ? 'block' : 'hidden'} md:block`}>
         <UserSidebar />
-      </div>
+      </div> */}
 
       {/* Right side */}
       <div className="flex-1 flex flex-col min-h-screen bg-gray-100 dark:bg-gray-900">
