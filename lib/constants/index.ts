@@ -66,7 +66,7 @@ export const roles = ['user', 'admin'] as const;
 export const bookDefaultValues = {
   title: '',
   userId: '',
-  language: '',
+  languageId: '',
   color1: '',
   color2: '',
 };
@@ -88,7 +88,6 @@ export const userWordDefaultValues = {
   meaning: '',
   wordGroupId: '',
   genderId: '',
-  language: '',
   bookId: '',
   userId: '',
 };

@@ -2,14 +2,16 @@
 
 import React, { useEffect, useState } from 'react';
 import SingleBook from '@/components/ui/shared/book';
-import { Book } from '@prisma/client';
+import { Book, Language } from '@prisma/client';
 import { getAllBooks } from '@/lib/actions/user/book.actions';
 import Pagination from '@/components/ui/shared/pagination';
 import { useSession } from 'next-auth/react';
 import { getTotalWordGroup } from '@/lib/actions/user/word-group.actions';
+import { getAllLanguages } from '@/lib/actions/admin/language.actions';
 const BookList = () => {
   const { data: session } = useSession();
   const [books, setBooks] = useState<Book[]>([]);
+  const [languages, setLanguages] = useState<Language[]>([]);
   const [totalCount, setTotalCount] = useState(0);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
@@ -23,9 +25,11 @@ const BookList = () => {
 
     const fetchBooks = async () => {
       const response = await getAllBooks(page, pageSize, userId);
+      const langRes = await getAllLanguages();
 
       if (response.success) {
         setBooks(response?.data as Book[]);
+        setLanguages(langRes?.data as Language[]);
         setTotalCount(Number(response.total));
         setTotalPages(Math.ceil(Number(response.total) / pageSize));
       }
@@ -53,11 +57,14 @@ const BookList = () => {
     <div className="">
       <div className="flex gap-4 flex-wrap justify-center items-center md:justify-start md:items-start mb-20">
         {books.map((book) => {
+          const language = languages.find(
+            (lang) => lang.id === book.languageId
+          );
           return (
             <div key={book.id}>
               <SingleBook
                 title={book.title}
-                language={book.language}
+                language={language?.languageName || 'Unknown'}
                 groups={groupCounts[book.id] || 0}
                 color1={book.color1}
                 color2={book.color2}

@@ -104,7 +104,7 @@ export const upsertBookSchema = z.object({
     .min(1, 'title is required')
     .max(24, 'title must not be longer than 24 characters.'),
   userId: z.string().min(1, 'User is required'),
-  language: z.string().min(1, 'Language is required'),
+  languageId: z.string().min(1, 'Language is required'),
   color1: z.string().min(1, 'color1 is required'),
   color2: z.string().min(1, 'color2 is required'),
 });
@@ -136,7 +136,6 @@ export const upsertUserWordSchema = z.object({
   antonym: z.string().optional().or(z.literal('')),
   meaning: z.string().optional().or(z.literal('')),
   wordGroupId: z.string(),
-  language: z.string(),
   genderId: z.string(),
   bookId: z.string(),
   userId: z.string(),

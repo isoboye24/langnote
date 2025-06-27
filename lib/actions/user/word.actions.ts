@@ -38,7 +38,6 @@ export const upsertUserWord = async (
     meaning,
     wordGroupId,
     genderId,
-    language,
     bookId,
     userId,
   } = parsed.data;
@@ -69,7 +68,6 @@ export const upsertUserWord = async (
           meaning,
           wordGroupId,
           genderId,
-          language,
           bookId,
           userId,
         },
@@ -84,7 +82,6 @@ export const upsertUserWord = async (
           meaning,
           wordGroupId,
           genderId,
-          language,
           bookId,
           userId,
         },
@@ -96,7 +93,9 @@ export const upsertUserWord = async (
             equals: word,
             mode: 'insensitive',
           },
-          language,
+          bookId: {
+            equals: bookId,
+          },
         },
       });
 
@@ -113,7 +112,6 @@ export const upsertUserWord = async (
             meaning,
             wordGroupId,
             genderId,
-            language,
             bookId,
             userId,
           },
@@ -123,7 +121,6 @@ export const upsertUserWord = async (
         const existingWordData = await prisma.word.findFirst({
           where: {
             word: existing.word,
-            language: existing.language,
             userId: currentUserId,
           },
         });
@@ -154,7 +151,7 @@ export const upsertUserWord = async (
   }
 };
 
-export const checkIfUserWordExists = async (language: string, word: string) => {
+export const checkIfUserWordExists = async (word: string, bookId: string) => {
   const session = await auth();
   const currentUserId = session?.user?.id;
   try {
@@ -164,8 +161,8 @@ export const checkIfUserWordExists = async (language: string, word: string) => {
           equals: word,
           mode: 'insensitive',
         },
-        language: {
-          equals: language,
+        bookId: {
+          equals: bookId,
         },
         userId: currentUserId,
       },

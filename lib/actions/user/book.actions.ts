@@ -17,7 +17,7 @@ export const upsertBook = async (data: z.infer<typeof upsertBookSchema>) => {
     };
   }
 
-  const { id, title, userId, language, color1, color2 } = parsed.data;
+  const { id, title, userId, languageId, color1, color2 } = parsed.data;
 
   try {
     let book;
@@ -34,8 +34,8 @@ export const upsertBook = async (data: z.infer<typeof upsertBookSchema>) => {
 
       book = await prisma.book.upsert({
         where: { id },
-        update: { title, userId, language, color1, color2 },
-        create: { title, userId, language, color1, color2 },
+        update: { title, userId, languageId, color1, color2 },
+        create: { title, userId, languageId, color1, color2 },
       });
     } else {
       const existing = await prisma.book.findFirst({
@@ -44,17 +44,17 @@ export const upsertBook = async (data: z.infer<typeof upsertBookSchema>) => {
             equals: title,
             mode: 'insensitive',
           },
-          language: {
-            equals: language,
-            mode: 'insensitive',
-          },
+          languageId: languageId,
           userId,
         },
+      });
+      const getLanguage = await prisma.language.findFirst({
+        where: { id: existing?.languageId },
       });
 
       if (!existing) {
         book = await prisma.book.create({
-          data: { title, userId, language, color1, color2 },
+          data: { title, userId, languageId, color1, color2 },
         });
 
         return {
@@ -68,7 +68,7 @@ export const upsertBook = async (data: z.infer<typeof upsertBookSchema>) => {
         return {
           success: false,
           message: `The book '${existing.title}' already exists in '${
-            existing.language
+            getLanguage?.languageName
           }'. It was created on ${existing.createdAt.getDay()}.${existing.createdAt.getMonth()}.${existing.createdAt.getFullYear()}.`,
         };
       }
@@ -84,7 +84,7 @@ export const upsertBook = async (data: z.infer<typeof upsertBookSchema>) => {
 
 export const checkIfBookExists = async (
   userId: string,
-  language: string,
+  languageId: string,
   title: string
 ) => {
   try {
@@ -94,9 +94,8 @@ export const checkIfBookExists = async (
           equals: title,
           mode: 'insensitive',
         },
-        language: {
-          equals: language,
-          mode: 'insensitive',
+        languageId: {
+          equals: languageId,
         },
         userId: {
           equals: userId,

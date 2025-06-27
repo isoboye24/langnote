@@ -8,17 +8,18 @@ datasource db {
 }
 
 model Book {
-  id        String      @id @default(uuid()) @db.Uuid
-  title     String
-  userId    String      @db.Uuid
-  color1    String
-  color2    String
-  language  String
-  createdAt DateTime    @default(now()) @db.Timestamp(6)
-  updatedAt DateTime    @updatedAt @db.Timestamp(6)
-  user      User        @relation(fields: [userId], references: [id], onDelete: Cascade)
-  Word      Word[]
-  Topic     WordGroup[]
+  id         String      @id @default(uuid()) @db.Uuid
+  title      String
+  userId     String      @db.Uuid
+  color1     String
+  color2     String
+  createdAt  DateTime    @default(now()) @db.Timestamp(6)
+  updatedAt  DateTime    @updatedAt @db.Timestamp(6)
+  languageId String      @db.Uuid
+  Language   Language    @relation(fields: [languageId], references: [id])
+  user       User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  Word       Word[]
+  Topic      WordGroup[]
 
   @@index([userId])
 }
@@ -46,6 +47,7 @@ model PartOfSpeech {
 model Language {
   id                  String                @id @default(uuid()) @db.Uuid
   languageName        String
+  Book                Book[]
   Gender              Gender[]
   PartOfSpeech        PartOfSpeech[]
   PopularListCategory PopularListCategory[]
@@ -153,7 +155,6 @@ model Word {
   genderId       String       @db.Uuid
   wordGroupId    String       @db.Uuid
   bookId         String       @db.Uuid
-  language       String
   userId         String       @db.Uuid
   book           Book         @relation(fields: [bookId], references: [id])
   gender         Gender       @relation(fields: [genderId], references: [id])

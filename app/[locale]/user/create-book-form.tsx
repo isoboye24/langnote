@@ -30,6 +30,7 @@ import { Book } from '@prisma/client';
 import { upsertBook } from '@/lib/actions/user/book.actions';
 import ColorPicker from '@/components/ui/shared/color-picker';
 import { useSession } from 'next-auth/react';
+import { getAllLanguages } from '@/lib/actions/admin/language.actions';
 
 const BookForm = ({
   type,
@@ -43,7 +44,10 @@ const BookForm = ({
   userId?: string;
 }) => {
   const router = useRouter();
-  const [languages, setLanguages] = useState<string[]>([]);
+
+  const [languages, setLanguages] = useState<
+    { id: string; languageName: string }[]
+  >([]);
   const { data: session } = useSession();
 
   const form = useForm<z.infer<typeof upsertBookSchema>>({
@@ -52,7 +56,7 @@ const BookForm = ({
       ? {
           title: book.title,
           userId: userId,
-          language: book.language,
+          languageId: book.languageId,
           color1: book.color1,
           color2: book.color2,
         }
@@ -65,7 +69,7 @@ const BookForm = ({
       form.reset({
         title: book.title,
         userId: book.userId,
-        language: book.language,
+        languageId: book.languageId,
         color1: book.color1,
         color2: book.color2,
       });
@@ -73,9 +77,17 @@ const BookForm = ({
   }, [book, type, form]);
 
   useEffect(() => {
-    fetch('/api/languages')
-      .then((res) => res.json())
-      .then((data) => setLanguages(data));
+    const fetchLanguages = async () => {
+      const res = await getAllLanguages();
+      if (res.success && Array.isArray(res.data)) {
+        setLanguages(res.data);
+      } else {
+        setLanguages([]);
+        toast.error('Failed to fetch languages.');
+      }
+    };
+
+    fetchLanguages();
   }, []);
 
   const onSubmit: SubmitHandler<z.infer<typeof upsertBookSchema>> = async (
@@ -112,27 +124,30 @@ const BookForm = ({
               <div className="">
                 <FormField
                   control={form.control}
-                  name="language"
+                  name="languageId"
                   render={({ field }) => (
-                    <FormItem>
+                    <FormItem className="w-full">
                       <FormLabel>Language</FormLabel>
-                      <Select
-                        onValueChange={field.onChange}
-                        defaultValue={field.value}
-                      >
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Select a language" />
+                      <FormControl>
+                        <Select
+                          value={field.value?.toString() || ''}
+                          onValueChange={(val) => field.onChange(val)}
+                        >
+                          <SelectTrigger className="w-full ">
+                            <SelectValue placeholder="Select language" />
                           </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          {languages.map((lang) => (
-                            <SelectItem key={lang} value={lang}>
-                              {lang}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
+                          <SelectContent className="w-full">
+                            {languages.map((language) => (
+                              <SelectItem
+                                key={language.id}
+                                value={language.id.toString()}
+                              >
+                                {language.languageName}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      </FormControl>
                       <FormMessage />
                     </FormItem>
                   )}
