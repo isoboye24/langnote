@@ -1,21 +1,30 @@
-import { Star } from 'lucide-react';
-import React from 'react';
+import { Eye, Pen, Star } from 'lucide-react';
+import React, { useState } from 'react';
+import DeleteDialog from './delete-dialog';
+import { deleteUserWord } from '@/lib/actions/user/word.actions';
+import Link from 'next/link';
+import { Button } from '../button';
 
 const UserWordListsItems = ({
   word,
   meaning,
   star,
   gender,
-  viewMeaning,
+  id,
+  bookId,
+  groupId,
 }: {
   word: string;
   meaning: string;
   star: boolean;
   gender?: string;
-  viewMeaning: boolean;
+  id: string;
+  bookId: string;
+  groupId: string;
 }) => {
+  const [show, setShow] = useState(false);
   return (
-    <div className="">
+    <div className="" onClick={() => setShow(!show)}>
       <div className="flex flex-between">
         <div className="flex flex-col">
           <div className="flex gap-2">
@@ -27,16 +36,61 @@ const UserWordListsItems = ({
             </div>
             <div className="">{gender}</div>
           </div>
-          {viewMeaning && <div className="text-sm italic">{meaning}</div>}
+          {show && <div className="text-sm italic">{meaning}</div>}
         </div>
-        <div className="">
-          <Star
-            className={`w-6 h-6 mr-2  transition-colors ${
-              star === true
-                ? 'text-yellow-400 fill-yellow-400'
-                : 'text-teal-400'
-            }`}
-          />
+        <div className="block md:hidden">
+          {show && (
+            <div className="flex gap-0.5">
+              <Star
+                className={`w-4 h-4 md:w-6 md:h-6 mr-2  transition-colors ${
+                  star === true
+                    ? 'text-yellow-400 fill-yellow-400'
+                    : 'text-teal-400'
+                }`}
+              />
+              <Link href={`/user/books/${bookId}/${groupId}/view/${id}`}>
+                <Button className="w-3 h-3 md:w-6 md:h-6 bg-transparent text-teal-500">
+                  <Eye />
+                </Button>
+              </Link>
+              <Link href={`/user/books/${bookId}/${groupId}/${id}`}>
+                <Button className="w-3 h-3 md:w-6 md:h-6 bg-transparent text-teal-500">
+                  <Pen className="w-3 h-3 md:w-6 md:h-6" />
+                </Button>
+              </Link>
+              <DeleteDialog
+                className="w-0 h-5 md:w-6 md:h-6"
+                id={id}
+                action={deleteUserWord}
+              />
+            </div>
+          )}
+        </div>
+        <div className="hidden md:block">
+          <div className="flex gap-0.5">
+            <Star
+              className={`w-4 h-4 md:w-6 md:h-6 mr-2  transition-colors ${
+                star === true
+                  ? 'text-yellow-400 fill-yellow-400'
+                  : 'text-teal-400'
+              }`}
+            />
+            <Link href={`/user/books/${bookId}/${groupId}/view/${id}`}>
+              <Button className="w-3 h-3 md:w-6 md:h-6 bg-transparent text-teal-500">
+                <Eye />
+              </Button>
+            </Link>
+            <Link href={`/user/books/${bookId}/${groupId}/${id}`}>
+              <Button className="w-3 h-3 md:w-6 md:h-6 bg-transparent text-teal-500">
+                <Pen className="w-3 h-3 md:w-6 md:h-6" />
+              </Button>
+            </Link>
+            <DeleteDialog
+              className="w-0 h-5 md:w-6 md:h-6"
+              id={id}
+              action={deleteUserWord}
+            />
+          </div>
         </div>
       </div>
       <hr className="mt-2 border-1 border-teal-100 dark:border-teal-800" />

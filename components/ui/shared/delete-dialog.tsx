@@ -15,18 +15,20 @@ import {
 import { Button } from '../button';
 import { toast } from 'sonner';
 import { Trash2 } from 'lucide-react';
+import clsx from 'clsx'; // or use `classnames`
 
 export default function DeleteDialog({
   id,
   action,
+  className, // Add className prop
 }: {
   id: string;
   action: (id: string) => Promise<{ success: boolean; message: string }>;
+  className?: string; // Make it optional
 }) {
   const [open, setOpen] = useState(false);
   const [isPending, startTransition] = useTransition();
 
-  // Handle delete order button click
   const handleDeleteClick = () => {
     startTransition(async () => {
       const res = await action(id);
@@ -45,7 +47,10 @@ export default function DeleteDialog({
       <AlertDialogTrigger asChild>
         <Button
           size="sm"
-          className="ml-2 bg-transparent hover:bg-red-200 h-full"
+          className={clsx(
+            'ml-2 bg-transparent hover:bg-red-200 h-full',
+            className
+          )}
         >
           <Trash2 className="ml-2 text-red-500" />
         </Button>
