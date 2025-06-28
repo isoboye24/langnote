@@ -42,19 +42,19 @@ const Book = ({
   return (
     <div
       onClick={handleCardClick}
-      className="relative w-60 h-70 md:w-45 rounded-md overflow-hidden shadow-xl border"
+      className="relative w-35 h-40 md:w-45 md:h-70 rounded-md overflow-hidden shadow-xl border"
       style={{
         background: `linear-gradient(135deg, ${color1}, ${color2})`,
       }}
     >
       {/* Top Title */}
-      <div className="absolute top-4 left-4 right-4 text-white text-lg font-bold tracking-wide text-center">
+      <div className="absolute top-4 left-4 right-4 text-white text-base md:text-lg font-bold tracking-wide text-center">
         {title}
       </div>
 
       {/* Subtext (Language) */}
       <div
-        className="absolute left-4 right-4 text-white text-sm italic"
+        className="text-center md:text-start mt-2 md:mt-0 absolute left-4 right-4 text-white text-xs md:text-sm italic"
         style={{ top: `${topValue}rem` }}
       >
         {language}
@@ -62,7 +62,7 @@ const Book = ({
 
       {/* Center Decorative Section */}
       <div
-        className={`absolute top-1/2 left-1/2 transform -translate-x-1/2 text-center`}
+        className={`hidden md:block absolute top-1/2 left-1/2 transform -translate-x-1/2 text-center`}
       >
         <div className="bg-white text-gray-700 rounded-full px-2 py-2 shadow-md text-xs font-semibold">
           Groups: {groups}

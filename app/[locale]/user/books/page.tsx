@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 const ListOfBooks = async () => {
   await requireUserAndAdmin();
   return (
-    <>
+    <div className="wrapper">
       <div className="flex-between mb-10">
         <div className="">Search book...</div>
         <Button className="">
@@ -22,7 +22,7 @@ const ListOfBooks = async () => {
       <div className="">
         <BookList />
       </div>
-    </>
+    </div>
   );
 };
 

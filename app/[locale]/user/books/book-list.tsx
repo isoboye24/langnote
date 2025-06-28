@@ -55,7 +55,7 @@ const BookList = () => {
 
   return (
     <div className="">
-      <div className="flex gap-4 flex-wrap justify-center items-center md:justify-start md:items-start mb-20">
+      <div className="grid grid-cols-2 md:flex gap-4 md:flex-wrap justify-center items-center md:justify-start md:items-start mb-20">
         {books.map((book) => {
           const language = languages.find(
             (lang) => lang.id === book.languageId
