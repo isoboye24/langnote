@@ -32,7 +32,7 @@ export default function Navbar({ toggleDarkMode }: MainAdminNavProps) {
 
   return (
     <nav className="fixed top-0 left-0 w-full bg-white dark:bg-gray-900 shadow-md z-50">
-      <div className="flex items-center justify-between px-6 py-4 max-w-7xl mx-auto">
+      <div className="flex justify-between px-6 py-4 max-w-7xl mx-auto">
         <Link
           href={`/${locale}/`}
           className="text-xl font-bold text-blue-600 flex"
@@ -69,22 +69,24 @@ export default function Navbar({ toggleDarkMode }: MainAdminNavProps) {
           })}
         </div>
 
-        <div className="flex items-center gap-4 px-5">
-          {/* <LanguageDropdown /> */}
-          <button
-            onClick={toggleDarkMode}
-            className="p-1 rounded hover:bg-gray-100 hover:text-gray-800 dark:hover:text-gray-200 transition"
-          >
-            <Sun className="w-5 h-5 text-gray-800 dark:hidden" />
-            <Moon className="w-5 h-5 text-gray-200 hidden dark:block" />
-          </button>
-          <UserButton />
-        </div>
+        <div className="flex gap-3">
+          <div className="flex items-center gap-4 ">
+            {/* <LanguageDropdown /> */}
+            <button
+              onClick={toggleDarkMode}
+              className="p-1 rounded hover:bg-gray-100 hover:text-gray-800 dark:hover:text-gray-200 transition"
+            >
+              <Sun className="w-5 h-5 text-gray-800 dark:hidden" />
+              <Moon className="w-5 h-5 text-gray-200 hidden dark:block" />
+            </button>
+            <UserButton />
+          </div>
 
-        {/* Mobile Toggle */}
-        <button className="md:hidden text-gray-700" onClick={toggleMenu}>
-          {isOpen ? <X size={24} /> : <Menu size={24} />}
-        </button>
+          {/* Mobile Toggle */}
+          <button className="md:hidden text-gray-700" onClick={toggleMenu}>
+            {isOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
+        </div>
       </div>
 
       {/* Mobile Menu */}

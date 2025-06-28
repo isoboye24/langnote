@@ -5,7 +5,6 @@ import { getPopularCategoryById } from '@/lib/actions/admin/popular-list-categor
 import { getGroupOfPopularListWords } from '@/lib/actions/admin/popular-lists-words';
 import { PopularListCategory } from '@prisma/client';
 import WordListsItems from '@/components/ui/shared/word-lists-item';
-import { Button } from '@/components/ui/button';
 import Pagination from '@/components/ui/shared/pagination';
 import SearchInput from '@/components/ui/search-input';
 
@@ -13,7 +12,6 @@ const ListOfWords = ({ id }: { id: string }) => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [words, setWords] = useState<Record<string, any[]>>();
   const [category, setCategory] = useState<PopularListCategory | null>(null);
-  const [viewMeaning, setViewMeaning] = useState(false);
   const [totalCount, setTotalCount] = useState(0);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
@@ -53,21 +51,9 @@ const ListOfWords = ({ id }: { id: string }) => {
         </div>
       </div>
       <div className="shadow rounded-2xl bg-gray-50 dark:bg-gray-800 p-10 mt-10">
-        <div className="grid grid-cols-1 gap-5 md:grid-cols-[3fr_1fr] mb-10 justify-items-center md:justify-items-start">
+        <div className="mb-10 md:mb-20 justify-items-center">
           <div className="">
             <SearchInput onSearch={onSearch} />
-          </div>
-          <div className="justify-items-end">
-            <Button
-              className={
-                viewMeaning
-                  ? 'bg-teal-500 text-gray-100'
-                  : 'bg-red-500 text-gray-100'
-              }
-              onClick={() => setViewMeaning(!viewMeaning)}
-            >
-              {viewMeaning ? 'Hide Meaning' : 'Show meaning'}
-            </Button>
           </div>
         </div>
         <div className="">
@@ -78,7 +64,6 @@ const ListOfWords = ({ id }: { id: string }) => {
                   word={word.word}
                   meaning={word.meaning || ''}
                   star={word.favorite || false}
-                  viewMeaning={viewMeaning}
                 />
               </div>
             ))}

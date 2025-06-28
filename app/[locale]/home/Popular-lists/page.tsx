@@ -36,16 +36,18 @@ const PopularLists = () => {
           );
 
           return (
-            <div className="" key={category.id}>
-              <Link href={`/home/Popular-lists/${category.id}`}>
-                <PopularList
-                  lightIcon={category.lightImageIcon}
-                  darkIcon={category.darkImageIcon}
-                  category={category.popularCategory}
-                  totalWords={totalWords.length}
-                />
-              </Link>
-            </div>
+            totalWords.length > 9 && (
+              <div key={category.id}>
+                <Link href={`/home/Popular-lists/${category.id}`}>
+                  <PopularList
+                    lightIcon={category.lightImageIcon}
+                    darkIcon={category.darkImageIcon}
+                    category={category.popularCategory}
+                    totalWords={totalWords.length}
+                  />
+                </Link>
+              </div>
+            )
           );
         })}
       </div>

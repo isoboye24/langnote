@@ -1,21 +1,20 @@
-import { Star } from 'lucide-react';
-import React from 'react';
+import { Eye, Star } from 'lucide-react';
+import React, { useState } from 'react';
 
 const WordListsItems = ({
   word,
   meaning,
   star,
   gender,
-  viewMeaning,
 }: {
   word: string;
   meaning: string;
   star: boolean;
   gender?: string;
-  viewMeaning: boolean;
 }) => {
+  const [show, setShow] = useState(false);
   return (
-    <div className="">
+    <div className="" onClick={() => setShow(!show)}>
       <div className="flex flex-between">
         <div className="flex flex-col">
           <div className="flex gap-2">
@@ -27,11 +26,14 @@ const WordListsItems = ({
             </div>
             <div className="">{gender}</div>
           </div>
-          {viewMeaning && <div className="text-sm italic">{meaning}</div>}
+          {show && <div className="text-sm italic">{meaning}</div>}
         </div>
-        <div className="">
+        <div className="flex gap-1">
+          <Eye
+            className={`w-4 h-4 md:w-6 md:h-6 mr-2 pointer transition-colors text-teal-400`}
+          />
           <Star
-            className={`w-6 h-6 mr-2  transition-colors ${
+            className={`w-4 h-4 md:w-6 md:h-6 mr-2  transition-colors ${
               star === true
                 ? 'text-yellow-400 fill-yellow-400'
                 : 'text-teal-400'
