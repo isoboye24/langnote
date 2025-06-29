@@ -84,7 +84,25 @@ const ListOfWords = ({
           </div>
         </div>
         <div className="shadow rounded-2xl bg-gray-50 dark:bg-gray-800 p-10 mt-10">
-          <div className="flex space-x-6 mb-15 justify-center ">
+          {/* Mobile: dropdown */}
+          <div className="sm:hidden mb-6 text-center">
+            <select
+              className="border border-gray-300 rounded px-3 py-2 text-sm"
+              value={activeType}
+              onChange={(e) => {
+                setPage(1); // reset pagination
+                setActiveType(e.target.value);
+              }}
+            >
+              {filterType.map((type) => (
+                <option key={type} value={type}>
+                  {type}
+                </option>
+              ))}
+            </select>
+          </div>
+          {/* Desktop: button group */}
+          <div className="hidden sm:flex space-x-6 mb-15 justify-center">
             {filterType.map((type) => (
               <button
                 key={type}
