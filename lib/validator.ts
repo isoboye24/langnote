@@ -86,6 +86,14 @@ export const signUpFormSchema = z
     path: ['confirmPassword'],
   });
 
+export const updateUserSchema = z.object({
+  id: z
+    .string()
+    .min(1, 'If provided, word id is should be at least 1 character')
+    .optional(),
+  role: z.string().min(1, 'Role is required'),
+});
+
 export const signInFormSchema = z.object({
   email: z
     .string()

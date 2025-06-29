@@ -1,7 +1,11 @@
 // app/(actions)/create-user.ts
 'use server';
 
-import { signInFormSchema, signUpFormSchema } from '@/lib/validator';
+import {
+  signInFormSchema,
+  signUpFormSchema,
+  updateUserSchema,
+} from '@/lib/validator';
 import { z } from 'zod';
 import { revalidatePath } from 'next/cache';
 import { formatError } from '@/lib/utils';
@@ -82,12 +86,11 @@ export async function signInWithCredentials(
 export async function SignOutUser() {
   await signOut();
 }
-
 export const updateUser = async (
   id: string,
-  data: z.infer<typeof signUpFormSchema>
+  data: z.infer<typeof updateUserSchema>
 ) => {
-  const parsed = signUpFormSchema.safeParse(data);
+  const parsed = updateUserSchema.safeParse(data);
   if (!parsed.success) {
     return {
       success: false,
@@ -96,16 +99,10 @@ export const updateUser = async (
     };
   }
 
-  const updateData = { ...parsed.data };
-
-  if (updateData.password) {
-    updateData.password = hashSync(updateData.password, 8);
-  }
-
   try {
     const user = await prisma.user.update({
       where: { id },
-      data: updateData,
+      data: { role: parsed.data.role },
     });
 
     return { success: true, message: 'User updated', data: user };

@@ -46,6 +46,11 @@ export const popularListWordDefaultValues = {
   genderId: '',
 };
 
+export const updateUserDefaultValues = {
+  id: '',
+  role: '',
+};
+
 export const signUpDefaultValues = {
   userName: '',
   firstName: '',

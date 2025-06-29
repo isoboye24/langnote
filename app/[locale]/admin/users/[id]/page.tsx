@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   title: 'Update User',
 };
 
-const UpdateWordCase = async (props: {
+const UpdateUser = async (props: {
   params: Promise<{
     id: string;
   }>;
@@ -27,4 +27,4 @@ const UpdateWordCase = async (props: {
   );
 };
 
-export default UpdateWordCase;
+export default UpdateUser;
