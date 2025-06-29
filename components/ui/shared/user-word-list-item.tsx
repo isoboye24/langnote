@@ -29,12 +29,12 @@ const UserWordListsItems = ({
         <div className="flex flex-col">
           <div className="flex gap-2">
             <div
-              className="text-teal-500 font-semibold text-base"
+              className="text-teal-500 font-semibold text-base mr-2"
               translate="no"
             >
               {word}
             </div>
-            <div className="">{gender}</div>
+            <div className="italic font-light text-xs">{gender}</div>
           </div>
           {show && <div className="text-sm italic">{meaning}</div>}
         </div>

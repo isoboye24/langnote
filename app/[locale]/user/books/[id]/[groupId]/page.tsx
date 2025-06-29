@@ -19,8 +19,8 @@ const UserWords = async (props: {
   const { id, groupId } = await props.params;
   return (
     <>
-      <div className="flex-between mb-10">
-        <div className="">Search for word...</div>
+      <div className="flex mb-10 justify-end">
+        {/* <div className="">Search for word...</div> */}
         <Button className="">
           <Link href={`/user/books/${id}/${groupId}/create-word`}>
             Create Word

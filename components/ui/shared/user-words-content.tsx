@@ -57,18 +57,20 @@ const ListOfWords = ({
             </div>
           </div>
           <div className="">
-            {words.map((word) => (
-              <div key={word.id} className="mb-2">
-                <UserWordListsItems
-                  word={word.word}
-                  meaning={word.meaning || ''}
-                  star={word.favorite || false}
-                  id={word.id}
-                  bookId={word.bookId}
-                  groupId={word.wordGroupId}
-                />
-              </div>
-            ))}
+            {words.map((word) => {
+              return (
+                <div key={word.id} className="mb-2">
+                  <UserWordListsItems
+                    word={word.word}
+                    meaning={word.meaning || ''}
+                    star={word.favorite || false}
+                    id={word.id}
+                    bookId={word.bookId}
+                    groupId={word.wordGroupId}
+                  />
+                </div>
+              );
+            })}
           </div>
           <Pagination
             currentPage={page}

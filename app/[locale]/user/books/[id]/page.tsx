@@ -18,8 +18,8 @@ const GroupList = async (props: {
   const { id } = await props.params;
   return (
     <>
-      <div className="flex-between mb-10">
-        <div className="">Search for group...</div>
+      <div className="flex mb-10 justify-end">
+        {/* <div className="">Search for group...</div> */}
         <Button className="">
           <Link href={`/user/books/${id}/create-group`}>Create Word Group</Link>
         </Button>

@@ -13,9 +13,9 @@ const ListOfBooks = async () => {
   await requireUserAndAdmin();
   return (
     <div className="wrapper">
-      <div className="flex-between mb-10">
-        <div className="">Search book...</div>
-        <Button className="">
+      <div className="flex mb-10 justify-end">
+        {/* <div className="">Search book...</div> */}
+        <Button className="justify-end">
           <Link href={`/user/books/create`}>Create Book</Link>
         </Button>
       </div>
