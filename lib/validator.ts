@@ -76,7 +76,7 @@ export const signUpFormSchema = z
     email: z.string().min(3, 'Email is required'),
     firstLanguage: z.string().min(3, 'First Language is required'),
     password: z.string().min(8, 'Password is required'),
-    role: z.string(),
+    role: z.string().default('user').optional(),
     confirmPassword: z
       .string()
       .min(3, 'Confirm password must be at least 3 characters'),
