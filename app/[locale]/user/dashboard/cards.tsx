@@ -1,21 +1,26 @@
 import DashboardCard from '@/components/ui/shared/dashboard-card';
 import { BookA, Boxes, Notebook } from 'lucide-react';
-import React from 'react';
 
-const Cards = () => {
+const Cards = ({
+  bookTotal,
+  groupTotal,
+  wordTotal,
+}: {
+  bookTotal: number;
+  groupTotal: number;
+  wordTotal: number;
+}) => {
+  const items = [
+    { icon: Notebook, amount: bookTotal, title: 'Total Books' },
+    { icon: Boxes, amount: groupTotal, title: 'Total Groups' },
+    { icon: BookA, amount: wordTotal, title: 'Total Words' },
+  ];
+
   return (
-    <div>
-      <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-        <div className="">
-          <DashboardCard icon={Notebook} amount={0} title="Total Books" />
-        </div>
-        <div className="">
-          <DashboardCard icon={Boxes} amount={0} title="Total Groups" />
-        </div>
-        <div className="">
-          <DashboardCard icon={BookA} amount={0} title="Total Words" />
-        </div>
-      </div>
+    <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+      {items.map(({ icon, amount, title }, i) => (
+        <DashboardCard key={i} icon={icon} amount={amount} title={title} />
+      ))}
     </div>
   );
 };

@@ -5,6 +5,7 @@ import { upsertWordGroupSchema } from '../../validator';
 import { revalidatePath } from 'next/cache';
 import { z } from 'zod';
 import { formatError } from '../../utils';
+import { auth } from '@/auth';
 
 export const upsertWordGroup = async (
   data: z.infer<typeof upsertWordGroupSchema>
@@ -188,5 +189,31 @@ export const getTotalWordGroup = async (bookId: string) => {
   } catch (error) {
     console.error('Error calculating total group:', error);
     return { success: false, message: 'Failed to count group' };
+  }
+};
+
+export const getAllTotalWordGroup = async () => {
+  const session = await auth();
+  const currentUserId = session?.user?.id;
+
+  try {
+    const allBook = await prisma.book.findMany({
+      where: { userId: currentUserId },
+    });
+
+    const totalCounts = await Promise.all(
+      allBook.map((book) =>
+        prisma.wordGroup.count({
+          where: { bookId: book.id },
+        })
+      )
+    );
+
+    const total = totalCounts.reduce((acc, count) => acc + count, 0);
+
+    return total;
+  } catch (error) {
+    console.error('Error calculating total word groups:', error);
+    return 0;
   }
 };

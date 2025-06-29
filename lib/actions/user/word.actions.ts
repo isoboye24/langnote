@@ -192,7 +192,7 @@ export const getAllUserWords = async (
           userId: currentUserId,
           known: false,
         },
-        orderBy: { createdAt: 'desc' },
+        orderBy: { word: 'asc' },
         skip: (page - 1) * pageSize,
         take: pageSize,
       }),
@@ -332,5 +332,23 @@ export const getAllUserWordsCompletely = async (
       success: false,
       message: 'Failed to fetch words',
     };
+  }
+};
+
+export const getAllTotalUserWord = async () => {
+  const session = await auth();
+  const currentUserId = session?.user?.id;
+  try {
+    const total = await prisma.word.count({
+      where: { userId: currentUserId },
+    });
+    if (total > 0) {
+      return total;
+    } else {
+      return 0;
+    }
+  } catch (error) {
+    console.error('Error calculating total word:', error);
+    return 0;
   }
 };

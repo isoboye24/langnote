@@ -192,15 +192,19 @@ export async function deleteBook(id: string) {
   }
 }
 
-export const getTotalBooks = async (userId: string) => {
+export const getTotalUserBooks = async (userId: string) => {
   try {
     const total = await prisma.book.count({
       where: { userId: userId },
     });
-    return { success: true, data: total };
+    if (total > 0) {
+      return total;
+    } else {
+      return 0;
+    }
   } catch (error) {
     console.error('Error calculating total book:', error);
-    return { success: false, message: 'Failed to count book' };
+    return 0;
   }
 };
 
