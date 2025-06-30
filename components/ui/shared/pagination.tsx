@@ -16,21 +16,51 @@ export const Pagination: React.FC<PaginationProps> = ({
 
   const renderPageNumbers = () => {
     const pages = [];
+    const pageRange = 1;
 
-    for (let i = 1; i <= totalPages; i++) {
-      pages.push(
-        <button
-          key={i}
-          onClick={() => goToPage(i)}
-          className={`px-3 py-1 rounded-md border text-sm ${
-            i === currentPage
-              ? 'bg-teal-600 text-white font-semibold'
-              : 'bg-white hover:bg-gray-100 text-gray-800'
-          }`}
-        >
-          {i}
-        </button>
-      );
+    const createButton = (page: number) => (
+      <button
+        key={page}
+        onClick={() => goToPage(page)}
+        className={`px-3 py-1 rounded-md border text-sm ${
+          page === currentPage
+            ? 'bg-teal-600 text-white font-semibold'
+            : 'bg-white hover:bg-gray-100 text-gray-800'
+        }`}
+      >
+        {page}
+      </button>
+    );
+
+    const addEllipsis = (key: string) => (
+      <span key={key} className="px-2 text-gray-500 text-sm">
+        ...
+      </span>
+    );
+
+    const showLeftDots = currentPage > 2 + pageRange;
+    const showRightDots = currentPage < totalPages - (1 + pageRange);
+
+    pages.push(createButton(1));
+
+    if (showLeftDots) {
+      pages.push(addEllipsis('left-ellipsis'));
+    }
+
+    for (
+      let i = Math.max(2, currentPage - pageRange);
+      i <= Math.min(totalPages - 1, currentPage + pageRange);
+      i++
+    ) {
+      pages.push(createButton(i));
+    }
+
+    if (showRightDots) {
+      pages.push(addEllipsis('right-ellipsis'));
+    }
+
+    if (totalPages > 1) {
+      pages.push(createButton(totalPages));
     }
 
     return pages;
