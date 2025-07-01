@@ -7,24 +7,39 @@ import { getAllPopularCategoriesToSelect } from '@/lib/actions/admin/popular-lis
 import { getAllPopularListWordsToSelect } from '@/lib/actions/admin/popular-lists-words';
 import { PopularListCategory, PopularListWord } from '@prisma/client';
 import Link from 'next/link';
+import Loader from '../../loading';
 
 const PopularLists = () => {
   const [categories, setCategories] = useState<PopularListCategory[]>([]);
   const [words, setWords] = useState<PopularListWord[]>([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const fetchPartsOfSpeech = async () => {
-      const wordsRes = await getAllPopularListWordsToSelect();
-      const response = await getAllPopularCategoriesToSelect();
+      setLoading(true);
+      try {
+        const wordsRes = await getAllPopularListWordsToSelect();
+        const response = await getAllPopularCategoriesToSelect();
 
-      if (response.success && wordsRes.success) {
-        setCategories(response.data as PopularListCategory[]);
-        setWords(wordsRes.data as PopularListWord[]);
+        if (response.success && wordsRes.success) {
+          setCategories(response.data as PopularListCategory[]);
+          setWords(wordsRes.data as PopularListWord[]);
+        }
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchPartsOfSpeech();
   }, []);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <Loader />
+      </div>
+    );
+  }
 
   return (
     <div className="bg-blue-50 dark:bg-gray-900 p-10 rounded-md">

@@ -96,3 +96,11 @@ export const userWordDefaultValues = {
   bookId: '',
   userId: '',
 };
+
+export const faqDefaultValues = {
+  page: '',
+  question: '',
+  answer: '',
+  publish: false,
+  rate: 0,
+};

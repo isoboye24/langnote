@@ -148,3 +148,21 @@ export const upsertUserWordSchema = z.object({
   bookId: z.string(),
   userId: z.string(),
 });
+
+export const upsertFAQSchema = z.object({
+  id: z
+    .string()
+    .min(1, 'If provided, group id is should be at least 1 character')
+    .optional(),
+  page: z
+    .string()
+    .min(1, 'page is required')
+    .max(30, 'page must not be longer than 30 characters.'),
+  question: z.string().min(1, 'question is required'),
+  answer: z.string().min(1, 'answer is required'),
+  publish: z.boolean(),
+  rate: z
+    .number()
+    .min(1, 'Rate must be at least 1')
+    .max(5, 'Rate must be at most 5'),
+});
