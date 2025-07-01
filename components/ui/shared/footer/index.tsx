@@ -55,23 +55,43 @@ const Footer = () => {
           <div className="text-center ">
             <div className="justify-center">
               <h2 className="mb-6 text-gray-300">Follow on:</h2>
-              <div className="flex items-center justify-center gap-5">
+              <div className="hidden md:flex items-center justify-center gap-5">
                 <SocialMedia
                   icon={faFacebookF}
                   bgColor={color}
-                  size={20}
+                  size={40}
                   url="https://www.facebook.com/isoboye.vincent/"
                 />
                 <SocialMedia
                   icon={faInstagram}
                   bgColor={color}
-                  size={20}
+                  size={40}
                   url="https://www.instagram.com/isoboye_vincent/"
                 />
                 <SocialMedia
                   icon={faXTwitter}
                   bgColor={color}
-                  size={20}
+                  size={40}
+                  url=""
+                />
+              </div>
+              <div className="flex md:hidden items-center justify-center gap-5">
+                <SocialMedia
+                  icon={faFacebookF}
+                  bgColor={color}
+                  size={30}
+                  url="https://www.facebook.com/isoboye.vincent/"
+                />
+                <SocialMedia
+                  icon={faInstagram}
+                  bgColor={color}
+                  size={30}
+                  url="https://www.instagram.com/isoboye_vincent/"
+                />
+                <SocialMedia
+                  icon={faXTwitter}
+                  bgColor={color}
+                  size={30}
                   url=""
                 />
               </div>
