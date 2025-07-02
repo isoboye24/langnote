@@ -37,7 +37,7 @@ export default function AdminLayout({
           toggleSidebar={toggleSidebar}
           toggleDarkMode={toggleDarkMode}
         />
-        <main className="overflow-auto flex-1 text-gray-900 dark:text-gray-100 p-6">
+        <main className="overflow-auto flex-1 bg-orange-50 dark:bg-slate-950 text-gray-900 dark:text-gray-100 p-6">
           {children}
         </main>
       </div>

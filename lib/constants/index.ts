@@ -102,5 +102,5 @@ export const faqDefaultValues = {
   question: '',
   answer: '',
   publish: false,
-  rate: 0,
+  rate: 1,
 };

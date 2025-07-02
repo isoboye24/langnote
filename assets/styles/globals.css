@@ -288,3 +288,7 @@
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
 }
+
+.main-background {
+  background-color: oklch(97.1% 0.013 17.38);
+}

@@ -152,7 +152,7 @@ export const upsertUserWordSchema = z.object({
 export const upsertFAQSchema = z.object({
   id: z
     .string()
-    .min(1, 'If provided, group id is should be at least 1 character')
+    .min(1, 'If provided, faq id is should be at least 1 character')
     .optional(),
   page: z
     .string()

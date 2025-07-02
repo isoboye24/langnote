@@ -19,9 +19,9 @@ export default function Navbar({ toggleDarkMode }: MainAdminNavProps) {
   const { t } = useTranslation();
 
   const links = [
-    { name: t('home'), href: '/' },
-    { name: t('about'), href: '/about' },
-    { name: t('contact'), href: '/contact' },
+    { name: t('Home'), href: '/' },
+    { name: t('About'), href: '/about' },
+    { name: t('Contact'), href: '/contact' },
   ];
   const pathname = usePathname();
   const segments = pathname.split('/').filter(Boolean);

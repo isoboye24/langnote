@@ -1,66 +1,66 @@
 'use server';
 
 import { prisma } from '@/db/prisma';
-import { upsertLanguageSchema } from '../../validator';
+import { upsertFAQSchema } from '../../validator';
 import { revalidatePath } from 'next/cache';
 import { z } from 'zod';
 import { formatError } from '../../utils';
 
-export const upsertFAQ = async (data: z.infer<typeof upsertLanguageSchema>) => {
-  const parsed = upsertLanguageSchema.safeParse(data);
+export const upsertFAQ = async (data: z.infer<typeof upsertFAQSchema>) => {
+  const parsed = upsertFAQSchema.safeParse(data);
 
   if (!parsed.success) {
     return {
       success: false,
-      message: 'Invalid language data',
+      message: 'Invalid FAQ data',
       errors: parsed.error.flatten().fieldErrors,
     };
   }
 
-  const { id, languageName } = parsed.data;
+  const { id, page, question, answer, publish, rate } = parsed.data;
 
   try {
-    let language;
+    let faq;
 
-    // Upsert the language
+    // Upsert the faq
     if (id) {
-      language = await prisma.language.upsert({
+      faq = await prisma.faq.upsert({
         where: { id },
-        update: { languageName },
-        create: { languageName },
+        update: { page, question, answer, publish, rate },
+        create: { page, question, answer, publish, rate },
       });
     } else {
-      const languageExists = await prisma.language.findFirst({
+      const faqExists = await prisma.faq.findFirst({
         where: {
-          languageName: {
-            equals: languageName.trim(),
+          question: {
+            equals: question.trim(),
             mode: 'insensitive',
           },
         },
       });
 
-      if (languageExists) {
+      if (faqExists) {
         return {
           success: false,
-          message: `This case ${languageExists.languageName} already exists.`,
+          message: `This FAQ already exists.`,
         };
       } else {
-        language = await prisma.language.create({ data: { languageName } });
+        faq = await prisma.faq.create({
+          data: { page, question, answer, publish, rate },
+        });
       }
     }
 
     return {
       success: true,
-      message: id
-        ? 'Language updated successfully'
-        : 'Language created successfully',
-      data: language,
+      message: id ? 'FAQ updated successfully' : 'FAQ created successfully',
+      data: faq,
     };
   } catch (error) {
-    console.error('Upsert language error:', error);
+    console.error('Upsert FAQ error:', error);
     return {
       success: false,
-      message: 'Failed to upsert language',
+      message: 'Failed to upsert FAQ',
     };
   }
 };
