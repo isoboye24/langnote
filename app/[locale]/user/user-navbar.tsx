@@ -15,7 +15,7 @@ type MainAdminNavProps = {
 
 export default function UserNavbar({ toggleDarkMode }: MainAdminNavProps) {
   return (
-    <header className=" w-full bg-gray-200 dark:bg-gray-800 shadow-sm px-6 py-4 md:px-10 lg:20 grid grid-cols-[1fr_150px] md:grid-cols-[150px_1fr_150px] ">
+    <header className=" w-full bg-orange-200 dark:bg-gray-800 shadow-sm px-6 py-4 md:px-10 lg:20 grid grid-cols-[1fr_150px] md:grid-cols-[150px_1fr_150px] ">
       <Link
         href={`https://langnote-three.vercel.app/en`}
         className="text-xl font-bold text-blue-600 hidden md:flex"

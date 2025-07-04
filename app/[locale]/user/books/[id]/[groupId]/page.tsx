@@ -21,8 +21,11 @@ const UserWords = async (props: {
     <>
       <div className="flex mb-10 justify-end">
         {/* <div className="">Search for word...</div> */}
-        <Button className="">
-          <Link href={`/user/books/${id}/${groupId}/create-word`}>
+        <Button className="bg-orange-500 hover:bg-Orange-300 dark:bg-teal-700">
+          <Link
+            href={`/user/books/${id}/${groupId}/create-word`}
+            className="text-gray-100"
+          >
             Create Word
           </Link>
         </Button>
