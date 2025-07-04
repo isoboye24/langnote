@@ -23,3 +23,8 @@ export type BackgroundWithDynamicImageOrVideoProps = {
   children: React.ReactNode;
   slideInterval?: number; // interval in ms
 };
+
+export interface TabSectionProps<T extends string = string> {
+  tab: T[];
+  types: T;
+}
