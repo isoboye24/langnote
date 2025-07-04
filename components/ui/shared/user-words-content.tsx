@@ -113,7 +113,7 @@ const ListOfWords = ({
                 className={`text-sm font-semibold transition-colors duration-200 ${
                   activeType === type
                     ? 'text-orange-500 border-b-2 border-orange-500'
-                    : 'text-gray-400 hover:text-orange-500'
+                    : 'text-gray-800 hover:text-orange-500'
                 }`}
               >
                 {type}

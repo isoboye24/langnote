@@ -188,15 +188,6 @@ model Review {
   @@index([userId])
 }
 
-model faq {
-  id       String  @id @db.Uuid
-  page     String
-  question String
-  answer   String
-  publish  Boolean
-  rate     Int
-}
-
 enum Role {
   user
   admin
