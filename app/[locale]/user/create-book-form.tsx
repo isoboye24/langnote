@@ -120,7 +120,7 @@ const BookForm = ({
           className="space-y-8"
         >
           <div className="">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-10">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-5 mb-10">
               <div className="">
                 <FormField
                   control={form.control}
@@ -133,8 +133,11 @@ const BookForm = ({
                           value={field.value?.toString() || ''}
                           onValueChange={(val) => field.onChange(val)}
                         >
-                          <SelectTrigger className="w-full ">
-                            <SelectValue placeholder="Select language" />
+                          <SelectTrigger className="w-full border-orange-200 dark:border-gray-800">
+                            <SelectValue
+                              className=" border-orange-200 dark:border-gray-800"
+                              placeholder="Select language"
+                            />
                           </SelectTrigger>
                           <SelectContent className="w-full">
                             {languages.map((language) => (
@@ -159,9 +162,13 @@ const BookForm = ({
                   name="title"
                   render={({ field }) => (
                     <FormItem className="w-full">
-                      <FormLabel>Title</FormLabel>
+                      <FormLabel>Book Title</FormLabel>
                       <FormControl>
-                        <Input placeholder="Enter Title" {...field} />
+                        <Input
+                          className=" border-orange-200 dark:border-gray-800"
+                          placeholder="Enter Book Title"
+                          {...field}
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -174,13 +181,13 @@ const BookForm = ({
                   name="color1"
                   render={({ field }) => (
                     <FormItem className="w-full">
-                      <FormLabel>First Color</FormLabel>
+                      <FormLabel>Top Color</FormLabel>
                       <FormControl>
                         <div>
                           <ColorPicker
                             onChange={(color) => field.onChange(color)}
                           />
-                          <p className="mt-2 text-sm">Current: {field.value}</p>
+                          <p className="mt-2 text-sm">{field.value}</p>
                         </div>
                       </FormControl>
                       <FormMessage />
@@ -194,13 +201,13 @@ const BookForm = ({
                   name="color2"
                   render={({ field }) => (
                     <FormItem className="w-full">
-                      <FormLabel>Second Color</FormLabel>
+                      <FormLabel>Bottom Color</FormLabel>
                       <FormControl>
                         <div>
                           <ColorPicker
                             onChange={(color) => field.onChange(color)}
                           />
-                          <p className="mt-2 text-sm">Current: {field.value}</p>
+                          <p className="mt-2 text-sm">{field.value}</p>
                         </div>
                       </FormControl>
                       <FormMessage />
@@ -214,9 +221,9 @@ const BookForm = ({
                   name="userId"
                   render={({ field }) => (
                     <FormItem className="w-full">
-                      <FormLabel>User ID</FormLabel>
+                      {/* <FormLabel>User ID</FormLabel> */}
                       <FormControl>
-                        <Input {...field} readOnly />
+                        <Input type="hidden" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -230,7 +237,7 @@ const BookForm = ({
                 type="submit"
                 size="lg"
                 disabled={form.formState.isSubmitting}
-                className="button col-span-2 w-full"
+                className="button col-span-2 w-full border-orange-200 dark:border-gray-800 bg-orange-400 dark:bg-gray-700 text-white dark:text-gray-300"
               >
                 {form.formState.isSubmitting ? 'Submitting...' : `${type} Book`}
               </Button>

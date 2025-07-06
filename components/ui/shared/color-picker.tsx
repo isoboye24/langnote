@@ -18,7 +18,9 @@ export default function ColorPicker({
   return (
     <div>
       <HexColorPicker color={color} onChange={handleChange} />
-      <p>Selected Color: {color}</p>
+      <p className="text-gray-800 dark:text-gray-400 text-sm">
+        Selected Color: {color}
+      </p>
     </div>
   );
 }
