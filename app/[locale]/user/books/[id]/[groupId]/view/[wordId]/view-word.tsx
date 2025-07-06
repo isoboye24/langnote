@@ -4,16 +4,24 @@ import React, { useState } from 'react';
 import { Word } from '@prisma/client';
 
 const ViewCurrentWord = ({ word, group }: { word?: Word; group?: string }) => {
-  const [activeType, setActiveType] = useState('Meaning');
-  const tabs = ['Meaning', 'Synonyms', 'Antonyms'];
+  const availableTabs = [
+    word?.meaning && 'Meaning',
+    word?.synonym && 'Synonyms',
+    word?.antonym && 'Antonyms',
+  ].filter(Boolean) as string[];
+
+  const [activeType, setActiveType] = useState(availableTabs[0] || '');
 
   return (
     <div className="wrapper">
-      <div className="mb-5 font-bold text-teal-500">{word?.word}</div>
-      <div className="">
-        <div className="flex justify-center md:justify-start text-base md:text-lg xl:text-2xl gap-4 md:gap-8 mb-5 lg:mb-8">
-          {tabs &&
-            tabs.map((t) => (
+      <div className="mb-5 font-bold text-teal-500 text-md md:text-xl">
+        {word?.word}
+      </div>
+
+      {availableTabs.length > 0 && (
+        <div className="">
+          <div className="flex text-sm md:text-lg xl:text-2xl gap-4 md:gap-8 mb-5 lg:mb-8">
+            {availableTabs.map((t) => (
               <button
                 key={t}
                 onClick={() => setActiveType(t)}
@@ -26,17 +34,14 @@ const ViewCurrentWord = ({ word, group }: { word?: Word; group?: string }) => {
                 {t}
               </button>
             ))}
+          </div>
         </div>
-      </div>
+      )}
 
       <div className="border-orange-200 overflow-y-scroll bg-white h-40 border-2 p-3 mb-5 text-black">
-        {activeType == 'Meaning' ? (
-          <div className="">{word?.meaning}</div>
-        ) : activeType == 'Synonyms' ? (
-          <div className="">{word?.synonym}</div>
-        ) : (
-          <div className="">{word?.antonym}</div>
-        )}
+        {activeType === 'Meaning' && <div>{word?.meaning}</div>}
+        {activeType === 'Synonyms' && <div>{word?.synonym}</div>}
+        {activeType === 'Antonyms' && <div>{word?.antonym}</div>}
       </div>
 
       {word?.favorite && (
