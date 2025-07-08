@@ -42,29 +42,33 @@ const PopularLists = () => {
   }
 
   return (
-    <div className="bg-orange-50 dark:bg-gray-900 p-10 rounded-md">
-      <div className="text-center text-3xl mb-10 font-bold">Popular Lists</div>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {categories.map((category) => {
-          const totalWords = words.filter(
-            (word) => word.popularCategoryId === category.id
-          );
+    <div className="py-20">
+      <div className="bg-orange-50 dark:bg-gray-900 p-10 rounded-md">
+        <div className="text-center text-3xl mb-10 font-bold">
+          Popular Lists
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {categories.map((category) => {
+            const totalWords = words.filter(
+              (word) => word.popularCategoryId === category.id
+            );
 
-          return (
-            totalWords.length > 9 && (
-              <div key={category.id}>
-                <Link href={`/home/Popular-lists/${category.id}`}>
-                  <PopularList
-                    lightIcon={category.lightImageIcon}
-                    darkIcon={category.darkImageIcon}
-                    category={category.popularCategory}
-                    totalWords={totalWords.length}
-                  />
-                </Link>
-              </div>
-            )
-          );
-        })}
+            return (
+              totalWords.length > 9 && (
+                <div key={category.id}>
+                  <Link href={`/home/Popular-lists/${category.id}`}>
+                    <PopularList
+                      lightIcon={category.lightImageIcon}
+                      darkIcon={category.darkImageIcon}
+                      category={category.popularCategory}
+                      totalWords={totalWords.length}
+                    />
+                  </Link>
+                </div>
+              )
+            );
+          })}
+        </div>
       </div>
     </div>
   );
