@@ -22,7 +22,7 @@ const HomeWelcomeSection2 = () => {
         </div>
         <div className="">
           <Image
-            className="rounded-0 md:rounded-lg w-full lg:w-[700px] h-[220px] md:h-[500px] lg:h-[400px]"
+            className="rounded-sm md:rounded-lg w-full lg:w-[700px] h-[220px] md:h-[500px] lg:h-[400px]"
             src={Picture}
             alt="language image"
           />

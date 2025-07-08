@@ -8,15 +8,15 @@ import BookComputerSection from '@/components/ui/shared/book-computer-section';
 const LocalePage = () => {
   return (
     <div>
-      <main className="mb-20">
+      <main className="">
         <div className="bg-blue-950">
           <HomeWelcomeSection2 />
         </div>
-        <div className="bg-orange-50">
-          <BookComputerSection />
-        </div>
         <div className="wrapper">
           <PopularLists />
+        </div>
+        <div className="bg-orange-200">
+          <BookComputerSection />
         </div>
       </main>
     </div>
