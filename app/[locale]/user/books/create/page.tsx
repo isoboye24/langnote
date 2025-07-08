@@ -11,7 +11,7 @@ const CreateBook = async () => {
   await requireUserAndAdmin();
   return (
     <div className="">
-      <h2 className="h2-bold text-center">Create Book</h2>
+      <h2 className="h2-bold text-center">Create Your Book</h2>
       <div className="my-8 justify-items-center">
         <div className="w-full lg:w-[50vw]">
           <BookForm type="Create" />

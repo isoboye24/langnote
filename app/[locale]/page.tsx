@@ -2,16 +2,20 @@
 
 import React from 'react';
 import PopularLists from '@/app/[locale]/home/Popular-lists/page';
-import HomeWelcomeSection from '@/components/ui/shared/home-welcome-section';
+import HomeWelcomeSection2 from '@/components/ui/shared/home-welcome-section2';
+import BookComputerSection from '@/components/ui/shared/book-computer-section';
 
 const LocalePage = () => {
   return (
     <div>
-      <main className="">
-        <div className="">
-          <HomeWelcomeSection />
+      <main className="mb-20">
+        <div className="bg-blue-950">
+          <HomeWelcomeSection2 />
         </div>
-        <div className="wrapper mt-20">
+        <div className="bg-orange-50">
+          <BookComputerSection />
+        </div>
+        <div className="wrapper">
           <PopularLists />
         </div>
       </main>
