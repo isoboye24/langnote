@@ -8,7 +8,11 @@ import Pagination from '@/components/ui/shared/pagination';
 import { useSession } from 'next-auth/react';
 import { getTotalWordGroup } from '@/lib/actions/user/word-group.actions';
 import { getAllLanguagesToSelect } from '@/lib/actions/admin/language.actions';
+import { Button } from '@/components/ui/button';
+import { ArrowLeft } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 const BookList = () => {
+  const router = useRouter();
   const { data: session } = useSession();
   const [books, setBooks] = useState<Book[]>([]);
   const [languages, setLanguages] = useState<Language[]>([]);
@@ -54,7 +58,25 @@ const BookList = () => {
   }, [books]);
 
   return (
-    <div className="">
+    <div className="wrapper">
+      <div className="flex-between mb-10 md:mb-20">
+        <div className="">
+          <Button
+            onClick={() => router.back()}
+            className="bg-orange-800 hover:bg-orange-700 transition"
+          >
+            <ArrowLeft className="w-4 h-4" />
+            Back
+          </Button>
+        </div>
+        <div className="">
+          <a href={`/user/books/create`}>
+            <Button className="bg-orange-500 hover:bg-orange-700 transition">
+              Create Book
+            </Button>
+          </a>
+        </div>
+      </div>
       <div className="grid grid-cols-2 md:flex gap-4 md:flex-wrap justify-center items-center md:justify-start md:items-start mb-20">
         {books.map((book) => {
           const language = languages.find(

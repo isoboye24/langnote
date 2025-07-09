@@ -17,7 +17,8 @@ import UserWordListsItems from './user-word-list-item';
 import { Button } from '../button';
 import Link from 'next/link';
 import { SmallCirclesWithIcon } from './small-circle-with-icon-center';
-import { BookType, Calendar1, RotateCcw } from 'lucide-react';
+import { ArrowLeft, BookType, Calendar1, RotateCcw } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
 const ListOfWords = ({
   bookId,
@@ -26,6 +27,7 @@ const ListOfWords = ({
   bookId: string;
   groupId: string;
 }) => {
+  const router = useRouter();
   const [words, setWords] = useState<Word[]>([]);
   const [wordGroup, setWordGroup] = useState<WordGroup | null>(null);
   const [totalCount, setTotalCount] = useState(0);
@@ -147,6 +149,15 @@ const ListOfWords = ({
     <>
       <div className="wrapper">
         <div className="flex-between">
+          <div className="">
+            <Button
+              onClick={() => router.back()}
+              className="bg-orange-800 hover:bg-orange-700 transition"
+            >
+              <ArrowLeft className="w-4 h-4" />
+              Back
+            </Button>
+          </div>
           <div
             className="text-xl md:text-2xl text-center font-bold"
             translate="no"

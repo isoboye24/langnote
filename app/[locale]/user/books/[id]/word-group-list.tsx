@@ -6,6 +6,9 @@ import Pagination from '@/components/ui/shared/pagination';
 import { getAllWordGroups } from '@/lib/actions/user/word-group.actions';
 import SingleWordGroup from '@/components/ui/shared/single-word-group';
 import {} from '@/lib/actions/user/book.actions';
+import { useRouter } from 'next/navigation';
+import { ArrowLeft } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 const WordGroupList = ({ bookId }: { bookId: string }) => {
   const [groups, setGroups] = useState<WordGroup[]>([]);
@@ -13,6 +16,7 @@ const WordGroupList = ({ bookId }: { bookId: string }) => {
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const pageSize = 10;
+  const router = useRouter();
 
   useEffect(() => {
     const fetchCases = async () => {
@@ -28,7 +32,26 @@ const WordGroupList = ({ bookId }: { bookId: string }) => {
     fetchCases();
   }, [bookId, page]);
   return (
-    <div className="">
+    <div className="wrapper">
+      <div className="flex-between mb-10 md:mb-20">
+        <div className="">
+          <Button
+            onClick={() => router.back()}
+            className="bg-orange-800 hover:bg-orange-700 transition"
+          >
+            <ArrowLeft className="w-4 h-4" />
+            Back
+          </Button>
+        </div>
+        <div className="">
+          <a href={`/user/books/${bookId}/create-group`}>
+            <Button className="bg-orange-500 hover:bg-orange-700 transition">
+              Create Group
+            </Button>
+          </a>
+        </div>
+      </div>
+      {/* <div className="">Search for group...</div> */}
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3 md:gap-4 mb-30">
         {groups.map((group) => {
           return (
