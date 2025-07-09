@@ -22,7 +22,7 @@ export const SmallCirclesWithIcon = ({
         <TooltipTrigger asChild>
           <div
             className={cn(
-              'w-10 h-10 md:w-20 md:h-20 flex items-center justify-center rounded-full bg-orange-200 dark:bg-gray-700 hover:bg-orange-300 hover:dark:bg-gray-600 transition-colors cursor-pointer',
+              'w-10 h-10 md:w-15 md:h-15 flex items-center justify-center rounded-full bg-orange-200 dark:bg-gray-700 hover:bg-orange-300 hover:dark:bg-gray-600 transition-colors cursor-pointer',
               className
             )}
           >

@@ -1,13 +1,17 @@
 import { ReactNode } from 'react';
 
+interface AuthLayoutProps {
+  children: ReactNode;
+  params: {
+    locale: string;
+  };
+}
+
 export default async function AuthLayout({
   children,
   params,
-}: {
-  children: ReactNode;
-  params: { locale: string };
-}) {
-  const { locale } = await params;
+}: AuthLayoutProps) {
+  const { locale } = params;
 
   return (
     <div className="flex-center min-h-screen w-full">

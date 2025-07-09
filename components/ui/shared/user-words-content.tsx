@@ -17,7 +17,7 @@ import UserWordListsItems from './user-word-list-item';
 import { Button } from '../button';
 import Link from 'next/link';
 import { SmallCirclesWithIcon } from './small-circle-with-icon-center';
-import { ArrowLeft, BookType, Calendar1, RotateCcw } from 'lucide-react';
+import { ArrowLeft, BookType, Calendar1, RotateCcw, Star } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 
 const ListOfWords = ({
@@ -184,30 +184,65 @@ const ListOfWords = ({
 
         <div className="">
           <div className="mt-10 justify-items-center">
-            <div className="flex gap-5 md:gap-10 lg:gap-20">
-              <div onClick={() => setTimeFilter('LAST_WEEK')}>
-                <SmallCirclesWithIcon
-                  icon={RotateCcw}
-                  tooltipText="Last week"
-                />
+            <div className="grid grid-cols-1 gap-3 mb justify-items-center">
+              <div className="flex gap-5 md:gap-10 lg:gap-20 ">
+                <div onClick={() => setTimeFilter('LAST_WEEK')}>
+                  <SmallCirclesWithIcon
+                    icon={RotateCcw}
+                    tooltipText="Last week"
+                  />
+                </div>
+                <div onClick={() => setTimeFilter('TWO_WEEKS')}>
+                  <SmallCirclesWithIcon
+                    icon={BookType}
+                    tooltipText="Last 2 weeks"
+                  />
+                </div>
+                <div onClick={() => setTimeFilter('LAST_MONTH')}>
+                  <SmallCirclesWithIcon
+                    icon={Calendar1}
+                    tooltipText="Last Month"
+                  />
+                </div>
+                <div onClick={() => setTimeFilter('THREE_MONTHS')}>
+                  <SmallCirclesWithIcon
+                    icon={Calendar1}
+                    tooltipText="Last 3 Month"
+                  />
+                </div>
+
+                <div
+                  className="hidden md:block"
+                  onClick={() => setTimeFilter('THREE_MONTHS')}
+                >
+                  <SmallCirclesWithIcon
+                    icon={Star}
+                    tooltipText="Favorite Words"
+                  />
+                </div>
+                <div
+                  className="hidden md:block"
+                  onClick={() => setTimeFilter('THREE_MONTHS')}
+                >
+                  <SmallCirclesWithIcon icon={Star} tooltipText="Known Words" />
+                </div>
               </div>
-              <div onClick={() => setTimeFilter('TWO_WEEKS')}>
-                <SmallCirclesWithIcon
-                  icon={BookType}
-                  tooltipText="Last 2 weeks"
-                />
-              </div>
-              <div onClick={() => setTimeFilter('LAST_MONTH')}>
-                <SmallCirclesWithIcon
-                  icon={Calendar1}
-                  tooltipText="Last Month"
-                />
-              </div>
-              <div onClick={() => setTimeFilter('THREE_MONTHS')}>
-                <SmallCirclesWithIcon
-                  icon={Calendar1}
-                  tooltipText="Last 3 Month"
-                />
+              <div className="flex gap-5 md:gap-10 lg:gap-20">
+                <div
+                  className="block md:hidden"
+                  onClick={() => setTimeFilter('THREE_MONTHS')}
+                >
+                  <SmallCirclesWithIcon
+                    icon={Star}
+                    tooltipText="Favorite Words"
+                  />
+                </div>
+                <div
+                  className="block md:hidden"
+                  onClick={() => setTimeFilter('THREE_MONTHS')}
+                >
+                  <SmallCirclesWithIcon icon={Star} tooltipText="Known Words" />
+                </div>
               </div>
             </div>
           </div>
