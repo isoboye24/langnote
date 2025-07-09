@@ -159,13 +159,12 @@ const ListOfWords = ({
             </Button>
           </div>
           <div
-            className="text-xl md:text-2xl text-center font-bold"
+            className=" hidden md:block text-xl md:text-2xl text-center font-bold"
             translate="no"
           >
             {wordGroup?.groupName ?? ''}
           </div>
-
-          <div className="flex justify-end">
+          <div className="">
             <Button className="bg-orange-500 hover:bg-Orange-300 dark:bg-teal-700">
               <Link
                 href={`/user/books/${bookId}/${groupId}/create-word`}
@@ -175,6 +174,12 @@ const ListOfWords = ({
               </Link>
             </Button>
           </div>
+        </div>
+        <div
+          className="block md:hidden text-xl mt-5 md:text-2xl text-center font-bold"
+          translate="no"
+        >
+          {wordGroup?.groupName ?? ''}
         </div>
 
         <div className="">
