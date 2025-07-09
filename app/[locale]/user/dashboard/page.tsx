@@ -1,7 +1,6 @@
 import { requireUserAndAdmin } from '@/lib/auth.guard';
 import React from 'react';
 import Cards from './cards';
-import SmallCircles from './small-circles';
 import { getAllTotalUserWord } from '@/lib/actions/user/word.actions';
 import { getAllTotalWordGroup } from '@/lib/actions/user/word-group.actions';
 import { auth } from '@/auth';
@@ -42,9 +41,6 @@ const UserDashboard = async () => {
             bookTotal={totalBooks}
             groupTotal={totalUserGroup}
           />
-        </div>
-        <div className="mt-10 justify-items-center">
-          <SmallCircles />
         </div>
       </div>
     </div>

@@ -1,6 +1,7 @@
 'use client';
 
 import { PaginationProps } from '@/types';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 import React from 'react';
 
 export const Pagination: React.FC<PaginationProps> = ({
@@ -22,7 +23,7 @@ export const Pagination: React.FC<PaginationProps> = ({
       <button
         key={page}
         onClick={() => goToPage(page)}
-        className={`px-3 py-1 rounded-md border text-sm ${
+        className={`px-2 md:px-3 py-0.5 md:py-1 rounded-xs md:rounded-md border text-xs md:text-sm ${
           page === currentPage
             ? 'bg-teal-600 text-white font-semibold'
             : 'bg-white hover:bg-gray-100 text-gray-800'
@@ -33,7 +34,7 @@ export const Pagination: React.FC<PaginationProps> = ({
     );
 
     const addEllipsis = (key: string) => (
-      <span key={key} className="px-2 text-gray-500 text-sm">
+      <span key={key} className="hidden md:block px-2 text-gray-500 text-sm">
         ...
       </span>
     );
@@ -71,9 +72,12 @@ export const Pagination: React.FC<PaginationProps> = ({
       <button
         onClick={() => goToPage(currentPage - 1)}
         disabled={currentPage === 1}
-        className="px-3 py-1 rounded-md border text-sm bg-white hover:bg-gray-100 disabled:opacity-50 dark:text-gray-900"
+        className="px-1 md:px-3 py-0.5 md:py-1 rounded-sm md:rounded-md border text-xs md:text-sm bg-white hover:bg-gray-100 disabled:opacity-50 dark:text-gray-900"
       >
-        Previous
+        <div className="hidden md:block">Previous</div>
+        <div className="block md:hidden">
+          <ChevronLeft size={20} />
+        </div>
       </button>
 
       {renderPageNumbers()}
@@ -81,9 +85,12 @@ export const Pagination: React.FC<PaginationProps> = ({
       <button
         onClick={() => goToPage(currentPage + 1)}
         disabled={currentPage === totalPages}
-        className="px-3 py-1 rounded-md border text-sm bg-white hover:bg-gray-100 disabled:opacity-50 dark:text-gray-900"
+        className="px-1 md:px-3 py-0.5 md:py-1 rounded-sm md:rounded-md border text-xs md:text-sm bg-white hover:bg-gray-100 disabled:opacity-50 dark:text-gray-900"
       >
-        Next
+        <div className="hidden md:block">Next</div>
+        <div className="block md:hidden">
+          <ChevronRight size={20} />
+        </div>
       </button>
     </div>
   );

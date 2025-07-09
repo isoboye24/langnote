@@ -1,8 +1,6 @@
 import React from 'react';
 import { Metadata } from 'next';
 import UserWordsContent from '@/components/ui/shared/user-words-content';
-import { Button } from '@/components/ui/button';
-import Link from 'next/link';
 import { requireUserAndAdmin } from '@/lib/auth.guard';
 
 export const metadata: Metadata = {
@@ -19,17 +17,6 @@ const UserWords = async (props: {
   const { id, groupId } = await props.params;
   return (
     <>
-      <div className="flex mb-10 justify-end">
-        {/* <div className="">Search for word...</div> */}
-        <Button className="bg-orange-500 hover:bg-Orange-300 dark:bg-teal-700">
-          <Link
-            href={`/user/books/${id}/${groupId}/create-word`}
-            className="text-gray-100"
-          >
-            Create Word
-          </Link>
-        </Button>
-      </div>
       <UserWordsContent bookId={id} groupId={groupId} />
     </>
   );

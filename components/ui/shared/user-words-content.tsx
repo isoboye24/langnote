@@ -10,6 +10,9 @@ import {
   getAllPartOfSpeechNamesInGroup,
 } from '@/lib/actions/user/word.actions';
 import UserWordListsItems from './user-word-list-item';
+import { Button } from '../button';
+import Link from 'next/link';
+import SmallCircles from '@/app/[locale]/user/dashboard/small-circles';
 
 const ListOfWords = ({
   bookId,
@@ -78,9 +81,29 @@ const ListOfWords = ({
   return (
     <>
       <div className="wrapper">
-        <div className="shadow mb-10 bg-orange-200 dark:bg-teal-800 p-5 rounded-3xl">
-          <div className="text-2xl text-center font-bold" translate="no">
+        <div className="flex-between">
+          <div
+            className="text-xl md:text-2xl text-center font-bold"
+            translate="no"
+          >
             {wordGroup?.groupName ?? ''}
+          </div>
+
+          <div className="flex justify-end">
+            <Button className="bg-orange-500 hover:bg-Orange-300 dark:bg-teal-700">
+              <Link
+                href={`/user/books/${bookId}/${groupId}/create-word`}
+                className="text-gray-100"
+              >
+                Create Word
+              </Link>
+            </Button>
+          </div>
+        </div>
+
+        <div className="">
+          <div className="mt-10 justify-items-center">
+            <SmallCircles />
           </div>
         </div>
         <div className="shadow rounded-2xl bg-orange-50 dark:bg-gray-800 p-10 mt-10">
