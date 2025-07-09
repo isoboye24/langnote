@@ -74,8 +74,7 @@ export const Pagination: React.FC<PaginationProps> = ({
         disabled={currentPage === 1}
         className="px-1 md:px-3 py-0.5 md:py-1 rounded-sm md:rounded-md border text-xs md:text-sm bg-white hover:bg-gray-100 disabled:opacity-50 dark:text-gray-900"
       >
-        <div className="hidden md:block">Previous</div>
-        <div className="block md:hidden">
+        <div className="">
           <ChevronLeft size={20} />
         </div>
       </button>
@@ -87,8 +86,7 @@ export const Pagination: React.FC<PaginationProps> = ({
         disabled={currentPage === totalPages}
         className="px-1 md:px-3 py-0.5 md:py-1 rounded-sm md:rounded-md border text-xs md:text-sm bg-white hover:bg-gray-100 disabled:opacity-50 dark:text-gray-900"
       >
-        <div className="hidden md:block">Next</div>
-        <div className="block md:hidden">
+        <div className="">
           <ChevronRight size={20} />
         </div>
       </button>

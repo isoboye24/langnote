@@ -354,6 +354,44 @@ export const getAllTotalUserWord = async () => {
   }
 };
 
+export const getAllPartOfSpeechNamesInGroup = async ({
+  bookId,
+  groupId,
+}: {
+  bookId: string;
+  groupId: string;
+}) => {
+  const session = await auth();
+  const currentUserId = session?.user?.id;
+
+  if (!currentUserId) throw new Error('Unauthorized');
+
+  const words = await prisma.word.findMany({
+    where: {
+      bookId,
+      wordGroupId: groupId,
+      userId: currentUserId,
+      known: false,
+      favorite: false,
+    },
+    select: {
+      partOfSpeech: {
+        select: { name: true },
+      },
+    },
+  });
+
+  const uniqueNames = Array.from(
+    new Set(
+      words
+        .map((w) => w.partOfSpeech?.name)
+        .filter((n): n is string => Boolean(n))
+    )
+  );
+
+  return uniqueNames.map((name) => ({ name }));
+};
+
 export const getAllFilteredUserWords = async ({
   activeType,
   bookId,
@@ -430,19 +468,28 @@ export const getAllFilteredUserWords = async ({
   };
 };
 
-export const getAllPartOfSpeechNamesInGroup = async ({
+export const getAllFilteredUserLastWeeksWords = async ({
+  activeType,
   bookId,
   groupId,
+  page = 1,
+  pageSize = 10,
 }: {
+  activeType: string;
   bookId: string;
   groupId: string;
+  page: number;
+  pageSize: number;
 }) => {
   const session = await auth();
   const currentUserId = session?.user?.id;
 
-  if (!currentUserId) throw new Error('Unauthorized');
+  const currentBook = await prisma.book.findFirst({ where: { id: bookId } });
+  if (!currentBook) {
+    throw new Error('Book not found');
+  }
 
-  const words = await prisma.word.findMany({
+  const wordsWithPartOfSpeech = await prisma.word.findMany({
     where: {
       bookId,
       wordGroupId: groupId,
@@ -457,13 +504,290 @@ export const getAllPartOfSpeechNamesInGroup = async ({
     },
   });
 
-  const uniqueNames = Array.from(
+  const partOfSpeechNames = Array.from(
     new Set(
-      words
-        .map((w) => w.partOfSpeech?.name)
-        .filter((n): n is string => Boolean(n))
+      wordsWithPartOfSpeech
+        .map((entry) => entry.partOfSpeech?.name)
+        .filter(Boolean)
     )
   );
 
-  return uniqueNames.map((name) => ({ name }));
+  const twoWeeksAgo = new Date();
+  twoWeeksAgo.setDate(twoWeeksAgo.getDate() - 7);
+
+  const whereCondition = {
+    partOfSpeech: {
+      name:
+        activeType === 'All'
+          ? { in: partOfSpeechNames }
+          : { equals: activeType },
+    },
+    bookId,
+    wordGroupId: groupId,
+    userId: currentUserId,
+    known: false,
+    favorite: false,
+    createdAt: {
+      gte: twoWeeksAgo,
+    },
+  };
+
+  const allFilteredWords = await prisma.word.findMany({
+    where: whereCondition,
+    include: {
+      partOfSpeech: true,
+    },
+    orderBy: [{ word: 'asc' }],
+    skip: (page - 1) * pageSize,
+    take: pageSize,
+  });
+
+  return {
+    success: true,
+    data: allFilteredWords,
+    total: await prisma.word.count({ where: whereCondition }),
+  };
+};
+
+export const getAllFilteredUserLastTwoWeeksWords = async ({
+  activeType,
+  bookId,
+  groupId,
+  page = 1,
+  pageSize = 10,
+}: {
+  activeType: string;
+  bookId: string;
+  groupId: string;
+  page: number;
+  pageSize: number;
+}) => {
+  const session = await auth();
+  const currentUserId = session?.user?.id;
+
+  const currentBook = await prisma.book.findFirst({ where: { id: bookId } });
+  if (!currentBook) {
+    throw new Error('Book not found');
+  }
+
+  const wordsWithPartOfSpeech = await prisma.word.findMany({
+    where: {
+      bookId,
+      wordGroupId: groupId,
+      userId: currentUserId,
+      known: false,
+      favorite: false,
+    },
+    select: {
+      partOfSpeech: {
+        select: { name: true },
+      },
+    },
+  });
+
+  const partOfSpeechNames = Array.from(
+    new Set(
+      wordsWithPartOfSpeech
+        .map((entry) => entry.partOfSpeech?.name)
+        .filter(Boolean)
+    )
+  );
+
+  const twoWeeksAgo = new Date();
+  twoWeeksAgo.setDate(twoWeeksAgo.getDate() - 14);
+
+  const whereCondition = {
+    partOfSpeech: {
+      name:
+        activeType === 'All'
+          ? { in: partOfSpeechNames }
+          : { equals: activeType },
+    },
+    bookId,
+    wordGroupId: groupId,
+    userId: currentUserId,
+    known: false,
+    favorite: false,
+    createdAt: {
+      gte: twoWeeksAgo,
+    },
+  };
+
+  const allFilteredWords = await prisma.word.findMany({
+    where: whereCondition,
+    include: {
+      partOfSpeech: true,
+    },
+    orderBy: [{ word: 'asc' }],
+    skip: (page - 1) * pageSize,
+    take: pageSize,
+  });
+
+  return {
+    success: true,
+    data: allFilteredWords,
+    total: await prisma.word.count({ where: whereCondition }),
+  };
+};
+
+export const getAllFilteredUserLastMonthWords = async ({
+  activeType,
+  bookId,
+  groupId,
+  page = 1,
+  pageSize = 10,
+}: {
+  activeType: string;
+  bookId: string;
+  groupId: string;
+  page: number;
+  pageSize: number;
+}) => {
+  const session = await auth();
+  const currentUserId = session?.user?.id;
+
+  const currentBook = await prisma.book.findFirst({ where: { id: bookId } });
+  if (!currentBook) {
+    throw new Error('Book not found');
+  }
+
+  const wordsWithPartOfSpeech = await prisma.word.findMany({
+    where: {
+      bookId,
+      wordGroupId: groupId,
+      userId: currentUserId,
+      known: false,
+      favorite: false,
+    },
+    select: {
+      partOfSpeech: {
+        select: { name: true },
+      },
+    },
+  });
+
+  const partOfSpeechNames = Array.from(
+    new Set(
+      wordsWithPartOfSpeech
+        .map((entry) => entry.partOfSpeech?.name)
+        .filter(Boolean)
+    )
+  );
+
+  const lastMonth = new Date();
+  lastMonth.setMonth(lastMonth.getMonth() - 1);
+
+  const whereCondition = {
+    partOfSpeech: {
+      name:
+        activeType === 'All'
+          ? { in: partOfSpeechNames }
+          : { equals: activeType },
+    },
+    bookId,
+    wordGroupId: groupId,
+    userId: currentUserId,
+    known: false,
+    favorite: false,
+    createdAt: {
+      gte: lastMonth,
+    },
+  };
+
+  const allFilteredWords = await prisma.word.findMany({
+    where: whereCondition,
+    include: {
+      partOfSpeech: true,
+    },
+    orderBy: [{ word: 'asc' }],
+    skip: (page - 1) * pageSize,
+    take: pageSize,
+  });
+
+  return {
+    success: true,
+    data: allFilteredWords,
+    total: await prisma.word.count({ where: whereCondition }),
+  };
+};
+
+export const getAllFilteredUserLastThreeMonthsWords = async ({
+  activeType,
+  bookId,
+  groupId,
+  page = 1,
+  pageSize = 10,
+}: {
+  activeType: string;
+  bookId: string;
+  groupId: string;
+  page: number;
+  pageSize: number;
+}) => {
+  const session = await auth();
+  const currentUserId = session?.user?.id;
+
+  const currentBook = await prisma.book.findFirst({ where: { id: bookId } });
+  if (!currentBook) {
+    throw new Error('Book not found');
+  }
+
+  const wordsWithPartOfSpeech = await prisma.word.findMany({
+    where: {
+      bookId,
+      wordGroupId: groupId,
+      userId: currentUserId,
+      known: false,
+      favorite: false,
+    },
+    select: {
+      partOfSpeech: {
+        select: { name: true },
+      },
+    },
+  });
+
+  const partOfSpeechNames = Array.from(
+    new Set(
+      wordsWithPartOfSpeech
+        .map((entry) => entry.partOfSpeech?.name)
+        .filter(Boolean)
+    )
+  );
+
+  const last3Month = new Date();
+  last3Month.setMonth(last3Month.getMonth() - 3);
+
+  const whereCondition = {
+    partOfSpeech: {
+      name:
+        activeType === 'All'
+          ? { in: partOfSpeechNames }
+          : { equals: activeType },
+    },
+    bookId,
+    wordGroupId: groupId,
+    userId: currentUserId,
+    known: false,
+    favorite: false,
+    createdAt: {
+      gte: last3Month,
+    },
+  };
+
+  const allFilteredWords = await prisma.word.findMany({
+    where: whereCondition,
+    include: {
+      partOfSpeech: true,
+    },
+    orderBy: [{ word: 'asc' }],
+    skip: (page - 1) * pageSize,
+    take: pageSize,
+  });
+
+  return {
+    success: true,
+    data: allFilteredWords,
+    total: await prisma.word.count({ where: whereCondition }),
+  };
 };

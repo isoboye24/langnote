@@ -6,13 +6,18 @@ import Pagination from '@/components/ui/shared/pagination';
 import SearchInput from '@/components/ui/search-input';
 import { getWordGroupById } from '@/lib/actions/user/word-group.actions';
 import {
+  getAllFilteredUserLastMonthWords,
+  getAllFilteredUserLastThreeMonthsWords,
+  getAllFilteredUserLastTwoWeeksWords,
+  getAllFilteredUserLastWeeksWords,
   getAllFilteredUserWords,
   getAllPartOfSpeechNamesInGroup,
 } from '@/lib/actions/user/word.actions';
 import UserWordListsItems from './user-word-list-item';
 import { Button } from '../button';
 import Link from 'next/link';
-import SmallCircles from '@/app/[locale]/user/dashboard/small-circles';
+import { SmallCirclesWithIcon } from './small-circle-with-icon-center';
+import { BookType, Calendar1, RotateCcw } from 'lucide-react';
 
 const ListOfWords = ({
   bookId,
@@ -28,6 +33,13 @@ const ListOfWords = ({
   const [totalPages, setTotalPages] = useState(1);
   const [filterType, setFilterTypes] = useState<string[]>(['All']);
   const [activeType, setActiveType] = useState('All');
+  type TimeFilter =
+    | 'ALL'
+    | 'LAST_WEEK'
+    | 'TWO_WEEKS'
+    | 'LAST_MONTH'
+    | 'THREE_MONTHS';
+  const [timeFilter, setTimeFilter] = useState<TimeFilter>('ALL');
 
   const pageSize = 10;
 
@@ -50,23 +62,76 @@ const ListOfWords = ({
 
   useEffect(() => {
     const fetchUserWord = async () => {
-      const wordGroupWithIdRes = await getWordGroupById(groupId);
-      const wordsRes = await getAllFilteredUserWords({
-        activeType,
-        bookId,
-        groupId,
-        page,
-        pageSize,
-      });
-
       try {
-        if (wordsRes.success && wordGroupWithIdRes.success) {
-          setWords(wordsRes.data as Word[]);
-          setWordGroup(wordGroupWithIdRes.data as WordGroup);
+        const wordGroupWithIdRes = await getWordGroupById(groupId);
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const getWords = (wordsRes: any) => {
+          if (wordsRes.success && wordGroupWithIdRes.success) {
+            setWords(wordsRes.data as Word[]);
+            setWordGroup(wordGroupWithIdRes.data as WordGroup);
 
-          const count = wordsRes.total ?? 0;
-          setTotalCount(count);
-          setTotalPages(Math.ceil(count / pageSize));
+            const count = wordsRes.total ?? 0;
+            setTotalCount(count);
+            setTotalPages(Math.ceil(count / pageSize));
+          }
+        };
+
+        switch (timeFilter) {
+          case 'ALL':
+            getWords(
+              await getAllFilteredUserWords({
+                activeType,
+                bookId,
+                groupId,
+                page,
+                pageSize,
+              })
+            );
+            break;
+          case 'LAST_WEEK':
+            getWords(
+              await getAllFilteredUserLastWeeksWords({
+                activeType,
+                bookId,
+                groupId,
+                page,
+                pageSize,
+              })
+            );
+            break;
+          case 'TWO_WEEKS':
+            getWords(
+              await getAllFilteredUserLastTwoWeeksWords({
+                activeType,
+                bookId,
+                groupId,
+                page,
+                pageSize,
+              })
+            );
+            break;
+          case 'LAST_MONTH':
+            getWords(
+              await getAllFilteredUserLastMonthWords({
+                activeType,
+                bookId,
+                groupId,
+                page,
+                pageSize,
+              })
+            );
+            break;
+          case 'THREE_MONTHS':
+            getWords(
+              await getAllFilteredUserLastThreeMonthsWords({
+                activeType,
+                bookId,
+                groupId,
+                page,
+                pageSize,
+              })
+            );
+            break;
         }
       } catch (error) {
         console.error('Failed to fetch words or word group:', error);
@@ -74,7 +139,7 @@ const ListOfWords = ({
     };
 
     fetchUserWord();
-  }, [activeType, bookId, groupId, page]);
+  }, [timeFilter, activeType, bookId, groupId, page]);
 
   const onSearch = () => {};
 
@@ -103,7 +168,32 @@ const ListOfWords = ({
 
         <div className="">
           <div className="mt-10 justify-items-center">
-            <SmallCircles />
+            <div className="flex gap-5 md:gap-10 lg:gap-20">
+              <div onClick={() => setTimeFilter('LAST_WEEK')}>
+                <SmallCirclesWithIcon
+                  icon={RotateCcw}
+                  tooltipText="Last week"
+                />
+              </div>
+              <div onClick={() => setTimeFilter('TWO_WEEKS')}>
+                <SmallCirclesWithIcon
+                  icon={BookType}
+                  tooltipText="Last 2 weeks"
+                />
+              </div>
+              <div onClick={() => setTimeFilter('LAST_MONTH')}>
+                <SmallCirclesWithIcon
+                  icon={Calendar1}
+                  tooltipText="Last Month"
+                />
+              </div>
+              <div onClick={() => setTimeFilter('THREE_MONTHS')}>
+                <SmallCirclesWithIcon
+                  icon={Calendar1}
+                  tooltipText="Last 3 Month"
+                />
+              </div>
+            </div>
           </div>
         </div>
         <div className="shadow rounded-2xl bg-orange-50 dark:bg-gray-800 p-10 mt-10">
