@@ -1,8 +1,15 @@
 import React from 'react';
 import Picture from '@/public/images/booksAndComputer.jpg';
 import Image from 'next/image';
+import { Brain, LaptopMinimalCheck, Search, Smartphone } from 'lucide-react';
 
 const BookComputerSection = () => {
+  const easyToIcons = [
+    { id: 1, icon: <Search />, title: 'Search' },
+    { id: 2, icon: <Brain />, title: 'Memorize' },
+    { id: 3, icon: <LaptopMinimalCheck />, title: 'Save' },
+    { id: 4, icon: <Smartphone />, title: 'Carry along' },
+  ];
   return (
     <div className="px-0 md:px-20 py-0 md:py-20">
       <div className="px-0 py-0 xl:px-20 xl:py-20 flex flex-col-reverse md:grid grid-cols-2 text-white gap-5">
@@ -19,12 +26,19 @@ const BookComputerSection = () => {
           </h1>
 
           {/* make each of them with an icon */}
-          <ul className="text-lg text-center text-black px-10 md:px-0">
-            <li>Easy to search</li>
-            <li>Easy to memorize</li>
-            <li>Easy to write down</li>
-            <li>Easy to carry along</li>
-          </ul>
+          <div className="text-lg text-center text-black px-10 md:px-0">
+            <div className="">Easy to </div>
+            <div className="grid grid-cols-2 gap-3">
+              {easyToIcons.map((easy) => {
+                return (
+                  <div key={easy.id}>
+                    <div className="">{easy.icon}</div>
+                    <div className="">{easy.title}</div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
         </div>
       </div>
     </div>
