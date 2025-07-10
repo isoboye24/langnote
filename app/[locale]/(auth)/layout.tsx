@@ -1,16 +1,14 @@
 import { ReactNode } from 'react';
 
-interface AuthLayoutProps {
+type AuthLayoutProps = {
   children: ReactNode;
   params: {
     locale: string;
+    [key: string]: string | string[] | undefined; // allow for more params if needed
   };
-}
+};
 
-export default async function AuthLayout({
-  children,
-  params,
-}: AuthLayoutProps) {
+export default function AuthLayout({ children, params }: AuthLayoutProps) {
   const { locale } = params;
 
   return (
