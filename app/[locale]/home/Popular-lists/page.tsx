@@ -47,7 +47,7 @@ const PopularLists = () => {
         <div className="text-center text-3xl mb-10 font-bold">
           Popular Lists
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xxl:grid-cols-5 gap-4 xxl:gap-6">
           {categories.map((category) => {
             const totalWords = words.filter(
               (word) => word.popularCategoryId === category.id

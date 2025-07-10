@@ -100,17 +100,25 @@ export const checkIfWordGroupExists = async (
     return false;
   }
 };
-
 export const getAllWordGroups = async (
   page: number = 1,
   pageSize: number = 10,
   bookId: string
 ) => {
   try {
-    const [groups, total] = await Promise.all([
+    const [groupsWithCount, total] = await Promise.all([
       prisma.wordGroup.findMany({
         where: { bookId },
-        orderBy: { createdAt: 'desc' },
+        orderBy: {
+          Word: {
+            _count: 'desc',
+          },
+        },
+        include: {
+          _count: {
+            select: { Word: true },
+          },
+        },
         skip: (page - 1) * pageSize,
         take: pageSize,
       }),
@@ -119,11 +127,14 @@ export const getAllWordGroups = async (
 
     return {
       success: true,
-      data: groups,
+      data: groupsWithCount.map((group) => ({
+        ...group,
+        wordCount: group._count.Word,
+      })),
       total,
     };
   } catch (error) {
-    console.error('Error fetching groups:', error);
+    console.error('Error fetching groups with count:', error);
     return {
       success: false,
       message: 'Failed to fetch groups',
@@ -154,6 +165,23 @@ export const getWordGroupById = async (id: string) => {
       success: false,
       message: 'Failed to fetch group',
     };
+  }
+};
+
+export const getWordGroupCountById = async (id: string) => {
+  try {
+    const groupCount = await prisma.word.count({
+      where: { wordGroupId: id },
+    });
+
+    if (groupCount > 0) {
+      return groupCount;
+    } else {
+      return 0;
+    }
+  } catch (error) {
+    console.error('Error fetching group:', error);
+    return;
   }
 };
 
