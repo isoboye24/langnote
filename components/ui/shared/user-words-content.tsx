@@ -6,6 +6,8 @@ import Pagination from '@/components/ui/shared/pagination';
 import SearchInput from '@/components/ui/search-input';
 import { getWordGroupById } from '@/lib/actions/user/word-group.actions';
 import {
+  getAllFilteredUserFavoriteWords,
+  getAllFilteredUserKnownWords,
   getAllFilteredUserLastMonthWords,
   getAllFilteredUserLastThreeMonthsWords,
   getAllFilteredUserLastTwoWeeksWords,
@@ -40,7 +42,9 @@ const ListOfWords = ({
     | 'LAST_WEEK'
     | 'TWO_WEEKS'
     | 'LAST_MONTH'
-    | 'THREE_MONTHS';
+    | 'THREE_MONTHS'
+    | 'FAVORITE'
+    | 'KNOWN';
   const [timeFilter, setTimeFilter] = useState<TimeFilter>('ALL');
 
   const pageSize = 10;
@@ -134,6 +138,28 @@ const ListOfWords = ({
               })
             );
             break;
+          case 'FAVORITE':
+            getWords(
+              await getAllFilteredUserFavoriteWords({
+                activeType,
+                bookId,
+                groupId,
+                page,
+                pageSize,
+              })
+            );
+            break;
+          case 'KNOWN':
+            getWords(
+              await getAllFilteredUserKnownWords({
+                activeType,
+                bookId,
+                groupId,
+                page,
+                pageSize,
+              })
+            );
+            break;
         }
       } catch (error) {
         console.error('Failed to fetch words or word group:', error);
@@ -213,7 +239,7 @@ const ListOfWords = ({
 
                 <div
                   className="hidden lg:block"
-                  onClick={() => setTimeFilter('THREE_MONTHS')}
+                  onClick={() => setTimeFilter('FAVORITE')}
                 >
                   <SmallCirclesWithIcon
                     icon={Star}
@@ -222,19 +248,19 @@ const ListOfWords = ({
                 </div>
                 <div
                   className="hidden lg:block"
-                  onClick={() => setTimeFilter('THREE_MONTHS')}
+                  onClick={() => setTimeFilter('KNOWN')}
                 >
                   <SmallCirclesWithIcon icon={Star} tooltipText="Known Words" />
                 </div>
               </div>
               <div className="flex lg:hidden gap-5 md:gap-10 lg:gap-20">
-                <div className="" onClick={() => setTimeFilter('THREE_MONTHS')}>
+                <div className="" onClick={() => setTimeFilter('FAVORITE')}>
                   <SmallCirclesWithIcon
                     icon={Star}
                     tooltipText="Favorite Words"
                   />
                 </div>
-                <div className="" onClick={() => setTimeFilter('THREE_MONTHS')}>
+                <div className="" onClick={() => setTimeFilter('KNOWN')}>
                   <SmallCirclesWithIcon icon={Star} tooltipText="Known Words" />
                 </div>
               </div>
