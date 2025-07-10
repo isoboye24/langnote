@@ -22,13 +22,13 @@ const BookComputerSection = () => {
         </div>
         <div className="mt-10 md:mt-0 flex flex-col gap-5 ">
           <h1 className="text-2xl md:text-4xl text-black dark:text-gray-300 text-center font-bold mb-5 ">
-            4 E comparison
+            4 S Comparison
           </h1>
 
           {/* make each of them with an icon */}
           <div className="text-xl text-start text-black dark:text-gray-300 px-10 md:px-0">
-            <div className="mb-10 text-center">
-              It&apos;s <strong>E</strong>asy to:
+            <div className="mb-10 text-center lg:text-start text-lg xl:text-xl">
+              It&apos;s <strong>S</strong>imple to:
             </div>
             <div className="flex flex-wrap w-full gap-5 items-center justify-center md:justify-start">
               {easyToIcons.map((easy) => (
@@ -39,7 +39,7 @@ const BookComputerSection = () => {
                   <div className="bg-amber-700 h-15 w-15 lg:w-20 lg:h-20 rounded-full flex items-center justify-center">
                     <div className="text-orange-100 mt-2">{easy.icon}</div>
                   </div>
-                  <div className="text-sm mt-1.5 text-center font-semibold">
+                  <div className="text-sm xl:text-lg mt-1.5 text-center font-semibold text-orange-800 dark:text-gray-300">
                     {easy.title}
                   </div>
                 </div>
