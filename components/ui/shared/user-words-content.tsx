@@ -19,7 +19,15 @@ import UserWordListsItems from './user-word-list-item';
 import { Button } from '../button';
 import Link from 'next/link';
 import { SmallCirclesWithIcon } from './small-circle-with-icon-center';
-import { ArrowLeft, BookType, Calendar1, RotateCcw, Star } from 'lucide-react';
+import {
+  ArrowLeft,
+  BookType,
+  Brain,
+  Calendar1,
+  CalendarSearch,
+  RotateCcw,
+  Star,
+} from 'lucide-react';
 import { useRouter } from 'next/navigation';
 
 const ListOfWords = ({
@@ -232,7 +240,7 @@ const ListOfWords = ({
                 </div>
                 <div onClick={() => setTimeFilter('THREE_MONTHS')}>
                   <SmallCirclesWithIcon
-                    icon={Calendar1}
+                    icon={CalendarSearch}
                     tooltipText="Last 3 Month"
                   />
                 </div>
@@ -250,7 +258,10 @@ const ListOfWords = ({
                   className="hidden lg:block"
                   onClick={() => setTimeFilter('KNOWN')}
                 >
-                  <SmallCirclesWithIcon icon={Star} tooltipText="Known Words" />
+                  <SmallCirclesWithIcon
+                    icon={Brain}
+                    tooltipText="Known Words"
+                  />
                 </div>
               </div>
               <div className="flex lg:hidden gap-5 md:gap-10 lg:gap-20">
@@ -261,7 +272,10 @@ const ListOfWords = ({
                   />
                 </div>
                 <div className="" onClick={() => setTimeFilter('KNOWN')}>
-                  <SmallCirclesWithIcon icon={Star} tooltipText="Known Words" />
+                  <SmallCirclesWithIcon
+                    icon={Brain}
+                    tooltipText="Known Words"
+                  />
                 </div>
               </div>
             </div>
