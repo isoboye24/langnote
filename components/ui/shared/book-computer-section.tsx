@@ -5,10 +5,10 @@ import { Brain, LaptopMinimalCheck, Search, Smartphone } from 'lucide-react';
 
 const BookComputerSection = () => {
   const easyToIcons = [
-    { id: 1, icon: <Search />, title: 'Search' },
-    { id: 2, icon: <Brain />, title: 'Memorize' },
-    { id: 3, icon: <LaptopMinimalCheck />, title: 'Save' },
-    { id: 4, icon: <Smartphone />, title: 'Carry along' },
+    { id: 1, icon: <Search size={30} />, title: 'Search' },
+    { id: 2, icon: <Brain size={30} />, title: 'Memorize' },
+    { id: 3, icon: <LaptopMinimalCheck size={30} />, title: 'Save' },
+    { id: 4, icon: <Smartphone size={30} />, title: 'Carry along' },
   ];
   return (
     <div className="px-0 md:px-20 py-0 md:py-20">
@@ -20,23 +20,26 @@ const BookComputerSection = () => {
             alt="book and computer image"
           />
         </div>
-        <div className="mt-10 md:mt-0 flex flex-col gap-5 justify-center items-center">
-          <h1 className="text-2xl md:text-4xl text-black text-center font-bold mb-5">
+        <div className="mt-10 md:mt-0 flex flex-col gap-5 ">
+          <h1 className="text-2xl md:text-4xl text-black text-center font-bold mb-5 ">
             4 E comparison
           </h1>
 
           {/* make each of them with an icon */}
-          <div className="text-lg text-center text-black px-10 md:px-0">
-            <div className="">Easy to </div>
-            <div className="grid grid-cols-2 gap-3">
-              {easyToIcons.map((easy) => {
-                return (
-                  <div key={easy.id}>
-                    <div className="">{easy.icon}</div>
-                    <div className="">{easy.title}</div>
-                  </div>
-                );
-              })}
+          <div className="text-xl text-start text-black px-10 md:px-0">
+            <div className="mb-10 text-center">
+              It&apos;s <strong>E</strong>asy to:
+            </div>
+            <div className="flex flex-wrap w-full">
+              {easyToIcons.map((easy) => (
+                <div
+                  key={easy.id}
+                  className="w-1/3 flex flex-col items-center justify-center mb-5 lg:mb-15"
+                >
+                  <div className="text-orange-700 mt-2">{easy.icon}</div>
+                  <div className="text-sm mt-1">{easy.title}</div>
+                </div>
+              ))}
             </div>
           </div>
         </div>
