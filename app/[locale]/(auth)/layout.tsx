@@ -1,15 +1,12 @@
 import { ReactNode } from 'react';
 
-type AuthLayoutProps = {
+type LayoutProps = {
   children: ReactNode;
-  params: {
-    locale: string;
-    [key: string]: string | string[] | undefined; // allow for more params if needed
-  };
+  params: Promise<{ locale: string }>;
 };
 
-export default function AuthLayout({ children, params }: AuthLayoutProps) {
-  const { locale } = params;
+export default async function AuthLayout({ children, params }: LayoutProps) {
+  const { locale } = await params;
 
   return (
     <div className="flex-center min-h-screen w-full">
