@@ -791,3 +791,235 @@ export const getAllFilteredUserLastThreeMonthsWords = async ({
     total: await prisma.word.count({ where: whereCondition }),
   };
 };
+
+export const getAllFilteredUserFavoriteWords = async ({
+  activeType,
+  bookId,
+  groupId,
+  page = 1,
+  pageSize = 10,
+}: {
+  activeType: string;
+  bookId: string;
+  groupId: string;
+  page: number;
+  pageSize: number;
+}) => {
+  const session = await auth();
+  const currentUserId = session?.user?.id;
+
+  const currentBook = await prisma.book.findFirst({ where: { id: bookId } });
+  if (!currentBook) {
+    throw new Error('Book not found');
+  }
+
+  const wordsWithPartOfSpeech = await prisma.word.findMany({
+    where: {
+      bookId,
+      wordGroupId: groupId,
+      userId: currentUserId,
+      known: false,
+      favorite: false,
+    },
+    select: {
+      partOfSpeech: {
+        select: { name: true },
+      },
+    },
+  });
+
+  const partOfSpeechNames = Array.from(
+    new Set(
+      wordsWithPartOfSpeech
+        .map((entry) => entry.partOfSpeech?.name)
+        .filter(Boolean)
+    )
+  );
+
+  const whereCondition = {
+    partOfSpeech: {
+      name:
+        activeType === 'All'
+          ? { in: partOfSpeechNames }
+          : { equals: activeType },
+    },
+    bookId,
+    wordGroupId: groupId,
+    userId: currentUserId,
+    favorite: true,
+  };
+
+  const allFilteredWords = await prisma.word.findMany({
+    where: whereCondition,
+    include: {
+      partOfSpeech: true,
+    },
+    orderBy: [{ word: 'asc' }],
+    skip: (page - 1) * pageSize,
+    take: pageSize,
+  });
+
+  return {
+    success: true,
+    data: allFilteredWords,
+    total: await prisma.word.count({ where: whereCondition }),
+  };
+};
+
+export const getAllFilteredUserKnownWords = async ({
+  activeType,
+  bookId,
+  groupId,
+  page = 1,
+  pageSize = 10,
+}: {
+  activeType: string;
+  bookId: string;
+  groupId: string;
+  page: number;
+  pageSize: number;
+}) => {
+  const session = await auth();
+  const currentUserId = session?.user?.id;
+
+  const currentBook = await prisma.book.findFirst({ where: { id: bookId } });
+  if (!currentBook) {
+    throw new Error('Book not found');
+  }
+
+  const wordsWithPartOfSpeech = await prisma.word.findMany({
+    where: {
+      bookId,
+      wordGroupId: groupId,
+      userId: currentUserId,
+      known: false,
+      favorite: false,
+    },
+    select: {
+      partOfSpeech: {
+        select: { name: true },
+      },
+    },
+  });
+
+  const partOfSpeechNames = Array.from(
+    new Set(
+      wordsWithPartOfSpeech
+        .map((entry) => entry.partOfSpeech?.name)
+        .filter(Boolean)
+    )
+  );
+
+  const whereCondition = {
+    partOfSpeech: {
+      name:
+        activeType === 'All'
+          ? { in: partOfSpeechNames }
+          : { equals: activeType },
+    },
+    bookId,
+    wordGroupId: groupId,
+    userId: currentUserId,
+    known: true,
+  };
+
+  const allFilteredWords = await prisma.word.findMany({
+    where: whereCondition,
+    include: {
+      partOfSpeech: true,
+    },
+    orderBy: [{ word: 'asc' }],
+    skip: (page - 1) * pageSize,
+    take: pageSize,
+  });
+
+  return {
+    success: true,
+    data: allFilteredWords,
+    total: await prisma.word.count({ where: whereCondition }),
+  };
+};
+
+export const getAllFilteredUserByMonthsAndYearWords = async ({
+  activeType,
+  bookId,
+  groupId,
+  page = 1,
+  pageSize = 10,
+  month,
+  year,
+}: {
+  activeType: string;
+  bookId: string;
+  groupId: string;
+  page: number;
+  pageSize: number;
+  month: number;
+  year: number;
+}) => {
+  const session = await auth();
+  const currentUserId = session?.user?.id;
+
+  const currentBook = await prisma.book.findFirst({ where: { id: bookId } });
+  if (!currentBook) {
+    throw new Error('Book not found');
+  }
+
+  const wordsWithPartOfSpeech = await prisma.word.findMany({
+    where: {
+      bookId,
+      wordGroupId: groupId,
+      userId: currentUserId,
+      known: false,
+      favorite: false,
+    },
+    select: {
+      partOfSpeech: {
+        select: { name: true },
+      },
+    },
+  });
+
+  const partOfSpeechNames = Array.from(
+    new Set(
+      wordsWithPartOfSpeech
+        .map((entry) => entry.partOfSpeech?.name)
+        .filter(Boolean)
+    )
+  );
+
+  const chosenDate = new Date();
+  chosenDate.setMonth(month - 1);
+  chosenDate.setFullYear(year);
+
+  const whereCondition = {
+    partOfSpeech: {
+      name:
+        activeType === 'All'
+          ? { in: partOfSpeechNames }
+          : { equals: activeType },
+    },
+    bookId,
+    wordGroupId: groupId,
+    userId: currentUserId,
+    known: false,
+    favorite: false,
+    createdAt: chosenDate,
+  };
+
+  const allFilteredWords = await prisma.word.findMany({
+    where: whereCondition,
+    include: {
+      partOfSpeech: true,
+    },
+    orderBy: [{ word: 'asc' }],
+    skip: (page - 1) * pageSize,
+    take: pageSize,
+  });
+
+  return {
+    success: true,
+    data: allFilteredWords,
+    total: await prisma.word.count({ where: whereCondition }),
+  };
+};

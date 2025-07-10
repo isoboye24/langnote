@@ -212,7 +212,7 @@ const ListOfWords = ({
                 </div>
 
                 <div
-                  className="hidden md:block"
+                  className="hidden lg:block"
                   onClick={() => setTimeFilter('THREE_MONTHS')}
                 >
                   <SmallCirclesWithIcon
@@ -221,26 +221,20 @@ const ListOfWords = ({
                   />
                 </div>
                 <div
-                  className="hidden md:block"
+                  className="hidden lg:block"
                   onClick={() => setTimeFilter('THREE_MONTHS')}
                 >
                   <SmallCirclesWithIcon icon={Star} tooltipText="Known Words" />
                 </div>
               </div>
-              <div className="flex gap-5 md:gap-10 lg:gap-20">
-                <div
-                  className="block md:hidden"
-                  onClick={() => setTimeFilter('THREE_MONTHS')}
-                >
+              <div className="flex lg:hidden gap-5 md:gap-10 lg:gap-20">
+                <div className="" onClick={() => setTimeFilter('THREE_MONTHS')}>
                   <SmallCirclesWithIcon
                     icon={Star}
                     tooltipText="Favorite Words"
                   />
                 </div>
-                <div
-                  className="block md:hidden"
-                  onClick={() => setTimeFilter('THREE_MONTHS')}
-                >
+                <div className="" onClick={() => setTimeFilter('THREE_MONTHS')}>
                   <SmallCirclesWithIcon icon={Star} tooltipText="Known Words" />
                 </div>
               </div>
