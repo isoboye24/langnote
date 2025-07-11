@@ -14,6 +14,7 @@ import {
   getAllFilteredUserLastWeeksWords,
   getAllFilteredUserWords,
   getAllPartOfSpeechNamesInGroup,
+  toggleFavoriteWord,
 } from '@/lib/actions/user/word.actions';
 import UserWordListsItems from './user-word-list-item';
 import { Button } from '../button';
@@ -333,6 +334,21 @@ const ListOfWords = ({
                     id={word.id}
                     bookId={word.bookId}
                     groupId={word.wordGroupId}
+                    onToggleStar={async () => {
+                      const res = await toggleFavoriteWord(word.id);
+                      if (res.success) {
+                        // Optimistically update UI without refetching all
+                        setWords((prev) =>
+                          prev.map((w) =>
+                            w.id === word.id
+                              ? { ...w, favorite: !w.favorite }
+                              : w
+                          )
+                        );
+                      } else {
+                        alert('Failed to toggle star.');
+                      }
+                    }}
                   />
                 </div>
               );

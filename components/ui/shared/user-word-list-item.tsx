@@ -13,6 +13,7 @@ const UserWordListsItems = ({
   id,
   bookId,
   groupId,
+  onToggleStar,
 }: {
   word: string;
   meaning: string;
@@ -21,6 +22,7 @@ const UserWordListsItems = ({
   id: string;
   bookId: string;
   groupId: string;
+  onToggleStar?: () => void;
 }) => {
   const [show, setShow] = useState(false);
   return (
@@ -41,13 +43,16 @@ const UserWordListsItems = ({
         <div className="block md:hidden">
           {show && (
             <div className="flex gap-0.5">
-              <Star
-                className={`w-4 h-4 md:w-6 md:h-6 mr-2  transition-colors ${
-                  star === true
-                    ? 'text-yellow-400 fill-yellow-400'
-                    : 'text-teal-400'
-                }`}
-              />
+              <button
+                onClick={onToggleStar}
+                className="text-orange-400 hover:text-orange-500 transition w-4 h-4 md:w-6 md:h-6 mr-2"
+              >
+                {star ? (
+                  <Star size={20} fill="currentColor" />
+                ) : (
+                  <Star size={20} />
+                )}
+              </button>
               <Link href={`/user/books/${bookId}/${groupId}/view/${id}`}>
                 <Button className="w-3 h-3 md:w-6 md:h-6 bg-transparent text-teal-500">
                   <Eye />
@@ -68,13 +73,12 @@ const UserWordListsItems = ({
         </div>
         <div className="hidden md:block">
           <div className="flex gap-0.5">
-            <Star
-              className={`w-4 h-4 md:w-6 md:h-6 mr-2  transition-colors ${
-                star === true
-                  ? 'text-yellow-400 fill-yellow-400'
-                  : 'text-teal-400'
-              }`}
-            />
+            <button
+              onClick={onToggleStar}
+              className="text-orange-400 hover:text-orange-500 transition w-4 h-4 md:w-6 md:h-6 mr-2"
+            >
+              {star ? <Star fill="currentColor" /> : <Star />}
+            </button>
             <Link href={`/user/books/${bookId}/${groupId}/view/${id}`}>
               <Button className="w-3 h-3 md:w-6 md:h-6 bg-transparent text-teal-500">
                 <Eye />

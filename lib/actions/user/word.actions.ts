@@ -1023,3 +1023,26 @@ export const getAllFilteredUserByMonthsAndYearWords = async ({
     total: await prisma.word.count({ where: whereCondition }),
   };
 };
+
+export const toggleFavoriteWord = async (wordId: string) => {
+  try {
+    const existing = await prisma.word.findUnique({
+      where: { id: wordId },
+      select: { favorite: true },
+    });
+
+    if (!existing) throw new Error('Word not found');
+
+    const updated = await prisma.word.update({
+      where: { id: wordId },
+      data: {
+        favorite: !existing.favorite,
+      },
+    });
+
+    return { success: true, data: updated };
+  } catch (error) {
+    console.error('Error toggling favorite word:', error);
+    return { success: false, error: 'Failed to toggle favorite' };
+  }
+};
