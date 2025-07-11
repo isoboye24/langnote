@@ -186,7 +186,7 @@ const ListOfWords = ({
           <div className="">
             <Button
               onClick={() => router.back()}
-              className="bg-orange-800 hover:bg-orange-700 transition"
+              className="bg-orange-800 hover:bg-orange-700 dark:bg-teal-700 hover:dark:bg-teal-500 transition duration-500 ease-in-out text-gray-100"
             >
               <ArrowLeft className="w-4 h-4" />
               Back
@@ -199,7 +199,7 @@ const ListOfWords = ({
             {wordGroup?.groupName ?? ''}
           </div>
           <div className="">
-            <Button className="bg-orange-500 hover:bg-Orange-300 dark:bg-teal-700">
+            <Button className="bg-orange-800 hover:bg-orange-700 dark:bg-teal-700 hover:dark:bg-teal-500 transition duration-500 ease-in-out text-gray-100">
               <Link
                 href={`/user/books/${bookId}/${groupId}/create-word`}
                 className="text-gray-100"

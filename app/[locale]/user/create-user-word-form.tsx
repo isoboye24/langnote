@@ -175,10 +175,10 @@ const UserWordForm = ({
 
     const res = await upsertUserWord(payload);
 
-    if (!res?.success) {
+    if (res?.success) {
       toast.error(res?.message);
     } else {
-      if (res.success) {
+      if (res?.success) {
         toast.success(res.message);
 
         if (type === 'Update') {

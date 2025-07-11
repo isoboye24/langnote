@@ -1,4 +1,5 @@
 import UserWordForm from '@/app/[locale]/user/create-user-word-form';
+import { getBookById } from '@/lib/actions/user/book.actions';
 import { getUserWordById } from '@/lib/actions/user/word.actions';
 import { requireUserAndAdmin } from '@/lib/auth.guard';
 import { Metadata } from 'next';
@@ -18,16 +19,20 @@ const UpdateUserWord = async (props: {
   await requireUserAndAdmin();
   const { id, groupId, wordId } = await props.params;
   const word = await getUserWordById(wordId);
+  const getBook = await getBookById(id);
 
   return (
     <div>
-      <h1 className="h2-bold mb-10 text-center">Update: {word.data?.word}</h1>
+      <h1 className="font-bold text-lg md:text-2xl mb-10 text-center">
+        Update: {word.data?.word}
+      </h1>
       <UserWordForm
         type="Update"
         currentGroupId={groupId}
         id={word.data?.id}
         currentBookId={id}
         userWord={word.data}
+        currentBook={getBook.data}
       />
     </div>
   );

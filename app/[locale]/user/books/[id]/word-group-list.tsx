@@ -37,7 +37,7 @@ const WordGroupList = ({ bookId }: { bookId: string }) => {
         <div className="">
           <Button
             onClick={() => router.back()}
-            className="bg-orange-800 hover:bg-orange-700 transition"
+            className="bg-orange-800 hover:bg-orange-700 dark:bg-teal-700 hover:dark:bg-teal-500 transition duration-500 ease-in-out text-gray-100"
           >
             <ArrowLeft className="w-4 h-4" />
             Back
@@ -45,7 +45,7 @@ const WordGroupList = ({ bookId }: { bookId: string }) => {
         </div>
         <div className="">
           <a href={`/user/books/${bookId}/create-group`}>
-            <Button className="bg-orange-500 hover:bg-orange-700 transition">
+            <Button className="bg-orange-800 hover:bg-orange-700 dark:bg-teal-700 hover:dark:bg-teal-500 transition duration-500 ease-in-out text-gray-100">
               Create Group
             </Button>
           </a>
