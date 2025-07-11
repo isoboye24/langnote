@@ -15,7 +15,7 @@ const LocalePage = () => {
         <div className="wrapper">
           <PopularLists />
         </div>
-        <div className="bg-orange-200 dark:bg-gray-800">
+        <div className="bg-gray-100 dark:bg-gray-800 pt-10 md:pt-0">
           <BookComputerSection />
         </div>
       </main>

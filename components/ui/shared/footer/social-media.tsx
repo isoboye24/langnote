@@ -20,11 +20,14 @@ const SocialMedia: React.FC<SocialMediaProps> = ({
         height: `${size}px`,
       }}
     >
-      <FontAwesomeIcon
-        color={bgColor}
-        icon={icon}
-        style={{ fontSize: `${size * 0.5}px` }}
-      />
+      <div className="w-full flex justify-center items-center relative h-full border-1 border-gray-400 rounded-full hover:bg-orange-300 transition duration-500 ease-in-out">
+        <FontAwesomeIcon
+          color={bgColor}
+          icon={icon}
+          style={{ fontSize: `${size * 0.5}px` }}
+          className="absolute"
+        />
+      </div>
     </a>
   );
 };

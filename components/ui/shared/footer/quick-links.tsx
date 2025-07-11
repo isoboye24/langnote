@@ -15,6 +15,9 @@ const QuickLinks = () => {
         <p className="mb-1">
           <QuickLink linkText="FAQ" url="/faq" />
         </p>
+        <p className="mb-1">
+          <QuickLink linkText="Get Started" url="/get-started" />
+        </p>
       </div>
     </>
   );
