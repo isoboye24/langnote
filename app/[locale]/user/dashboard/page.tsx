@@ -1,7 +1,11 @@
 import { requireUserAndAdmin } from '@/lib/auth.guard';
 import React from 'react';
 import Cards from './cards';
-import { getAllTotalUserWord } from '@/lib/actions/user/word.actions';
+import {
+  getAllTotalUserFavoriteWordCount,
+  getAllTotalUserKnownWordCount,
+  getAllTotalUserWord,
+} from '@/lib/actions/user/word.actions';
 import { getAllTotalWordGroup } from '@/lib/actions/user/word-group.actions';
 import { auth } from '@/auth';
 import { getTotalUserBooks } from '@/lib/actions/user/book.actions';
@@ -18,10 +22,18 @@ const UserDashboard = async () => {
     return <div>User not authenticated</div>;
   }
 
-  const [totalUserWords, totalUserGroup, totalBooks] = await Promise.all([
+  const [
+    totalUserWords,
+    totalUserGroup,
+    totalBooks,
+    totalFavoriteWords,
+    totalKnownWords,
+  ] = await Promise.all([
     getAllTotalUserWord(),
     getAllTotalWordGroup(),
     getTotalUserBooks(currentUserId),
+    getAllTotalUserFavoriteWordCount(),
+    getAllTotalUserKnownWordCount(),
   ]);
 
   return (
@@ -40,6 +52,8 @@ const UserDashboard = async () => {
             wordTotal={totalUserWords}
             bookTotal={totalBooks}
             groupTotal={totalUserGroup}
+            favoriteWordTotal={totalFavoriteWords}
+            KnownWordTotal={totalKnownWords}
           />
         </div>
       </div>

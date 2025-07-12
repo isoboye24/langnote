@@ -18,7 +18,6 @@ const ViewWord = async (props: {
 
   return (
     <div>
-      <h1 className="font-bold text-3xl text-center">Last 2 Weeks Words</h1>
       <ViewCurrentWord word={word.data} group={group.data?.groupName} />
     </div>
   );

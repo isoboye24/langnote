@@ -1046,3 +1046,39 @@ export const toggleFavoriteWord = async (wordId: string) => {
     return { success: false, error: 'Failed to toggle favorite' };
   }
 };
+
+export const getAllTotalUserFavoriteWordCount = async () => {
+  const session = await auth();
+  const currentUserId = session?.user?.id;
+  try {
+    const total = await prisma.word.count({
+      where: { userId: currentUserId, favorite: true },
+    });
+    if (total > 0) {
+      return total;
+    } else {
+      return 0;
+    }
+  } catch (error) {
+    console.error('Error calculating total word:', error);
+    return 0;
+  }
+};
+
+export const getAllTotalUserKnownWordCount = async () => {
+  const session = await auth();
+  const currentUserId = session?.user?.id;
+  try {
+    const total = await prisma.word.count({
+      where: { userId: currentUserId, known: true },
+    });
+    if (total > 0) {
+      return total;
+    } else {
+      return 0;
+    }
+  } catch (error) {
+    console.error('Error calculating total word:', error);
+    return 0;
+  }
+};

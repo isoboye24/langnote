@@ -23,7 +23,15 @@ const DashboardCard = ({
         {subtitle}
       </div>
       <div className="flex items-baseline justify-between">
-        <Icon className="w-6 h-6 md:w-10 md:h-10 text-gray-600 dark:text-gray-500 " />
+        {title == 'Total Favorite Words' ? (
+          <Icon
+            fill="currentColor"
+            className="w-6 h-6 md:w-10 md:h-10 text-orange-600 dark:text-orange-500 "
+          />
+        ) : (
+          <Icon className="w-6 h-6 md:w-10 md:h-10 text-gray-600 dark:text-gray-500 " />
+        )}
+
         <div className="text-base md:text-3xl font-bold text-gray-600 dark:text-gray-500 ">
           {amount}
         </div>
