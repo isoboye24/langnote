@@ -104,3 +104,10 @@ export const faqDefaultValues = {
   publish: false,
   rate: 1,
 };
+
+export const contactDefaultValues = {
+  senderName: '',
+  senderEmail: '',
+  subject: '',
+  messageText: '',
+};

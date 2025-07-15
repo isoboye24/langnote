@@ -188,6 +188,15 @@ model Review {
   @@index([userId])
 }
 
+model Contact {
+  id          String   @id @default(uuid())
+  senderName  String
+  senderEmail String
+  subject     String
+  messageText String
+  date        DateTime @default(now()) @db.Timestamp(6)
+}
+
 enum Role {
   user
   admin

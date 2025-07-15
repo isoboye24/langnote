@@ -12,8 +12,11 @@ const LocalePage = () => {
         <div className="bg-blue-950">
           <HomeWelcomeSection2 />
         </div>
-        <div className="wrapper">
-          <PopularLists />
+
+        <div className=" bg-orange-100 dark:bg-slate-950">
+          <div className="wrapper">
+            <PopularLists />
+          </div>
         </div>
         <div className="bg-gray-100 dark:bg-gray-800 pt-10 md:pt-0">
           <BookComputerSection />

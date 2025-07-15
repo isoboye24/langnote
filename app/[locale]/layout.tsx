@@ -18,7 +18,7 @@ export default function LocaleLayout({ children }: { children: ReactNode }) {
   return (
     <>
       {!hideLayout && <Header />}
-      <main className="bg-orange-100 dark:bg-slate-950">{children}</main>
+      <main className="">{children}</main>
       {!hideLayout && <Footer />}
     </>
   );

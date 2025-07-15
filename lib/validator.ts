@@ -166,3 +166,22 @@ export const upsertUserWordSchema = z.object({
 //     .min(1, 'Rate must be at least 1')
 //     .max(5, 'Rate must be at most 5'),
 // });
+
+export const upsertContactSchema = z.object({
+  id: z
+    .string()
+    .min(1, 'If provided, message id is should be at least 1 character')
+    .optional(),
+  senderName: z
+    .string()
+    .min(3, 'sender name is required and must be at least 3 characters'),
+  senderEmail: z
+    .string()
+    .min(3, 'sender email is required and must be at least 3 characters'),
+  subject: z
+    .string()
+    .min(3, 'Subject is required and must be at least 3 characters'),
+  messageText: z
+    .string()
+    .min(3, 'Text is required and must be at least 3 characters'),
+});
