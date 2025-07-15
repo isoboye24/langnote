@@ -57,9 +57,9 @@ export default function Navbar({ toggleDarkMode }: MainAdminNavProps) {
                 key={t(link.name)}
                 href={`/${locale}/${link.href}`}
                 locale={locale}
-                className={`hover:text-gray-800 dark:hover:text-gray-200 transition-colors ${
+                className={`hover:text-teal-600 dark:hover:text-teal-600 transition-colors ${
                   pathname === `/${locale}${link.href}`
-                    ? 'font-semibold text-amber-100'
+                    ? 'font-semibold text-teal-600 underline'
                     : ''
                 }`}
               >
@@ -106,9 +106,9 @@ export default function Navbar({ toggleDarkMode }: MainAdminNavProps) {
                     key={t(link.name)}
                     href={`/${locale}${link.href}`}
                     locale={locale}
-                    className={`hover:text-gray-800 dark:hover:text-gray-200 transition-colors ${
+                    className={`hover:text-teal-600 dark:hover:text-teal-600 transition-colors ${
                       pathname === `/${locale}${link.href}`
-                        ? 'font-semibold text-amber-100'
+                        ? 'font-semibold text-teal-600 underline'
                         : ''
                     }`}
                   >
