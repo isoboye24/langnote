@@ -28,9 +28,9 @@ const Footer = () => {
             </div>
             <p className="px-2 lg:px-15 text-justify text-sm md:text-md lg:text-lg">
               LangNote is a platform for increasing your vocabulary learning at
-              anywhere and anytime on different device platform by serving you
-              with the opportunity to create your language books, groups and
-              save your words or sentences.
+              anywhere and anytime on different devices by serving you with the
+              opportunity to create your language books, groups and save your
+              words or sentences.
             </p>
           </div>
           <div className=" hidden md:block">

@@ -6,7 +6,7 @@ const ContactTopSection = () => {
   return (
     <div className="flex flex-col-reverse md:grid md:grid-cols-2">
       <div className="wrapper flex flex-col justify-center items-center lg:justify-start mt-0 lg:mt-10">
-        <h1 className="text-black dark:text-gray-100 dark:md:text-gray-100 md:text-gray-100 text-center mt-5 md:mt-8 mb-2 text-3xl md:text-4xl lg:text-5xl font-bold">
+        <h1 className="text-black dark:text-gray-100 dark:md:text-gray-100 md:text-gray-100 text-center mt-5 md:mt-8 mb-2 md:mb-5 text-3xl lg:text-4xl font-bold">
           Contact Us
         </h1>
         <p className="dark:text-gray-300 text-gray-700 md:text-teal-200 text-center text-base lg:text-lg">
