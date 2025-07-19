@@ -1082,3 +1082,35 @@ export const getAllTotalUserKnownWordCount = async () => {
     return 0;
   }
 };
+
+export async function getAllUserWordsWithoutPagination({
+  bookId,
+  groupId,
+  activeType,
+}: {
+  bookId: string;
+  groupId: string;
+  activeType?: string;
+}) {
+  try {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const filters: any = {
+      bookId,
+      wordGroupId: groupId,
+    };
+
+    if (activeType && activeType !== 'All') {
+      filters.partOfSpeech = activeType;
+    }
+
+    const words = await prisma.word.findMany({
+      where: filters,
+      orderBy: { word: 'asc' },
+    });
+
+    return { success: true, data: words };
+  } catch (error) {
+    console.error('Error fetching all words for search:', error);
+    return { success: false, error };
+  }
+}

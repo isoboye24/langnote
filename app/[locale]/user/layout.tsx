@@ -1,8 +1,8 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-// import UserSidebar from './user-sidebar';
 import UserNavbar from './user-navbar';
+import UserSidebar from './user-sidebar';
 
 export default function AdminLayout({
   children,
@@ -25,11 +25,11 @@ export default function AdminLayout({
   }, [isDarkMode]);
 
   return (
-    <div className="flex h-screen overflow-y-hidden">
+    <div className="flex h-screen overflow-hidden">
       {/* Sidebar */}
-      {/* <div className={`${isSidebarOpen ? 'block' : 'hidden'} md:block`}>
-        <UserSidebar />
-      </div> */}
+      <div className="transition-all duration-300">
+        <UserSidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
+      </div>
 
       {/* Right side */}
       <div className="flex-1 flex flex-col min-h-screen bg-gray-100 dark:bg-gray-900">

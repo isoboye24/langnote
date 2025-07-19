@@ -89,7 +89,7 @@ const ContactForm = ({
           onSubmit={form.handleSubmit(onSubmit)}
           className="space-y-8"
         >
-          <div className="flex flex-col gap-3 ">
+          <div className="flex flex-col gap-3 px-0 lg:px-20 xxl:px-0">
             <div className="">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-6 xl:mb-10">
                 <div className="">
