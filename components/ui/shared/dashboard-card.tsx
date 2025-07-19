@@ -14,25 +14,32 @@ const DashboardCard = ({
 }) => {
   return (
     <div
-      className={`bg-gray-50 dark:bg-gray-800 p-2 md:p-6 rounded-sm md:rounded-xl shadow-md w-full max-w-xs`}
+      className={`bg-gray-50 dark:bg-slate-900 py-2 px-5 rounded-sm md:rounded-xl shadow-md grid grid-cols-[50px_1fr] md:grid-cols-[80px_1fr]`}
     >
-      <div className="text-sm md:text-lg font-medium text-center opacity-90 dark:opacity-80 text-gray-950 dark:text-gray-300">
-        {title}
-      </div>
-      <div className="text-xs mb-4 opacity-60 text-gray-950 dark:text-gray-300">
-        {subtitle}
-      </div>
-      <div className="flex items-baseline justify-between">
+      <div className="flex justify-center items-center ">
         {title == 'Total Favorite Words' ? (
-          <Icon
-            fill="currentColor"
-            className="w-6 h-6 md:w-10 md:h-10 text-orange-600 dark:text-orange-500 "
-          />
+          <div className="p-3 bg-slate-950 rounded-full">
+            <Icon
+              fill="currentColor"
+              className="w-4 h-4 md:w-6 md:h-6 text-orange-600 dark:text-orange-800 "
+            />
+          </div>
         ) : (
-          <Icon className="w-6 h-6 md:w-10 md:h-10 text-gray-600 dark:text-gray-500 " />
+          <div className="p-3 bg-slate-950 rounded-full">
+            <Icon className="w-4 h-4 md:w-6 md:h-6 text-orange-600 dark:text-orange-800" />
+          </div>
         )}
-
-        <div className="text-base md:text-3xl font-bold text-gray-600 dark:text-gray-500 ">
+      </div>
+      <div className="flex flex-col gap-4">
+        <div className="">
+          <div className="text-sm md:text-lg font-medium text-center opacity-90 dark:opacity-80 text-gray-950 dark:text-gray-300">
+            {title}
+          </div>
+          <div className="text-xs opacity-60 text-gray-950 dark:text-gray-300">
+            {subtitle}
+          </div>
+        </div>
+        <div className="text-base text-end md:text-3xl font-bold text-gray-600 dark:text-gray-500 ">
           {amount}
         </div>
       </div>

@@ -38,7 +38,7 @@ const UserDashboard = async () => {
 
   return (
     <div>
-      <div className="wrapper">
+      <div className=" ">
         {currentUserId && (
           <h1 className="text-xl text-center mb-10">
             Welcome{' '}

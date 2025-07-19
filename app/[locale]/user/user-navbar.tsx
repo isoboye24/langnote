@@ -15,6 +15,7 @@ export default function UserNavbar({ toggleDarkMode }: MainAdminNavProps) {
     <header className="w-full bg-orange-900 dark:bg-gray-800 shadow-sm px-6 py-4 md:px-10 lg:20 flex-between">
       <Link
         href={`https://langnote-three.vercel.app/en`}
+        target="_blank"
         className="text-base md:text-xl font-bold flex hover:bg-gray-100 dark:hover:bg-slate-600 hover:text-gray-800 dark:hover:text-slate-800 transition ease-in-out duration-500 p-1 rounded-sm text-slate-200 dark:text-slate-500"
       >
         <Home className="" />

@@ -23,7 +23,7 @@ const Cards = ({
   ];
 
   return (
-    <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:flex justify-center gap-4 xl:gap-6">
       {items.map(({ icon, amount, title }, i) => (
         <DashboardCard key={i} icon={icon} amount={amount} title={title} />
       ))}
