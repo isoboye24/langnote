@@ -15,6 +15,7 @@ const WordGroupList = ({ bookId }: { bookId: string }) => {
   const [totalCount, setTotalCount] = useState(0);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const [value, setValue] = useState('');
   const pageSize = 10;
   const router = useRouter();
 
@@ -31,6 +32,7 @@ const WordGroupList = ({ bookId }: { bookId: string }) => {
 
     fetchCases();
   }, [bookId, page]);
+
   return (
     <div className="wrapper">
       <div className="flex-between mb-10 md:mb-20">
@@ -51,7 +53,27 @@ const WordGroupList = ({ bookId }: { bookId: string }) => {
           </a>
         </div>
       </div>
-      {/* <div className="">Search for group...</div> */}
+      {totalCount > 10 && (
+        <div className="mb-10">
+          <div className="flex justify-center gap-3 items-center">
+            <input
+              type="text"
+              className={`border px-3 py-2 rounded-2xl border-orange-800 w-100`}
+              placeholder="Search..."
+              value={value}
+              onChange={(e) => setValue(e.target.value)}
+            />
+            {value && (
+              <span
+                className="px-5 py-2 text-gray-200 bg-orange-900 rounded-xl pointer"
+                onClick={() => setValue('')}
+              >
+                Clear
+              </span>
+            )}
+          </div>
+        </div>
+      )}
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3 md:gap-4 mb-30">
         {groups.map((group) => {
           return (
@@ -73,8 +95,8 @@ const WordGroupList = ({ bookId }: { bookId: string }) => {
         onPageChange={setPage}
       />
 
-      <div className="mt-10 text-end pr-4 md:pr-8 text-green-500">
-        Total Books: {totalCount}
+      <div className="mt-10 text-end pr-4 md:pr-8 text-orange-800 dark:text-orange-200">
+        Total Groups: <strong>{totalCount}</strong>
       </div>
     </div>
   );
