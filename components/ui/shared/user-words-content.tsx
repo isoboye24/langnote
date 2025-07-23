@@ -3,7 +3,6 @@
 import React, { useEffect, useState } from 'react';
 import { Word, WordGroup } from '@prisma/client';
 import Pagination from '@/components/ui/shared/pagination';
-import SearchInput from '@/components/ui/search-input';
 import { getWordGroupById } from '@/lib/actions/user/word-group.actions';
 import {
   getAllFilteredUserFavoriteWords,
@@ -12,6 +11,7 @@ import {
   getAllFilteredUserLastThreeMonthsWords,
   getAllFilteredUserLastTwoWeeksWords,
   getAllFilteredUserLastWeeksWords,
+  getAllFilteredUserWord,
   getAllFilteredUserWords,
   getAllPartOfSpeechNamesInGroup,
   toggleFavoriteWord,
@@ -46,6 +46,7 @@ const ListOfWords = ({
   const [totalPages, setTotalPages] = useState(1);
   const [filterType, setFilterTypes] = useState<string[]>(['All']);
   const [activeType, setActiveType] = useState('All');
+  const [value, setValue] = useState('');
   type TimeFilter =
     | 'ALL'
     | 'LAST_WEEK'
@@ -71,114 +72,215 @@ const ListOfWords = ({
         console.error('Failed to fetch part of speech types:', error);
       }
     };
-
     fetchFilterTypes();
   }, [bookId, groupId]);
 
   useEffect(() => {
-    const fetchUserWord = async () => {
-      try {
-        const wordGroupWithIdRes = await getWordGroupById(groupId);
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const getWords = (wordsRes: any) => {
-          if (wordsRes.success && wordGroupWithIdRes.success) {
-            setWords(wordsRes.data as Word[]);
-            setWordGroup(wordGroupWithIdRes.data as WordGroup);
+    if (!value) {
+      const fetchUserWord = async () => {
+        try {
+          const wordGroupWithIdRes = await getWordGroupById(groupId);
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          const getWords = (wordsRes: any) => {
+            if (wordsRes.success && wordGroupWithIdRes.success) {
+              setWords(wordsRes.data as Word[]);
+              setWordGroup(wordGroupWithIdRes.data as WordGroup);
 
-            const count = wordsRes.total ?? 0;
-            setTotalCount(count);
-            setTotalPages(Math.ceil(count / pageSize));
+              const count = wordsRes.total ?? 0;
+              setTotalCount(count);
+              setTotalPages(Math.ceil(count / pageSize));
+            }
+          };
+
+          switch (timeFilter) {
+            case 'ALL':
+              getWords(
+                await getAllFilteredUserWords({
+                  activeType,
+                  bookId,
+                  groupId,
+                  page,
+                  pageSize,
+                })
+              );
+              break;
+            case 'LAST_WEEK':
+              getWords(
+                await getAllFilteredUserLastWeeksWords({
+                  activeType,
+                  bookId,
+                  groupId,
+                  page,
+                  pageSize,
+                })
+              );
+              break;
+            case 'TWO_WEEKS':
+              getWords(
+                await getAllFilteredUserLastTwoWeeksWords({
+                  activeType,
+                  bookId,
+                  groupId,
+                  page,
+                  pageSize,
+                })
+              );
+              break;
+            case 'LAST_MONTH':
+              getWords(
+                await getAllFilteredUserLastMonthWords({
+                  activeType,
+                  bookId,
+                  groupId,
+                  page,
+                  pageSize,
+                })
+              );
+              break;
+            case 'THREE_MONTHS':
+              getWords(
+                await getAllFilteredUserLastThreeMonthsWords({
+                  activeType,
+                  bookId,
+                  groupId,
+                  page,
+                  pageSize,
+                })
+              );
+              break;
+            case 'FAVORITE':
+              getWords(
+                await getAllFilteredUserFavoriteWords({
+                  activeType,
+                  bookId,
+                  groupId,
+                  page,
+                  pageSize,
+                })
+              );
+              break;
+            case 'KNOWN':
+              getWords(
+                await getAllFilteredUserKnownWords({
+                  activeType,
+                  bookId,
+                  groupId,
+                  page,
+                  pageSize,
+                })
+              );
+              break;
           }
-        };
-
-        switch (timeFilter) {
-          case 'ALL':
-            getWords(
-              await getAllFilteredUserWords({
-                activeType,
-                bookId,
-                groupId,
-                page,
-                pageSize,
-              })
-            );
-            break;
-          case 'LAST_WEEK':
-            getWords(
-              await getAllFilteredUserLastWeeksWords({
-                activeType,
-                bookId,
-                groupId,
-                page,
-                pageSize,
-              })
-            );
-            break;
-          case 'TWO_WEEKS':
-            getWords(
-              await getAllFilteredUserLastTwoWeeksWords({
-                activeType,
-                bookId,
-                groupId,
-                page,
-                pageSize,
-              })
-            );
-            break;
-          case 'LAST_MONTH':
-            getWords(
-              await getAllFilteredUserLastMonthWords({
-                activeType,
-                bookId,
-                groupId,
-                page,
-                pageSize,
-              })
-            );
-            break;
-          case 'THREE_MONTHS':
-            getWords(
-              await getAllFilteredUserLastThreeMonthsWords({
-                activeType,
-                bookId,
-                groupId,
-                page,
-                pageSize,
-              })
-            );
-            break;
-          case 'FAVORITE':
-            getWords(
-              await getAllFilteredUserFavoriteWords({
-                activeType,
-                bookId,
-                groupId,
-                page,
-                pageSize,
-              })
-            );
-            break;
-          case 'KNOWN':
-            getWords(
-              await getAllFilteredUserKnownWords({
-                activeType,
-                bookId,
-                groupId,
-                page,
-                pageSize,
-              })
-            );
-            break;
+        } catch (error) {
+          console.error('Failed to fetch words or word group:', error);
         }
-      } catch (error) {
-        console.error('Failed to fetch words or word group:', error);
-      }
-    };
+      };
 
-    fetchUserWord();
-  }, [timeFilter, activeType, bookId, groupId, page]);
+      fetchUserWord();
+    }
+  }, [value, timeFilter, activeType, bookId, groupId, page]);
 
-  const onSearch = () => {};
+  useEffect(() => {
+    if (value) {
+      const fetchUserWord = async () => {
+        try {
+          const wordGroupWithIdRes = await getWordGroupById(groupId);
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          const getWords = (wordsRes: any) => {
+            if (wordsRes.success && wordGroupWithIdRes.success) {
+              setWords(wordsRes.data as Word[]);
+              setWordGroup(wordGroupWithIdRes.data as WordGroup);
+
+              const count = wordsRes.total ?? 0;
+              setTotalCount(count);
+              setTotalPages(Math.ceil(count / pageSize));
+            }
+          };
+
+          switch (timeFilter) {
+            case 'ALL':
+              getWords(
+                await getAllFilteredUserWord({
+                  word: value,
+                  activeType,
+                  bookId,
+                  groupId,
+                })
+              );
+              break;
+            case 'LAST_WEEK':
+              getWords(
+                await getAllFilteredUserWord({
+                  word: value,
+                  activeType,
+                  bookId,
+                  groupId,
+                })
+              );
+              break;
+            case 'TWO_WEEKS':
+              getWords(
+                await getAllFilteredUserWord({
+                  word: value,
+                  activeType,
+                  bookId,
+                  groupId,
+                })
+              );
+              break;
+            case 'LAST_MONTH':
+              getWords(
+                await getAllFilteredUserWord({
+                  word: value,
+                  activeType,
+                  bookId,
+                  groupId,
+                })
+              );
+              break;
+            case 'THREE_MONTHS':
+              getWords(
+                await getAllFilteredUserWord({
+                  word: value,
+                  activeType,
+                  bookId,
+                  groupId,
+                })
+              );
+              break;
+            case 'FAVORITE':
+              getWords(
+                await getAllFilteredUserWord({
+                  word: value,
+                  activeType,
+                  bookId,
+                  groupId,
+                })
+              );
+              break;
+            case 'KNOWN':
+              getWords(
+                await getAllFilteredUserWord({
+                  word: value,
+                  activeType,
+                  bookId,
+                  groupId,
+                })
+              );
+              break;
+          }
+        } catch (error) {
+          console.error('Failed to fetch words or word group:', error);
+        }
+      };
+
+      fetchUserWord();
+    }
+  }, [value, timeFilter, activeType, bookId, groupId, page]);
+
+  const onClear = () => {
+    setValue('');
+  };
 
   return (
     <>
@@ -301,26 +403,46 @@ const ListOfWords = ({
             </select>
           </div>
           {/* Desktop: button group */}
-          <div className="hidden sm:flex space-x-6 mb-15 justify-center">
-            {filterType.map((type) => (
-              <button
-                key={type}
-                onClick={() => {
-                  setPage(1); // reset pagination
-                  setActiveType(type);
-                }}
-                className={`text-sm font-semibold transition-colors duration-200 ${
-                  activeType === type
-                    ? 'text-orange-500 border-b-2 border-orange-500'
-                    : 'text-gray-800 dark:text-gray-400 hover:text-orange-500'
-                }`}
-              >
-                {type}
-              </button>
-            ))}
-          </div>
-          <div className="mb-10 justify-items-center">
-            <SearchInput className="" onSearch={onSearch} />
+          {value ? (
+            ''
+          ) : (
+            <div className="hidden sm:flex space-x-6 mb-15 justify-center">
+              {filterType.map((type) => (
+                <button
+                  key={type}
+                  onClick={() => {
+                    setPage(1); // reset pagination
+                    setActiveType(type);
+                  }}
+                  className={`text-sm font-semibold transition-colors duration-200 ${
+                    activeType === type
+                      ? 'text-orange-500 border-b-2 border-orange-500'
+                      : 'text-gray-800 dark:text-gray-400 hover:text-orange-500'
+                  }`}
+                >
+                  {type}
+                </button>
+              ))}
+            </div>
+          )}
+          <div className="mb-10">
+            <div className="flex justify-center gap-3 items-center">
+              <input
+                type="text"
+                className={`border px-3 py-2 rounded-2xl border-orange-800 w-100`}
+                placeholder="Search..."
+                value={value}
+                onChange={(e) => setValue(e.target.value)}
+              />
+              {value && (
+                <span
+                  className="px-5 py-2 text-gray-200 bg-orange-900 rounded-xl pointer"
+                  onClick={onClear}
+                >
+                  Clear
+                </span>
+              )}
+            </div>
           </div>
 
           <div className="">
@@ -354,11 +476,13 @@ const ListOfWords = ({
               );
             })}
           </div>
-          <Pagination
-            currentPage={page}
-            totalPages={totalPages}
-            onPageChange={setPage}
-          />
+          {!value && (
+            <Pagination
+              currentPage={page}
+              totalPages={totalPages}
+              onPageChange={setPage}
+            />
+          )}
           <div className="mt-10 text-end pr-4 md:pr-8 text-green-500">
             Total: {totalCount}
           </div>

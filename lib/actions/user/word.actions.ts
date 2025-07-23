@@ -1114,3 +1114,97 @@ export async function getAllUserWordsWithoutPagination({
     return { success: false, error };
   }
 }
+export const getAllFilteredUserWord = async ({
+  word,
+  activeType,
+  bookId,
+  groupId,
+}: {
+  word: string;
+  activeType: string;
+  bookId: string;
+  groupId: string;
+}) => {
+  const session = await auth();
+  const currentUserId = session?.user?.id;
+
+  if (!currentUserId) {
+    throw new Error('Unauthorized');
+  }
+
+  const currentBook = await prisma.book.findUnique({ where: { id: bookId } });
+  if (!currentBook) {
+    throw new Error('Book not found');
+  }
+
+  // Get available partOfSpeech names (if needed)
+  let partOfSpeechFilter;
+  if (activeType === 'All') {
+    const wordsWithPartOfSpeech = await prisma.word.findMany({
+      where: {
+        bookId,
+        wordGroupId: groupId,
+        userId: currentUserId,
+        word: {
+          contains: word,
+          mode: 'insensitive',
+        },
+      },
+      select: {
+        partOfSpeech: {
+          select: { name: true },
+        },
+      },
+    });
+
+    const partOfSpeechNames = Array.from(
+      new Set(
+        wordsWithPartOfSpeech
+          .map((entry) => entry.partOfSpeech?.name)
+          .filter(Boolean)
+      )
+    );
+
+    partOfSpeechFilter = {
+      partOfSpeech: {
+        name: {
+          in: partOfSpeechNames,
+        },
+      },
+    };
+  } else {
+    partOfSpeechFilter = {
+      partOfSpeech: {
+        name: {
+          equals: activeType,
+        },
+      },
+    };
+  }
+
+  // Final query condition
+  const whereCondition = {
+    ...partOfSpeechFilter,
+    bookId,
+    wordGroupId: groupId,
+    userId: currentUserId,
+    word: { contains: word },
+  };
+
+  const [allFilteredWords, total] = await Promise.all([
+    prisma.word.findMany({
+      where: whereCondition,
+      include: {
+        partOfSpeech: true,
+      },
+      orderBy: [{ word: 'asc' }],
+    }),
+    prisma.word.count({ where: whereCondition }),
+  ]);
+
+  return {
+    success: true,
+    data: allFilteredWords,
+    total,
+  };
+};

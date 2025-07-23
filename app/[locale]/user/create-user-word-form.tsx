@@ -10,7 +10,7 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { z } from 'zod';
-import { Star } from 'lucide-react';
+import { Lock, LockOpen, Star } from 'lucide-react';
 import { upsertUserWordSchema } from '@/lib/validator';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { Button } from '@/components/ui/button';
@@ -309,9 +309,7 @@ const UserWordForm = ({
               className={preserveState ? 'bg-green-600' : 'bg-red-700'}
               onClick={() => setPreserveState((prev) => !prev)}
             >
-              {preserveState
-                ? 'Preserve Form Values: ON'
-                : 'Preserve Form Values: OFF'}
+              {preserveState ? <Lock /> : <LockOpen />}
             </Button>
           </div>
 
