@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import UserNavbar from './user-navbar';
 import UserSidebar from './user-sidebar';
+import { ChevronLeft } from 'lucide-react';
 
 export default function AdminLayout({
   children,
@@ -11,6 +12,7 @@ export default function AdminLayout({
 }) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [isDarkMode, setIsDarkMode] = useState(false);
+  const [isVisible, setIsVisible] = useState(true);
 
   const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
   const toggleDarkMode = () => setIsDarkMode((prev) => !prev);
@@ -24,11 +26,35 @@ export default function AdminLayout({
     }
   }, [isDarkMode]);
 
+  const closeSidebar = () => setIsVisible(!isVisible);
+
   return (
     <div className="flex h-screen overflow-hidden">
       {/* Sidebar */}
       <div className="transition-all duration-300">
-        <UserSidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
+        {isVisible && (
+          <UserSidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
+        )}
+
+        {!isSidebarOpen ? (
+          isVisible ? (
+            <button
+              onClick={closeSidebar}
+              className="fixed top-40 left-20 z-50 bg-orange-900 rounded-r-full w-8 h-16 flex items-center justify-center shadow-md hover:bg-orange-800 transition ease-in-out duration-500 cursor-pointer"
+            >
+              <ChevronLeft className="text-white" size={18} />
+            </button>
+          ) : (
+            <button
+              onClick={closeSidebar}
+              className="fixed top-40 left-0 z-50 bg-orange-900 rounded-r-full w-8 h-16 flex items-center justify-center shadow-md hover:bg-orange-800 transition ease-in-out duration-500 cursor-pointer"
+            >
+              <ChevronLeft className="text-white" size={18} />
+            </button>
+          )
+        ) : (
+          ''
+        )}
       </div>
 
       {/* Right side */}

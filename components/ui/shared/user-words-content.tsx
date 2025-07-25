@@ -422,12 +422,13 @@ const ListOfWords = ({
             </div>
           )}
 
+          {/* search input */}
           <div className="mb-10">
             <div className="flex flex-col justify-center gap-3 items-center">
               {totalCount > 10 && (
                 <input
                   type="text"
-                  className={`border px-3 py-2 rounded-2xl border-orange-800 w-100`}
+                  className={`border px-3 py-2 rounded-2xl border-orange-800 w-60 md:100`}
                   placeholder="Search..."
                   value={value}
                   onChange={(e) => setValue(e.target.value)}

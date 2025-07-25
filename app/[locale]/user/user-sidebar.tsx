@@ -78,79 +78,81 @@ export default function UserSidebar({
   }, [userId]);
 
   return (
-    <aside
-      className={clsx(
-        'h-screen bg-orange-950 dark:bg-slate-900 text-white p-4 flex flex-col border-r transition-all ease-in-out border-orange-950 duration-300',
-        isOpen ? 'w-64' : 'w-20'
-      )}
-    >
-      {/* Top section with avatar + toggle */}
-      <div className="flex justify-between items-center mb-6 ">
-        {isOpen && (
-          <div className="flex flex-col gap-4 justify-center items-center  w-48 ">
-            <div className="">
-              <Image
-                src={PictureLight}
-                alt="user Image"
-                className="w-15 h-15 md:w-30 md:h-30 rounded-full block dark:hidden"
-              />
-              <Image
-                src={PictureDark}
-                alt="user Image"
-                className="w-15 h-15 md:w-30 md:h-30 rounded-full hidden dark:block"
-              />
-            </div>
-            <div className="flex flex-col gap-1 text-center">
-              <div className="text-lg">{currentUser?.userName}</div>
-              <div className="text-sm text-orange-500 dark:text-slate-600">
-                {currentUser?.email}
+    <div className="">
+      <aside
+        className={clsx(
+          'h-screen bg-orange-950 dark:bg-slate-900 text-white p-4 flex flex-col border-r transition-all ease-in-out border-orange-950 duration-300',
+          isOpen ? 'w-64' : 'w-20'
+        )}
+      >
+        {/* Top section with avatar + toggle */}
+        <div className="flex justify-between items-center mb-6 ">
+          {isOpen && (
+            <div className="flex flex-col gap-4 justify-center items-center  w-48 ">
+              <div className="">
+                <Image
+                  src={PictureLight}
+                  alt="user Image"
+                  className="w-15 h-15 md:w-30 md:h-30 rounded-full block dark:hidden"
+                />
+                <Image
+                  src={PictureDark}
+                  alt="user Image"
+                  className="w-15 h-15 md:w-30 md:h-30 rounded-full hidden dark:block"
+                />
+              </div>
+              <div className="flex flex-col gap-1 text-center">
+                <div className="text-lg">{currentUser?.userName}</div>
+                <div className="text-sm text-orange-500 dark:text-slate-600">
+                  {currentUser?.email}
+                </div>
               </div>
             </div>
-          </div>
-        )}
-        {isOpen && (
-          <button onClick={toggleSidebar} className="text-white">
-            <Menu size={24} />
-          </button>
-        )}
-        {!isOpen && (
-          <button onClick={toggleSidebar} className="text-white mx-auto">
-            <Menu size={24} />
-          </button>
-        )}
-      </div>
+          )}
+          {isOpen && (
+            <button onClick={toggleSidebar} className="text-white">
+              <Menu size={24} />
+            </button>
+          )}
+          {!isOpen && (
+            <button onClick={toggleSidebar} className="text-white mx-auto">
+              <Menu size={24} />
+            </button>
+          )}
+        </div>
 
-      {/* Navigation Links */}
-      <nav className="flex-1 space-y-4">
-        {links.map(({ href, label, icon }) => {
-          const isActive = href === activePath;
+        {/* Navigation Links */}
+        <nav className="flex-1 space-y-4">
+          {links.map(({ href, label, icon }) => {
+            const isActive = href === activePath;
 
-          return (
-            <Link
-              key={href}
-              href={`/${locale}/${href}`}
-              className={clsx(
-                'flex items-center p-2 rounded transition-all duration-300 relative hover:bg-orange-800',
-                isActive ? 'bg-orange-800 pl-2' : 'pl-3',
-                isOpen ? 'space-x-3' : 'justify-center'
-              )}
-            >
-              {isActive && isOpen && (
-                <span className="absolute left-0 top-0 h-full w-1 bg-amber-500 animate-pulse rounded-r" />
-              )}
-              <div className="relative group">
-                {icon}
-                {!isOpen && (
-                  <span className="absolute left-full ml-2 top-1/2 -translate-y-1/2 whitespace-nowrap bg-orange-950 dark:bg-slate-800 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity z-10">
-                    {label}
-                  </span>
+            return (
+              <Link
+                key={href}
+                href={`/${locale}/${href}`}
+                className={clsx(
+                  'flex items-center p-2 rounded transition-all duration-300 relative hover:bg-orange-800',
+                  isActive ? 'bg-orange-800 pl-2' : 'pl-3',
+                  isOpen ? 'space-x-3' : 'justify-center'
                 )}
-              </div>
-              {isOpen && <span>{label}</span>}
-            </Link>
-          );
-        })}
-      </nav>
-    </aside>
+              >
+                {isActive && isOpen && (
+                  <span className="absolute left-0 top-0 h-full w-1 bg-amber-500 animate-pulse rounded-r" />
+                )}
+                <div className="relative group">
+                  {icon}
+                  {!isOpen && (
+                    <span className="absolute left-full ml-2 top-1/2 -translate-y-1/2 whitespace-nowrap bg-orange-950 dark:bg-slate-800 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity z-10">
+                      {label}
+                    </span>
+                  )}
+                </div>
+                {isOpen && <span>{label}</span>}
+              </Link>
+            );
+          })}
+        </nav>
+      </aside>
+    </div>
   );
 }

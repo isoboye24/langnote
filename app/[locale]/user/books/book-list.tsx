@@ -59,7 +59,7 @@ const BookList = () => {
 
   return (
     <div className="wrapper">
-      <div className="flex-between mb-10 md:mb-20">
+      <div className="flex-between mb-15 md:mb-20">
         <div className="">
           <Button
             onClick={() => router.back()}
@@ -77,7 +77,7 @@ const BookList = () => {
           </a>
         </div>
       </div>
-      <div className="grid grid-cols-2 md:flex gap-4 md:flex-wrap justify-center items-center md:justify-start md:items-start mb-20">
+      <div className="grid grid-cols-1 md:flex gap-4 md:flex-wrap justify-items-center md:justify-start md:items-start mb-20">
         {books.map((book) => {
           const language = languages.find(
             (lang) => lang.id === book.languageId
