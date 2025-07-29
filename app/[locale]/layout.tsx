@@ -14,6 +14,7 @@ export default function LocaleLayout({ children }: { children: ReactNode }) {
     pathname?.startsWith(`/${pathname.split('/')[1]}/admin`) ||
     pathname?.startsWith(`/${pathname.split('/')[1]}/user`) ||
     pathname?.startsWith(`/${pathname.split('/')[1]}/(auth)`);
+  pathname?.startsWith(`/${pathname.split('/')[1]}/documentation`);
 
   return (
     <>

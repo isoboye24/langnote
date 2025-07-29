@@ -312,6 +312,10 @@ const UserWordForm = ({
               {preserveState ? <Lock /> : <LockOpen />}
             </Button>
           </div>
+          <div className="">
+            <span className="ml-1 text-orange-700 pt-0.5">*</span>
+            <span> is required</span>
+          </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-5 mb-10">
             <div className="">
@@ -320,7 +324,10 @@ const UserWordForm = ({
                 name="partOfSpeechId"
                 render={({ field }) => (
                   <FormItem className="w-full">
-                    <FormLabel>Part of Speech</FormLabel>
+                    <div className="flex">
+                      <FormLabel>Part of Speech</FormLabel>
+                      <span className="ml-1 text-orange-700 pt-0.5">*</span>
+                    </div>
                     <FormControl>
                       <Select
                         value={field.value?.toString() || ''}
@@ -352,7 +359,10 @@ const UserWordForm = ({
                 name="word"
                 render={({ field }) => (
                   <FormItem className="w-full">
-                    <FormLabel>Word</FormLabel>
+                    <div className="flex">
+                      <FormLabel>Word</FormLabel>
+                      <span className="ml-1 text-orange-700 pt-0.5">*</span>
+                    </div>
                     <FormControl>
                       <Input placeholder="Enter Word" {...field} />
                     </FormControl>
@@ -473,7 +483,10 @@ const UserWordForm = ({
                 name="wordCaseId"
                 render={({ field }) => (
                   <FormItem className="w-full">
-                    <FormLabel>Word Case</FormLabel>
+                    <div className="flex">
+                      <FormLabel>Word Case</FormLabel>
+                      <span className="ml-1 text-orange-700 pt-0.5">*</span>
+                    </div>
                     <FormControl>
                       <Select
                         value={field.value?.toString() || ''}
@@ -507,7 +520,10 @@ const UserWordForm = ({
                 name="genderId"
                 render={({ field }) => (
                   <FormItem className="w-full">
-                    <FormLabel>Gender</FormLabel>
+                    <div className="flex">
+                      <FormLabel>Gender</FormLabel>
+                      <span className="ml-1 text-orange-700 pt-0.5">*</span>
+                    </div>
                     <FormControl>
                       <Select
                         value={field.value?.toString() || ''}

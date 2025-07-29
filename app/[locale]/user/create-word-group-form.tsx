@@ -104,7 +104,10 @@ const WordGroupForm = ({
                   name="groupName"
                   render={({ field }) => (
                     <FormItem className="w-full">
-                      <FormLabel>Group Name</FormLabel>
+                      <div className="flex">
+                        <FormLabel>Group Name</FormLabel>
+                        <span className="ml-1 text-orange-700 pt-0.5">*</span>
+                      </div>
                       <FormControl>
                         <Input placeholder="Enter Group Name" {...field} />
                       </FormControl>
@@ -134,7 +137,10 @@ const WordGroupForm = ({
                   name="color"
                   render={({ field }) => (
                     <FormItem className="w-full">
-                      <FormLabel>Choose Color</FormLabel>
+                      <div className="flex">
+                        <FormLabel>Choose Color</FormLabel>
+                        <span className="ml-1 text-orange-700 pt-0.5">*</span>
+                      </div>
                       <FormControl>
                         <div>
                           <ColorPicker
