@@ -14,8 +14,7 @@ const GetStarted: React.FC<Props> = ({ user }) => {
         Hi <strong>{user?.userName}</strong>, welcome to{' '}
         <strong className="text-green-500">LangNote</strong> documentation.
       </h1>
-      {/* {docData.getStarted.map((p) => (
-        <div key={p.id}> */}
+
       <div className="text-gray-700 dark:text-gray-300 text-justify">
         <p className="my-5 ">
           <strong className="text-green-500">LangNote</strong> is the easiest
@@ -47,8 +46,6 @@ const GetStarted: React.FC<Props> = ({ user }) => {
           learning speed. So let&apos;s get started.
         </p>
       </div>
-      {/* </div>
-      ))} */}
     </div>
   );
 };

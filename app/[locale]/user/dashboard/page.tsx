@@ -41,18 +41,18 @@ const UserDashboard = async () => {
   return (
     <div>
       <div className=" ">
-        <div className="mb-10 flex justify-between wrapper">
+        <div className="mb-10 grid grid-cols-1 gap-5 md:flex md:justify-between wrapper">
           {currentUserId && (
-            <h1 className="text-xl text-center ">
+            <h1 className="text-lg md:text-xl text-center ">
               Welcome{' '}
-              <strong className="font-bold text-2xl">
+              <strong className="font-bold text-xl md:text-2xl">
                 {user.data?.userName}!
               </strong>
             </h1>
           )}
-          {totalBooks > 2 && (
+          {totalBooks < 3 && (
             <div className="">
-              <Link href={`http://localhost:3000/en/documentation`}>
+              <Link href={`https://langnote-three.vercel.app/documentation`}>
                 <Button className="bg-black dark:bg-slate-800 text-gray-200 dark:text-gray-300">
                   How to use
                   <strong className="text-green-500  ">LangNote</strong>
