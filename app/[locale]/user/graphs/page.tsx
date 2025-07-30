@@ -1,7 +1,7 @@
 import React from 'react';
 
 const Graphs = () => {
-  return <div>Graphs</div>;
+  return <div className="wrapper text-center">You have no graph.</div>;
 };
 
 export default Graphs;

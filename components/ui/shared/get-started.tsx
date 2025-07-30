@@ -1,7 +1,6 @@
 'use client';
 import { User } from '@prisma/client';
 import React from 'react';
-// import docData from '@/app/[locale]/documentation/doc.json';
 
 type Props = {
   user?: User;

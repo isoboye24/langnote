@@ -20,8 +20,7 @@ const UserDashboard = async () => {
   const user = await getUserById(currentUserId!);
 
   if (!currentUserId) {
-    // Optionally handle missing session (e.g. redirect or return null)
-    return <div>User not authenticated</div>;
+    return <div>You&apos;re not authenticated</div>;
   }
 
   const [
