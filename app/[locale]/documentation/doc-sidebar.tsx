@@ -41,11 +41,11 @@ export default function DocSidebar({ isOpen }: DocSidebarProps) {
       children: [
         {
           label: t('How to create group'),
-          href: 'documentation/book-section#how_to_create_group',
+          href: 'documentation/section-group#how_to_create_group',
         },
         {
           label: t('How to update & delete group'),
-          href: 'documentation/book-section#how_to_update_group',
+          href: 'documentation/section-group#how_to_update_group',
         },
       ],
     },
