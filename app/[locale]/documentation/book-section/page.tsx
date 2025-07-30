@@ -12,6 +12,9 @@ const BookDoc = () => {
   const createBookFormPage =
     'https://jr6g4vgkv4.ufs.sh/f/jVfJldLHdC4Z6WXCWuOroROt8KFX4vPfupCeV50gETd2qcQh';
 
+  const BookCover =
+    'https://jr6g4vgkv4.ufs.sh/f/jVfJldLHdC4ZK7zrcBIxyaF60cSmfwIbNpPLsd4EzQ1q5kCM';
+
   return (
     <div className="wrapper">
       <section id="how_to_create_book" className="mb-20">
@@ -60,14 +63,26 @@ const BookDoc = () => {
             />
           </span>
           Fill out the form by choosing the language, giving title to the book
-          and also choose the colors for the book. This colors will design the
-          book cover.
+          and also choose the colors for the book then create. This colors will
+          design the book cover.
         </p>
       </section>
 
       <section id="how_to_update_book">
         <h1 className="text-2xl font-bold text-center">How to update Book</h1>
-        <p className="text-gray-700 dark:text-gray-300 text-justify"></p>
+
+        <p className="text-gray-700 dark:text-gray-300 text-justify">
+          <span className="flex justify-center items-center">
+            <Image
+              src={BookCover}
+              alt="book btn"
+              width={200}
+              height={100}
+              unoptimized
+              className="my-5 rounded-md"
+            />
+          </span>
+        </p>
       </section>
     </div>
   );
