@@ -25,7 +25,7 @@ export default function AdminLayout({
           {isSidebarOpen ? (
             <button
               onClick={toggleSidebar}
-              className="fixed top-20 left-50 xl:left-64  z-50 text-orange-950 dark:text-gray-400 rounded-r-full w-8 h-16 flex items-center justify-center shadow-md transition ease-in-out duration-500 cursor-pointer"
+              className="fixed top-20 left-50 md:left-64 z-50 text-orange-950 dark:text-gray-400 rounded-r-full w-8 h-16 flex items-center justify-center shadow-md transition ease-in-out duration-500 cursor-pointer"
             >
               <Menu size={24} />
             </button>

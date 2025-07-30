@@ -49,7 +49,24 @@ export default function DocSidebar({ isOpen }: DocSidebarProps) {
         },
       ],
     },
-    { label: t('Word'), href: 'documentation/section-word' },
+    {
+      label: t('Word'),
+      href: 'documentation/section-word',
+      children: [
+        {
+          label: t('How to create word'),
+          href: 'documentation/section-word#how_to_create_word',
+        },
+        {
+          label: t('How to search & filter word'),
+          href: 'documentation/section-word#how_to_search_word',
+        },
+        {
+          label: t('How to update & delete word'),
+          href: 'documentation/section-word#how_to_update_word',
+        },
+      ],
+    },
     { label: t('Review'), href: 'documentation/section-review' },
   ];
 
@@ -68,7 +85,7 @@ export default function DocSidebar({ isOpen }: DocSidebarProps) {
     <div>
       <aside
         className={clsx(
-          'h-screen w-50 xl:w-64 bg-gray-200 dark:bg-slate-900 text-slate-950 dark:text-gray-200 p-4 flex flex-col border-r border-gray-100 dark:border-slate-950 transition-all duration-300 ease-in-out mt-5'
+          'h-screen w-50 md:w-64 bg-gray-100 dark:bg-slate-950  text-slate-950 dark:text-gray-200 p-4 flex flex-col border-r border-gray-200 dark:border-slate-900 transition-all duration-300 ease-in-out mt-5'
         )}
       >
         <nav className="flex-1 space-y-2">

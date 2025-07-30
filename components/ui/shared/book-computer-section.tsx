@@ -18,7 +18,7 @@ const BookComputerSection = () => {
       <div className="p-0 md:pt-10 xl:p-20 flex flex-col-reverse md:grid grid-cols-2 text-white gap-5">
         <div className="">
           <Image
-            className="rounded-0 md:rounded-lg w-full lg:w-[700px] h-[220px] lg:h-[400px]"
+            className="rounded-0 md:rounded-full w-full lg:w-[700px] h-[220px] lg:h-[400px]"
             src={Picture}
             alt="book and computer image"
           />
@@ -39,8 +39,10 @@ const BookComputerSection = () => {
                       </div>
                     </div>
                     <div className=" ">
-                      <div className="text-sm mb-2">Simple to </div>
-                      <div className="text-sm xl:text-lg mt-1.5 text-center font-semibold bg-orange-500 px-1 py-0.5 rounded-sm text-gray-100 dark:text-gray-300">
+                      <div className="text-sm mb-2 text-gray-900">
+                        Simple to{' '}
+                      </div>
+                      <div className="text-sm xl:text-lg mt-1.5 text-center font-semibold bg-orange-500 px-1 py-0.5 rounded-sm text-gray-100">
                         {easy.title}
                       </div>
                     </div>

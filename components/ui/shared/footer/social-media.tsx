@@ -12,7 +12,7 @@ const SocialMedia: React.FC<SocialMediaProps> = ({
   return (
     <a
       href={url}
-      target="_blank"
+      // target="_blank"
       rel="noopener noreferrer"
       className={`flex items-center justify-center rounded-full`}
       style={{

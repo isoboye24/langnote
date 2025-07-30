@@ -60,13 +60,13 @@ const Footer = () => {
                   icon={faFacebookF}
                   bgColor={color}
                   size={40}
-                  url="https://www.facebook.com/isoboye.vincent/"
+                  url=""
                 />
                 <SocialMedia
                   icon={faInstagram}
                   bgColor={color}
                   size={40}
-                  url="https://www.instagram.com/isoboye_vincent/"
+                  url=""
                 />
                 <SocialMedia
                   icon={faXTwitter}
@@ -80,13 +80,13 @@ const Footer = () => {
                   icon={faFacebookF}
                   bgColor={color}
                   size={30}
-                  url="https://www.facebook.com/isoboye.vincent/"
+                  url=""
                 />
                 <SocialMedia
                   icon={faInstagram}
                   bgColor={color}
                   size={30}
-                  url="https://www.instagram.com/isoboye_vincent/"
+                  url=""
                 />
                 <SocialMedia
                   icon={faXTwitter}
