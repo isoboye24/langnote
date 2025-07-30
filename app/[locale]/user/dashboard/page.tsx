@@ -50,12 +50,9 @@ const UserDashboard = async () => {
               </strong>
             </h1>
           )}
-          {totalBooks < 3 && (
+          {totalBooks > 2 && (
             <div className="">
-              <Link
-                href={`https://langnote-three.vercel.app/documentation`}
-                target="_blank"
-              >
+              <Link href={`http://localhost:3000/en/documentation`}>
                 <Button className="bg-black dark:bg-slate-800 text-gray-200 dark:text-gray-300">
                   How to use
                   <strong className="text-green-500  ">LangNote</strong>

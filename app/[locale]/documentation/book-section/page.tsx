@@ -50,7 +50,7 @@ const BookDoc = () => {
               className="mb-3 rounded-md"
             />
           </span>
-          Then click on the create book button at the to right corner of the
+          Then click on the create book button at the top right corner of the
           page (as shown in the image above). This will open a create book form.
           <span className="flex justify-center items-center">
             <Image
@@ -63,7 +63,7 @@ const BookDoc = () => {
             />
           </span>
           Fill out the form by choosing the language, giving title to the book
-          and also choose the colors for the book then create. This colors will
+          and also choose the colors for the book then create. These colors will
           design the book cover.
         </p>
       </section>
@@ -82,6 +82,16 @@ const BookDoc = () => {
               className="my-5 rounded-md"
             />
           </span>
+          In order to update the book click on the pencil button on the book and
+          refill the book form page and click update.
+        </p>
+        <p className="text-gray-700 dark:text-gray-300 text-justify my-5">
+          The delete button is also on the book cover. Click the red trash icon
+          on the book to delete the book.
+        </p>
+        <p className="text-gray-700 dark:text-gray-300 text-justify my-5">
+          When you have no group created in the book, your total group at the
+          middle of the book cover will be zero.
         </p>
       </section>
     </div>

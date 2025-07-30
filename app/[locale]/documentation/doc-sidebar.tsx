@@ -30,12 +30,25 @@ export default function DocSidebar({ isOpen }: DocSidebarProps) {
           href: 'documentation/book-section#how_to_create_book',
         },
         {
-          label: t('How to update book'),
+          label: t('How to update & delete book'),
           href: 'documentation/book-section#how_to_update_book',
         },
       ],
     },
-    { label: t('Group'), href: 'documentation/section-group' },
+    {
+      label: t('Group'),
+      href: 'documentation/section-group',
+      children: [
+        {
+          label: t('How to create group'),
+          href: 'documentation/book-section#how_to_create_group',
+        },
+        {
+          label: t('How to update & delete group'),
+          href: 'documentation/book-section#how_to_update_group',
+        },
+      ],
+    },
     { label: t('Word'), href: 'documentation/section-word' },
     { label: t('Review'), href: 'documentation/section-review' },
   ];
