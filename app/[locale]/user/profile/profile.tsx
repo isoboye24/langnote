@@ -107,7 +107,7 @@ const Profile: React.FC<Props> = ({
             <div className="">
               <hr className="w-full border-0.5 border-orange-800 dark:border-slate-400 my-10" />
             </div>
-            <div className="grid grid-cols-1 lg:flex gap-1 lg:justify-between">
+            <div className="grid grid-cols-1 lg:flex gap-1 lg:justify-between text-sm lg:text-base">
               <div className="text-slate-800 dark:text-slate-400">
                 <span>Most used book:</span>{' '}
                 <strong className="">{mostUsedBook}</strong>
