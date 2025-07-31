@@ -54,7 +54,7 @@ const UserDashboard = async () => {
               <Link href={`https://langnote-three.vercel.app/documentation`}>
                 <Button className="bg-black dark:bg-slate-800 text-gray-200 dark:text-gray-300">
                   How to use
-                  <strong className="text-green-500  ">LangNote</strong>
+                  <strong className="text-green-500">LangNote</strong>
                 </Button>
               </Link>
             </div>
