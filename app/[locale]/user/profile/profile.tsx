@@ -7,9 +7,21 @@ import { Button } from '@/components/ui/button';
 
 type Props = {
   user?: User;
+  totalUserWords: number;
+  totalUserGroup: number;
+  totalBooks: number;
+  totalFavoriteWords: number;
+  totalKnownWords: number;
 };
 
-const Profile: React.FC<Props> = ({ user }) => {
+const Profile: React.FC<Props> = ({
+  user,
+  totalUserWords,
+  totalUserGroup,
+  totalBooks,
+  totalFavoriteWords,
+  totalKnownWords,
+}) => {
   return (
     <div className="wrapper">
       <h1 className="mb-20 text-center text-2xl font-bold">My Profile</h1>
@@ -45,25 +57,45 @@ const Profile: React.FC<Props> = ({ user }) => {
           </div>
           <div className="flex-1 px-5 py-7 md:py-10">
             <div className="grid grid-cols-2 md:grid-cols-3 gap-4 dark:text-slate-400 text-slate-800">
-              <div className="flex flex-col text-center">
-                <span className="">Books</span>
-                <span className="font-semibold text-4xl md:text-5xl">0</span>
+              <div className="text-center">
+                <div className="font-bold">Books</div>
+                <div className="font-semibold text-lg md:text-2xl justify-items-center px-3 py-1">
+                  <div className="text-slate-200 dark:text-slate-400 dark:bg-slate-900 bg-orange-800 px-3 py-1 rounded-lg ">
+                    {totalBooks}
+                  </div>
+                </div>
               </div>
-              <div className="flex flex-col text-center">
-                <span className="">Groups</span>
-                <span className="font-semibold text-4xl md:text-5xl">0</span>
+              <div className="text-center">
+                <div className="font-bold">Groups</div>
+                <div className="font-semibold text-lg md:text-2xl justify-items-center px-3 py-1">
+                  <div className="text-slate-200 dark:text-slate-400 dark:bg-slate-900 bg-orange-800 px-3 py-1 rounded-lg ">
+                    {totalUserGroup}
+                  </div>
+                </div>
               </div>
-              <div className="flex flex-col text-center">
-                <span className="">Words</span>
-                <span className="font-semibold text-4xl md:text-5xl">0</span>
+              <div className="text-center">
+                <div className="font-bold">Words</div>
+                <div className="font-semibold text-lg md:text-2xl justify-items-center px-3 py-1">
+                  <div className="text-slate-200 dark:text-slate-400 dark:bg-slate-900 bg-orange-800 px-3 py-1 rounded-lg ">
+                    {totalUserWords}
+                  </div>
+                </div>
               </div>
-              <div className="flex flex-col text-center">
-                <span className="">Favorite</span>
-                <span className="font-semibold text-4xl md:text-5xl">0</span>
+              <div className="text-center">
+                <div className="font-bold">Favorite</div>
+                <div className="font-semibold text-lg md:text-2xl justify-items-center px-3 py-1">
+                  <div className="text-slate-200 dark:text-slate-400 dark:bg-slate-900 bg-orange-800 px-3 py-1 rounded-lg ">
+                    {totalFavoriteWords}
+                  </div>
+                </div>
               </div>
-              <div className="flex flex-col text-center">
-                <span className="">Known</span>
-                <span className="font-semibold text-4xl md:text-5xl">0</span>
+              <div className="text-center">
+                <div className="font-bold">Known</div>
+                <div className="font-semibold text-lg md:text-2xl justify-items-center px-3 py-1">
+                  <div className="text-slate-200 dark:text-slate-400 dark:bg-slate-900 bg-orange-800 px-3 py-1 rounded-lg ">
+                    {totalKnownWords}
+                  </div>
+                </div>
               </div>
             </div>
             <div className="">
