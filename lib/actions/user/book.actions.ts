@@ -5,6 +5,7 @@ import { upsertBookSchema } from '../../validator';
 import { revalidatePath } from 'next/cache';
 import { z } from 'zod';
 import { formatError } from '../../utils';
+import { auth } from '@/auth';
 
 export const upsertBook = async (data: z.infer<typeof upsertBookSchema>) => {
   const parsed = upsertBookSchema.safeParse(data);
@@ -230,4 +231,25 @@ export const getAllBooksToSelect = async (id: string, userId: string) => {
       message: 'Failed to fetch books',
     };
   }
+};
+
+export const getBookWithMostWords = async () => {
+  const session = await auth();
+  const currentUserId = session?.user?.id;
+
+  const book = await prisma.book.findFirst({
+    where: { userId: currentUserId },
+    orderBy: {
+      Word: {
+        _count: 'desc',
+      },
+    },
+    include: {
+      _count: {
+        select: { Word: true },
+      },
+    },
+  });
+
+  return book ?? null;
 };

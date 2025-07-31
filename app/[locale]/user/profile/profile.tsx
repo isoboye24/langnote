@@ -12,6 +12,9 @@ type Props = {
   totalBooks: number;
   totalFavoriteWords: number;
   totalKnownWords: number;
+  mostUsedBook?: string;
+  getMostUsedGroup?: string;
+  getMostUsedGroupWordCount?: number;
 };
 
 const Profile: React.FC<Props> = ({
@@ -21,6 +24,9 @@ const Profile: React.FC<Props> = ({
   totalBooks,
   totalFavoriteWords,
   totalKnownWords,
+  mostUsedBook,
+  getMostUsedGroup,
+  getMostUsedGroupWordCount,
 }) => {
   return (
     <div className="wrapper">
@@ -104,11 +110,14 @@ const Profile: React.FC<Props> = ({
             <div className="grid grid-cols-1 lg:flex gap-1 lg:justify-between">
               <div className="text-slate-800 dark:text-slate-400">
                 <span>Most used book:</span>{' '}
-                <strong className="">Book name</strong>
+                <strong className="">{mostUsedBook}</strong>
               </div>
               <div className="text-slate-800 dark:text-slate-400">
                 <span>Most used group:</span>{' '}
-                <strong className="">Group name</strong>
+                <strong className="">{getMostUsedGroup} </strong>
+                <span className="text-slate-950 dark:text-slate-500 font-semibold">
+                  ({getMostUsedGroupWordCount})
+                </span>
               </div>
             </div>
           </div>

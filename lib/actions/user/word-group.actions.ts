@@ -245,3 +245,42 @@ export const getAllTotalWordGroup = async () => {
     return 0;
   }
 };
+
+export const getMostUsedGroup = async (bookId: string) => {
+  try {
+    const mostUsedGroup = await prisma.wordGroup.findFirst({
+      where: { bookId },
+      orderBy: {
+        Word: {
+          _count: 'desc',
+        },
+      },
+      include: {
+        _count: {
+          select: { Word: true },
+        },
+      },
+    });
+
+    if (!mostUsedGroup) {
+      return {
+        success: false,
+        message: 'No groups found for this book',
+      };
+    }
+
+    return {
+      success: true,
+      data: {
+        ...mostUsedGroup,
+        wordCount: mostUsedGroup._count.Word,
+      },
+    };
+  } catch (error) {
+    console.error('Error fetching most used group:', error);
+    return {
+      success: false,
+      message: 'Failed to fetch most used group',
+    };
+  }
+};

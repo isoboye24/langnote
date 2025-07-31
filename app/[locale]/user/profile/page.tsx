@@ -3,13 +3,19 @@ import { requireUserAndAdmin } from '@/lib/auth.guard';
 import { auth } from '@/auth';
 import { getUserById } from '@/lib/actions/admin/user.actions';
 import Profile from './profile';
-import { getTotalUserBooks } from '@/lib/actions/user/book.actions';
+import {
+  getBookWithMostWords,
+  getTotalUserBooks,
+} from '@/lib/actions/user/book.actions';
 import {
   getAllTotalUserFavoriteWordCount,
   getAllTotalUserKnownWordCount,
   getAllTotalUserWord,
 } from '@/lib/actions/user/word.actions';
-import { getAllTotalWordGroup } from '@/lib/actions/user/word-group.actions';
+import {
+  getAllTotalWordGroup,
+  getMostUsedGroup,
+} from '@/lib/actions/user/word-group.actions';
 
 const ProfilePage = async () => {
   await requireUserAndAdmin();
@@ -27,13 +33,23 @@ const ProfilePage = async () => {
     totalBooks,
     totalFavoriteWords,
     totalKnownWords,
+    mostUsedBook,
   ] = await Promise.all([
     getAllTotalUserWord(),
     getAllTotalWordGroup(),
     getTotalUserBooks(currentUserId),
     getAllTotalUserFavoriteWordCount(),
     getAllTotalUserKnownWordCount(),
+    getBookWithMostWords(),
   ]);
+
+  let mostUsedGroup = null;
+
+  if (mostUsedBook?.id) {
+    mostUsedGroup = await getMostUsedGroup(mostUsedBook.id);
+  } else {
+    console.warn('No book found with words');
+  }
 
   return (
     <div>
@@ -44,6 +60,9 @@ const ProfilePage = async () => {
         totalBooks={totalBooks}
         totalFavoriteWords={totalFavoriteWords}
         totalKnownWords={totalKnownWords}
+        mostUsedBook={mostUsedBook?.title}
+        getMostUsedGroup={mostUsedGroup?.data?.groupName}
+        getMostUsedGroupWordCount={mostUsedGroup?.data?.wordCount}
       />
     </div>
   );
