@@ -30,6 +30,7 @@ import {
   Star,
 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import FilterWordsComponent from './filter-words-component';
 
 const ListOfWords = ({
   bookId,
@@ -47,6 +48,10 @@ const ListOfWords = ({
   const [filterType, setFilterTypes] = useState<string[]>(['All']);
   const [activeType, setActiveType] = useState('All');
   const [value, setValue] = useState('');
+  type Option = { key: number; value: string };
+  const [months, setMonths] = useState<Option[]>([]);
+
+  const [year, setYear] = useState<number[]>([]);
   type TimeFilter =
     | 'ALL'
     | 'LAST_WEEK'
@@ -278,6 +283,42 @@ const ListOfWords = ({
     }
   }, [value, timeFilter, activeType, bookId, groupId, page]);
 
+  useEffect(() => {
+    fetch('/api/months')
+      .then((res) => res.json())
+      .then((data) => {
+        const months = Object.entries(data).map(([key, value]) => ({
+          key: Number(key),
+          value: value as string,
+        }));
+        setMonths(months);
+      });
+  }, []);
+
+  useEffect(() => {
+    const fetchYears = async () => {
+      try {
+        const res = await fetch('/api/years', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ bookId, groupId }),
+        });
+        const years = await res.json();
+        setYear(years);
+      } catch (error) {
+        console.error('Failed to fetch years:', error);
+      }
+    };
+
+    if (bookId && groupId) {
+      fetchYears();
+    }
+  }, [bookId, groupId]);
+
+  const searchWords = () => {};
+
   return (
     <>
       <div className="wrapper">
@@ -317,6 +358,15 @@ const ListOfWords = ({
 
         <div className="">
           <div className="mt-10 justify-items-center">
+            <div className="mb-5">
+              <FilterWordsComponent
+                onSubmit={searchWords}
+                options1={months}
+                options2={year}
+                label1="Month"
+                label2="Year"
+              />
+            </div>
             <div className="grid grid-cols-1 gap-3 mb justify-items-center">
               <div className="flex gap-5 md:gap-10 lg:gap-20 ">
                 <div onClick={() => setTimeFilter('LAST_WEEK')}>
@@ -380,6 +430,7 @@ const ListOfWords = ({
             </div>
           </div>
         </div>
+
         <div className="shadow rounded-2xl bg-orange-50 dark:bg-gray-800 p-10 mt-10">
           {/* Mobile: dropdown */}
           <div className="sm:hidden mb-6 text-center">

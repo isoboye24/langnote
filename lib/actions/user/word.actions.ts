@@ -1208,3 +1208,25 @@ export const getAllFilteredUserWord = async ({
     total,
   };
 };
+
+export const getUniqueWordYears = async ({
+  bookId,
+  groupId,
+}: {
+  bookId: string;
+  groupId: string;
+}) => {
+  const words = await prisma.word.findMany({
+    where: { bookId: bookId, wordGroupId: groupId },
+    select: {
+      createdAt: true,
+    },
+  });
+
+  // Extract years and remove duplicates
+  const uniqueYears = [
+    ...new Set(words.map((word) => word.createdAt.getFullYear())),
+  ];
+
+  return uniqueYears.sort((a, b) => b - a);
+};
