@@ -1230,3 +1230,109 @@ export const getUniqueWordYears = async ({
 
   return uniqueYears.sort((a, b) => b - a);
 };
+
+export const getMonthlyFilteredUserWord = async ({
+  activeType,
+  bookId,
+  groupId,
+  month,
+  year,
+  page = 1,
+  pageSize = 10,
+}: {
+  activeType: string;
+  bookId: string;
+  groupId: string;
+  month: number;
+  year: number;
+  page: number;
+  pageSize: number;
+}) => {
+  const session = await auth();
+  const currentUserId = session?.user?.id;
+
+  if (!currentUserId) {
+    throw new Error('Unauthorized');
+  }
+
+  const currentBook = await prisma.book.findUnique({ where: { id: bookId } });
+  if (!currentBook) {
+    throw new Error('Book not found');
+  }
+
+  // Get available partOfSpeech names (if needed)
+  let partOfSpeechFilter;
+  if (activeType === 'All') {
+    const wordsWithPartOfSpeech = await prisma.word.findMany({
+      where: {
+        bookId,
+        wordGroupId: groupId,
+        userId: currentUserId,
+        createdAt: {
+          gte: new Date(year, month - 1, 1), // start of the month
+          lt: new Date(year, month, 1), // start of next month
+        },
+      },
+      select: {
+        partOfSpeech: {
+          select: { name: true },
+        },
+      },
+    });
+
+    const partOfSpeechNames = Array.from(
+      new Set(
+        wordsWithPartOfSpeech
+          .map((entry) => entry.partOfSpeech?.name)
+          .filter(Boolean)
+      )
+    );
+
+    partOfSpeechFilter = {
+      partOfSpeech: {
+        name: {
+          in: partOfSpeechNames,
+        },
+      },
+    };
+  } else {
+    partOfSpeechFilter = {
+      partOfSpeech: {
+        name: {
+          equals: activeType,
+        },
+      },
+    };
+  }
+
+  // Final query condition
+  const whereCondition = {
+    ...partOfSpeechFilter,
+    bookId,
+    wordGroupId: groupId,
+    userId: currentUserId,
+    createdAt: {
+      gte: new Date(year, month - 1, 1), // start of the month
+      lt: new Date(year, month, 1), // start of next month
+    },
+  };
+
+  const [allFilteredWords, total] = await Promise.all([
+    prisma.word.findMany({
+      where: whereCondition,
+      include: {
+        partOfSpeech: true,
+      },
+      orderBy: [{ word: 'asc' }],
+      skip: (page - 1) * pageSize, // <-- NEW
+      take: pageSize,
+    }),
+    prisma.word.count({ where: whereCondition }),
+  ]);
+
+  return {
+    success: true,
+    data: allFilteredWords,
+    total,
+  };
+};

@@ -7,30 +7,20 @@ import { getWordGroupById } from '@/lib/actions/user/word-group.actions';
 import {
   getAllFilteredUserFavoriteWords,
   getAllFilteredUserKnownWords,
-  getAllFilteredUserLastMonthWords,
-  getAllFilteredUserLastThreeMonthsWords,
   getAllFilteredUserLastTwoWeeksWords,
   getAllFilteredUserLastWeeksWords,
   getAllFilteredUserWord,
   getAllFilteredUserWords,
   getAllPartOfSpeechNamesInGroup,
+  getMonthlyFilteredUserWord,
   toggleFavoriteWord,
 } from '@/lib/actions/user/word.actions';
 import UserWordListsItems from './user-word-list-item';
 import { Button } from '../button';
 import Link from 'next/link';
 import { SmallCirclesWithIcon } from './small-circle-with-icon-center';
-import {
-  ArrowLeft,
-  BookType,
-  Brain,
-  Calendar1,
-  CalendarSearch,
-  RotateCcw,
-  Star,
-} from 'lucide-react';
+import { ArrowLeft, BookType, Brain, RotateCcw, Star } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import FilterWordsComponent from './filter-words-component';
 
 const ListOfWords = ({
   bookId,
@@ -50,14 +40,16 @@ const ListOfWords = ({
   const [value, setValue] = useState('');
   type Option = { key: number; value: string };
   const [months, setMonths] = useState<Option[]>([]);
+  const [selectedMonth, setSelectedMonth] = useState(0);
+  const [selectedMonthName, setSelectedMonthName] = useState('');
+  const [selectedYear, setSelectedYear] = useState(0);
 
   const [year, setYear] = useState<number[]>([]);
   type TimeFilter =
     | 'ALL'
     | 'LAST_WEEK'
     | 'TWO_WEEKS'
-    | 'LAST_MONTH'
-    | 'THREE_MONTHS'
+    | 'MONTH_AND_YEAR'
     | 'FAVORITE'
     | 'KNOWN';
   const [timeFilter, setTimeFilter] = useState<TimeFilter>('ALL');
@@ -131,28 +123,20 @@ const ListOfWords = ({
                 })
               );
               break;
-            case 'LAST_MONTH':
+            case 'MONTH_AND_YEAR':
               getWords(
-                await getAllFilteredUserLastMonthWords({
+                await getMonthlyFilteredUserWord({
                   activeType,
                   bookId,
                   groupId,
+                  month: selectedMonth,
+                  year: selectedYear,
                   page,
                   pageSize,
                 })
               );
               break;
-            case 'THREE_MONTHS':
-              getWords(
-                await getAllFilteredUserLastThreeMonthsWords({
-                  activeType,
-                  bookId,
-                  groupId,
-                  page,
-                  pageSize,
-                })
-              );
-              break;
+
             case 'FAVORITE':
               getWords(
                 await getAllFilteredUserFavoriteWords({
@@ -183,7 +167,16 @@ const ListOfWords = ({
 
       fetchUserWord();
     }
-  }, [value, timeFilter, activeType, bookId, groupId, page]);
+  }, [
+    value,
+    timeFilter,
+    activeType,
+    bookId,
+    groupId,
+    page,
+    selectedMonth,
+    selectedYear,
+  ]);
 
   useEffect(() => {
     if (value) {
@@ -233,23 +226,16 @@ const ListOfWords = ({
                 })
               );
               break;
-            case 'LAST_MONTH':
+            case 'MONTH_AND_YEAR':
               getWords(
-                await getAllFilteredUserWord({
-                  word: value,
+                await getMonthlyFilteredUserWord({
                   activeType,
                   bookId,
                   groupId,
-                })
-              );
-              break;
-            case 'THREE_MONTHS':
-              getWords(
-                await getAllFilteredUserWord({
-                  word: value,
-                  activeType,
-                  bookId,
-                  groupId,
+                  month: selectedMonth,
+                  year: selectedYear,
+                  page,
+                  pageSize,
                 })
               );
               break;
@@ -281,7 +267,16 @@ const ListOfWords = ({
 
       fetchUserWord();
     }
-  }, [value, timeFilter, activeType, bookId, groupId, page]);
+  }, [
+    value,
+    timeFilter,
+    activeType,
+    bookId,
+    groupId,
+    page,
+    selectedMonth,
+    selectedYear,
+  ]);
 
   useEffect(() => {
     fetch('/api/months')
@@ -316,8 +311,6 @@ const ListOfWords = ({
       fetchYears();
     }
   }, [bookId, groupId]);
-
-  const searchWords = () => {};
 
   return (
     <>
@@ -356,75 +349,99 @@ const ListOfWords = ({
           {wordGroup?.groupName ?? ''}
         </div>
 
-        <div className="">
-          <div className="mt-10 justify-items-center">
-            <div className="mb-5">
-              <FilterWordsComponent
-                onSubmit={searchWords}
-                options1={months}
-                options2={year}
-                label1="Month"
-                label2="Year"
-              />
-            </div>
-            <div className="grid grid-cols-1 gap-3 mb justify-items-center">
-              <div className="flex gap-5 md:gap-10 lg:gap-20 ">
-                <div onClick={() => setTimeFilter('LAST_WEEK')}>
-                  <SmallCirclesWithIcon
-                    icon={RotateCcw}
-                    tooltipText="Last week"
-                  />
-                </div>
-                <div onClick={() => setTimeFilter('TWO_WEEKS')}>
-                  <SmallCirclesWithIcon
-                    icon={BookType}
-                    tooltipText="Last 2 weeks"
-                  />
-                </div>
-                <div onClick={() => setTimeFilter('LAST_MONTH')}>
-                  <SmallCirclesWithIcon
-                    icon={Calendar1}
-                    tooltipText="Last Month"
-                  />
-                </div>
-                <div onClick={() => setTimeFilter('THREE_MONTHS')}>
-                  <SmallCirclesWithIcon
-                    icon={CalendarSearch}
-                    tooltipText="Last 3 Month"
-                  />
-                </div>
+        {/* Filters */}
+        <div className="justify-items-center">
+          <div className="mt-10">
+            <div className="grid grid-cols-1 md:grid-cols-2 justify-items-center gap-10 md:gap-5">
+              <div className="bg-orange-200 p-5 rounded-2xl ">
+                <h1 className="text-sm md:text-base lg:text-lg text-center">
+                  Filter by date:
+                </h1>
+                <div className="p-3 mx-auto bg-transparent rounded-2xl shadow-lg space-y-1">
+                  <div className="flex gap-2 justify-center items-center">
+                    {/* Dropdown 1 */}
+                    <div>
+                      <select
+                        className="w-full p-2 border rounded text-sm md:text-base"
+                        value={selectedMonth}
+                        onChange={(e) => {
+                          const monthInt = parseInt(e.target.value);
+                          setSelectedMonth(monthInt);
 
-                <div
-                  className="hidden lg:block"
-                  onClick={() => setTimeFilter('FAVORITE')}
-                >
-                  <SmallCirclesWithIcon
-                    icon={Star}
-                    tooltipText="Favorite Words"
-                  />
-                </div>
-                <div
-                  className="hidden lg:block"
-                  onClick={() => setTimeFilter('KNOWN')}
-                >
-                  <SmallCirclesWithIcon
-                    icon={Brain}
-                    tooltipText="Known Words"
-                  />
+                          const monthName =
+                            months.find((option) => option.key + 1 === monthInt)
+                              ?.value || '';
+                          setSelectedMonthName(monthName);
+                        }}
+                      >
+                        <option value="">Month</option>
+                        {months.map((option) => (
+                          <option key={option.key} value={option.key + 1}>
+                            {option.value}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+
+                    {/* Dropdown 2 */}
+                    <div>
+                      <select
+                        className="w-full p-2 border rounded text-sm md:text-base"
+                        value={selectedYear}
+                        onChange={(e) =>
+                          setSelectedYear(parseInt(e.target.value))
+                        }
+                      >
+                        <option value="">Year</option>
+                        {year.map((option) => (
+                          <option key={option} value={option} className="px-2">
+                            {option}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+
+                    {/* Submit Button */}
+                    <div className="flex justify-center items-center">
+                      <button
+                        className="w-full bg-orange-800 hover:bg-orange-700 text-white font-semibold py-1 px-2 rounded-md cursor-pointer transition ease-in-out duration-500 text-sm md:text-base"
+                        onClick={() => setTimeFilter('MONTH_AND_YEAR')}
+                      >
+                        Search
+                      </button>
+                    </div>
+                  </div>
                 </div>
               </div>
-              <div className="flex lg:hidden gap-5 md:gap-10 lg:gap-20">
-                <div className="" onClick={() => setTimeFilter('FAVORITE')}>
-                  <SmallCirclesWithIcon
-                    icon={Star}
-                    tooltipText="Favorite Words"
-                  />
-                </div>
-                <div className="" onClick={() => setTimeFilter('KNOWN')}>
-                  <SmallCirclesWithIcon
-                    icon={Brain}
-                    tooltipText="Known Words"
-                  />
+              <div className="bg-orange-200 p-5 rounded-2xl grid grid-cols-1 gap-3 justify-items-center">
+                <h1 className="text-sm md:text-base lg:text-lg text-center">
+                  Filter by button:
+                </h1>
+                <div className="flex gap-5 lg:gap-8 ">
+                  <div onClick={() => setTimeFilter('LAST_WEEK')}>
+                    <SmallCirclesWithIcon
+                      icon={RotateCcw}
+                      tooltipText="Last week"
+                    />
+                  </div>
+                  <div onClick={() => setTimeFilter('TWO_WEEKS')}>
+                    <SmallCirclesWithIcon
+                      icon={BookType}
+                      tooltipText="Last 2 weeks"
+                    />
+                  </div>
+                  <div className="" onClick={() => setTimeFilter('FAVORITE')}>
+                    <SmallCirclesWithIcon
+                      icon={Star}
+                      tooltipText="Favorite Words"
+                    />
+                  </div>
+                  <div className="" onClick={() => setTimeFilter('KNOWN')}>
+                    <SmallCirclesWithIcon
+                      icon={Brain}
+                      tooltipText="Known Words"
+                    />
+                  </div>
                 </div>
               </div>
             </div>
@@ -433,6 +450,23 @@ const ListOfWords = ({
 
         <div className="shadow rounded-2xl bg-orange-50 dark:bg-gray-800 p-10 mt-10">
           {/* Mobile: dropdown */}
+          <div className="block lg:hidden text-sm md:text-base text-orange-800 mb-3 md:mb-5 text-center">
+            {timeFilter === 'ALL' ? (
+              ''
+            ) : timeFilter === 'LAST_WEEK' ? (
+              <p>saved a week ago</p>
+            ) : timeFilter === 'TWO_WEEKS' ? (
+              <p>saved 2 week ago</p>
+            ) : timeFilter === 'MONTH_AND_YEAR' ? (
+              <p>
+                saved in {selectedMonthName} {selectedYear}
+              </p>
+            ) : timeFilter === 'FAVORITE' ? (
+              <p>Favorite words</p>
+            ) : (
+              <p>Known words</p>
+            )}
+          </div>
           <div className="sm:hidden mb-6 text-center">
             <select
               className="border border-gray-300 rounded px-3 py-2 text-sm"

@@ -13,7 +13,7 @@ export const SmallCirclesWithIcon = ({
   className,
 }: {
   icon: LucideIcon;
-  tooltipText: string;
+  tooltipText?: string;
   className?: string;
 }) => {
   return (
@@ -22,7 +22,7 @@ export const SmallCirclesWithIcon = ({
         <TooltipTrigger asChild>
           <div
             className={cn(
-              'w-10 h-10 md:w-15 md:h-15 flex items-center justify-center rounded-full bg-orange-200 dark:bg-gray-700 hover:bg-orange-300 hover:dark:bg-gray-600 transition-colors cursor-pointer',
+              'w-10 h-10 lg:w-15 lg:h-15 flex items-center justify-center rounded-full bg-orange-300 dark:bg-gray-700 hover:bg-orange-400 hover:dark:bg-gray-600 transition-colors cursor-pointer',
               className
             )}
           >
