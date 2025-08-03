@@ -1268,6 +1268,8 @@ export const getMonthlyFilteredUserWord = async ({
         bookId,
         wordGroupId: groupId,
         userId: currentUserId,
+        known: false,
+        favorite: false,
         createdAt: {
           gte: new Date(year, month - 1, 1), // start of the month
           lt: new Date(year, month, 1), // start of next month
@@ -1311,6 +1313,8 @@ export const getMonthlyFilteredUserWord = async ({
     bookId,
     wordGroupId: groupId,
     userId: currentUserId,
+    known: false,
+    favorite: false,
     createdAt: {
       gte: new Date(year, month - 1, 1), // start of the month
       lt: new Date(year, month, 1), // start of next month
