@@ -352,69 +352,77 @@ const ListOfWords = ({
         {/* Filters */}
         <div className="justify-items-center">
           <div className="mt-10">
-            <div className="grid grid-cols-1 md:grid-cols-2 justify-items-center gap-10 md:gap-5">
-              <div className="bg-orange-200 p-5 rounded-2xl ">
-                <h1 className="text-sm md:text-base lg:text-lg text-center">
+            <div className="grid grid-cols-1 md:grid-cols-2 justify-items-center gap-5 bg-orange-200 md:bg-orange-100 dark:bg-slate-800 md:dark:bg-slate-950 rounded-2xl py-5">
+              <div className="bg-orange-200 dark:bg-slate-800 px-2 md:p-5 rounded-2xl ">
+                <h1 className="text-sm md:text-base lg:text-lg text-center dark:text-slate-400">
                   Filter by date:
                 </h1>
-                <div className="p-3 mx-auto bg-transparent rounded-2xl shadow-lg space-y-1">
-                  <div className="flex gap-2 justify-center items-center">
-                    {/* Dropdown 1 */}
-                    <div>
-                      <select
-                        className="w-full p-2 border rounded text-sm md:text-base"
-                        value={selectedMonth}
-                        onChange={(e) => {
-                          const monthInt = parseInt(e.target.value);
-                          setSelectedMonth(monthInt);
+                <div className="flex gap-2 justify-between py-3 w-full bg-transparent ">
+                  {/* <div className=" "> */}
+                  {/* Dropdown 1 */}
+                  <div>
+                    <select
+                      className="w-full p-2 border border-orange-800 dark:border-slate-700 rounded-md text-sm md:text-base dark:text-slate-400"
+                      value={selectedMonth}
+                      onChange={(e) => {
+                        const monthInt = parseInt(e.target.value);
+                        setSelectedMonth(monthInt);
 
-                          const monthName =
-                            months.find((option) => option.key + 1 === monthInt)
-                              ?.value || '';
-                          setSelectedMonthName(monthName);
-                        }}
-                      >
-                        <option value="">Month</option>
-                        {months.map((option) => (
-                          <option key={option.key} value={option.key + 1}>
-                            {option.value}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-
-                    {/* Dropdown 2 */}
-                    <div>
-                      <select
-                        className="w-full p-2 border rounded text-sm md:text-base"
-                        value={selectedYear}
-                        onChange={(e) =>
-                          setSelectedYear(parseInt(e.target.value))
-                        }
-                      >
-                        <option value="">Year</option>
-                        {year.map((option) => (
-                          <option key={option} value={option} className="px-2">
-                            {option}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-
-                    {/* Submit Button */}
-                    <div className="flex justify-center items-center">
-                      <button
-                        className="w-full bg-orange-800 hover:bg-orange-700 text-white font-semibold py-1 px-2 rounded-md cursor-pointer transition ease-in-out duration-500 text-sm md:text-base"
-                        onClick={() => setTimeFilter('MONTH_AND_YEAR')}
-                      >
-                        Search
-                      </button>
-                    </div>
+                        const monthName =
+                          months.find((option) => option.key + 1 === monthInt)
+                            ?.value || '';
+                        setSelectedMonthName(monthName);
+                      }}
+                    >
+                      <option value="">Month</option>
+                      {months.map((option) => (
+                        <option
+                          key={option.key}
+                          value={option.key + 1}
+                          className="dark:bg-slate-900 bg-orange-100 hover:bg-orange-200 dark:hover:bg-slate-800"
+                        >
+                          {option.value}
+                        </option>
+                      ))}
+                    </select>
                   </div>
+
+                  {/* Dropdown 2 */}
+                  <div>
+                    <select
+                      className="w-full p-2 border border-orange-800 dark:border-slate-700 rounded-md text-sm md:text-base dark:text-slate-400"
+                      value={selectedYear}
+                      onChange={(e) =>
+                        setSelectedYear(parseInt(e.target.value))
+                      }
+                    >
+                      <option value="">Year</option>
+                      {year.map((option) => (
+                        <option
+                          key={option}
+                          value={option}
+                          className="dark:bg-slate-900 bg-orange-100 hover:bg-orange-200 dark:hover:bg-slate-800 px-2"
+                        >
+                          {option}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  {/* Submit Button */}
+                  <div className="flex justify-center items-center">
+                    <button
+                      className="w-full bg-orange-800 hover:bg-orange-700 dark:bg-slate-700 dark:hover:bg-slate-600 text-white dark:text-slate-400 font-semibold py-1 px-2 rounded-md cursor-pointer transition ease-in-out duration-500 text-sm md:text-base"
+                      onClick={() => setTimeFilter('MONTH_AND_YEAR')}
+                    >
+                      Search
+                    </button>
+                  </div>
+                  {/* </div> */}
                 </div>
               </div>
-              <div className="bg-orange-200 p-5 rounded-2xl grid grid-cols-1 gap-3 justify-items-center">
-                <h1 className="text-sm md:text-base lg:text-lg text-center">
+              <div className="bg-orange-200 dark:bg-slate-800 rounded-2xl grid grid-cols-1 gap-3 justify-items-center p-0 md:p-5">
+                <h1 className="dark:text-slate-400 text-sm md:text-base lg:text-lg text-center">
                   Filter by button:
                 </h1>
                 <div className="flex gap-5 lg:gap-8 ">
@@ -450,7 +458,7 @@ const ListOfWords = ({
 
         <div className="shadow rounded-2xl bg-orange-50 dark:bg-gray-800 p-10 mt-10">
           {/* Mobile: dropdown */}
-          <div className="block lg:hidden text-sm md:text-base text-orange-800 mb-3 md:mb-5 text-center">
+          <div className="block lg:hidden text-sm md:text-base text-orange-800 dark:text-slate-400 mb-3 md:mb-5 text-center">
             {timeFilter === 'ALL' ? (
               ''
             ) : timeFilter === 'LAST_WEEK' ? (
