@@ -10,7 +10,7 @@ import { useRouter } from 'next/navigation';
 
 const Book = ({
   title,
-  language,
+  // language,
   groups,
   color1 = '#4f46e5',
   color2 = '#9333ea',
@@ -26,14 +26,14 @@ const Book = ({
   const router = useRouter();
 
   // Compute topValue before returning JSX
-  let topValue = 4;
-  if (title.length < 12) {
-    topValue = 3;
-  } else if (title.length < 24) {
-    topValue = 4;
-  } else {
-    topValue = 6.5;
-  }
+  // let topValue = 4;
+  // if (title.length < 12) {
+  //   topValue = 3;
+  // } else if (title.length < 24) {
+  //   topValue = 4;
+  // } else {
+  //   topValue = 6.5;
+  // }
 
   const handleCardClick = () => {
     router.push(`/user/books/${id}`);
@@ -42,7 +42,7 @@ const Book = ({
   return (
     <div
       onClick={handleCardClick}
-      className="relative w-50 h-60 md:w-45 md:h-70 rounded-md overflow-hidden shadow-xl border"
+      className="relative w-50 h-60 md:w-45 md:h-70 rounded-md overflow-hidden shadow-l-4xl border shadow-amber-600"
       style={{
         background: `linear-gradient(135deg, ${color1}, ${color2})`,
       }}
@@ -53,12 +53,12 @@ const Book = ({
       </div>
 
       {/* Subtext (Language) */}
-      <div
+      {/* <div
         className="text-center md:text-start mt-2 md:mt-0 absolute left-4 right-4 text-white text-xs md:text-sm italic"
         style={{ top: `${topValue}rem` }}
       >
         {language}
-      </div>
+      </div> */}
 
       {/* Center Decorative Section */}
       <div

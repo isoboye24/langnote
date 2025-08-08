@@ -9,7 +9,7 @@ import {
   getAllFilteredUserKnownWords,
   getAllFilteredUserLastTwoWeeksWords,
   getAllFilteredUserLastWeeksWords,
-  getAllFilteredUserWord,
+  getAllFilteredUserWordBySearch,
   getAllFilteredUserWords,
   getAllPartOfSpeechNamesInGroup,
   getMonthlyFilteredUserWord,
@@ -198,7 +198,7 @@ const ListOfWords = ({
           switch (timeFilter) {
             case 'ALL':
               getWords(
-                await getAllFilteredUserWord({
+                await getAllFilteredUserWordBySearch({
                   word: value,
                   activeType,
                   bookId,
@@ -208,7 +208,7 @@ const ListOfWords = ({
               break;
             case 'LAST_WEEK':
               getWords(
-                await getAllFilteredUserWord({
+                await getAllFilteredUserWordBySearch({
                   word: value,
                   activeType,
                   bookId,
@@ -218,7 +218,7 @@ const ListOfWords = ({
               break;
             case 'TWO_WEEKS':
               getWords(
-                await getAllFilteredUserWord({
+                await getAllFilteredUserWordBySearch({
                   word: value,
                   activeType,
                   bookId,
@@ -241,7 +241,7 @@ const ListOfWords = ({
               break;
             case 'FAVORITE':
               getWords(
-                await getAllFilteredUserWord({
+                await getAllFilteredUserWordBySearch({
                   word: value,
                   activeType,
                   bookId,
@@ -251,7 +251,7 @@ const ListOfWords = ({
               break;
             case 'KNOWN':
               getWords(
-                await getAllFilteredUserWord({
+                await getAllFilteredUserWordBySearch({
                   word: value,
                   activeType,
                   bookId,

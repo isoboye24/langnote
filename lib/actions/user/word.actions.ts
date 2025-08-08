@@ -1114,7 +1114,7 @@ export async function getAllUserWordsWithoutPagination({
     return { success: false, error };
   }
 }
-export const getAllFilteredUserWord = async ({
+export const getAllFilteredUserWordBySearch = async ({
   word,
   activeType,
   bookId,
@@ -1145,10 +1145,7 @@ export const getAllFilteredUserWord = async ({
         bookId,
         wordGroupId: groupId,
         userId: currentUserId,
-        word: {
-          contains: word,
-          mode: 'insensitive',
-        },
+        word,
       },
       select: {
         partOfSpeech: {
@@ -1188,7 +1185,12 @@ export const getAllFilteredUserWord = async ({
     bookId,
     wordGroupId: groupId,
     userId: currentUserId,
-    word: { contains: word },
+    OR: [
+      { word: { contains: word } },
+      { synonym: { contains: word } },
+      { antonym: { contains: word } },
+      { meaning: { contains: word } },
+    ],
   };
 
   const [allFilteredWords, total] = await Promise.all([
