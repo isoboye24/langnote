@@ -42,7 +42,7 @@ const Book = ({
   return (
     <div
       onClick={handleCardClick}
-      className="relative w-50 h-60 md:w-45 md:h-70 rounded-md overflow-hidden shadow-l-4xl border shadow-amber-600"
+      className="relative w-45 h-50 md:h-60 rounded-md overflow-hidden shadow-l-4xl border shadow-amber-600"
       style={{
         background: `linear-gradient(135deg, ${color1}, ${color2})`,
       }}
