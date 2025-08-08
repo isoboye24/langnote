@@ -56,6 +56,7 @@ const ListOfWords = ({
 
   const pageSize = 10;
 
+  // Fetch types
   useEffect(() => {
     const fetchFilterTypes = async () => {
       try {
@@ -72,6 +73,7 @@ const ListOfWords = ({
     fetchFilterTypes();
   }, [bookId, groupId]);
 
+  // Fetch words by default
   useEffect(() => {
     if (!value) {
       const fetchUserWord = async () => {
@@ -178,6 +180,7 @@ const ListOfWords = ({
     selectedYear,
   ]);
 
+  // Fetch words
   useEffect(() => {
     if (value) {
       const fetchUserWord = async () => {
@@ -278,6 +281,7 @@ const ListOfWords = ({
     selectedYear,
   ]);
 
+  // Fetch months
   useEffect(() => {
     fetch('/api/months')
       .then((res) => res.json())
@@ -290,6 +294,7 @@ const ListOfWords = ({
       });
   }, []);
 
+  // Fetch years
   useEffect(() => {
     const fetchYears = async () => {
       try {
@@ -518,15 +523,15 @@ const ListOfWords = ({
           {/* search input */}
           <div className="mb-10">
             <div className="flex flex-col justify-center gap-3 items-center">
-              {totalCount > 10 && (
-                <input
-                  type="text"
-                  className={`border px-3 py-2 rounded-2xl border-orange-800 w-60 md:100`}
-                  placeholder="Search..."
-                  value={value}
-                  onChange={(e) => setValue(e.target.value)}
-                />
-              )}
+              {/* {totalCount > 10 && ( */}
+              <input
+                type="text"
+                className={`border px-3 py-2 rounded-2xl border-orange-800 w-60 md:100`}
+                placeholder="Search..."
+                value={value}
+                onChange={(e) => setValue(e.target.value)}
+              />
+              {/* )} */}
               <div className="flex gap-3 justify-center items-center">
                 <span className="font-bold">{value}</span>
                 {value.length > 0 && (

@@ -1114,6 +1114,7 @@ export async function getAllUserWordsWithoutPagination({
     return { success: false, error };
   }
 }
+
 export const getAllFilteredUserWordBySearch = async ({
   word,
   activeType,
@@ -1145,7 +1146,12 @@ export const getAllFilteredUserWordBySearch = async ({
         bookId,
         wordGroupId: groupId,
         userId: currentUserId,
-        word,
+        OR: [
+          { word: { contains: word } },
+          { synonym: word },
+          { antonym: word },
+          { meaning: { contains: word } },
+        ],
       },
       select: {
         partOfSpeech: {
@@ -1186,9 +1192,9 @@ export const getAllFilteredUserWordBySearch = async ({
     wordGroupId: groupId,
     userId: currentUserId,
     OR: [
-      { word: { contains: word } },
-      { synonym: { contains: word } },
-      { antonym: { contains: word } },
+      { word: { startsWith: word } },
+      { synonym: word },
+      { antonym: word },
       { meaning: { contains: word } },
     ],
   };
