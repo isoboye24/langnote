@@ -1147,10 +1147,10 @@ export const getAllFilteredUserWordBySearch = async ({
         wordGroupId: groupId,
         userId: currentUserId,
         OR: [
-          { word: { contains: word } },
+          { word: { contains: word, mode: 'insensitive' } },
           { synonym: word },
           { antonym: word },
-          { meaning: { contains: word } },
+          { meaning: { contains: word, mode: 'insensitive' } },
         ],
       },
       select: {
@@ -1192,7 +1192,7 @@ export const getAllFilteredUserWordBySearch = async ({
     wordGroupId: groupId,
     userId: currentUserId,
     OR: [
-      { word: { startsWith: word } },
+      { word: { contains: word } },
       { synonym: word },
       { antonym: word },
       { meaning: { contains: word } },
