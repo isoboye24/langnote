@@ -7,7 +7,7 @@ const defaultLocale = 'en';
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  // Skip static assets and API
+  // Skip static and API routes
   if (
     pathname.startsWith('/_next') ||
     pathname.startsWith('/api') ||
@@ -25,9 +25,13 @@ export function middleware(request: NextRequest) {
     return NextResponse.redirect(url);
   }
 
-  // Auth protection using ONLY cookie (no heavy auth import)
-  const sessionCookie = request.cookies.get('authjs.session-token')?.value;
+  // Support all possible NextAuth session cookies
+  const sessionCookie =
+    request.cookies.get('__Secure-authjs.session-token')?.value ||
+    request.cookies.get('authjs.session-token')?.value ||
+    request.cookies.get('__Host-authjs.session-token')?.value;
 
+  // Protected routes
   const protectedPaths = [
     /^\/(en|de|ru)\/user(\/.*)?$/,
     /^\/(en|de|ru)\/admin(\/.*)?$/,
@@ -41,7 +45,7 @@ export function middleware(request: NextRequest) {
     );
   }
 
-  // Cookie handling
+  // Cart cookie
   const response = NextResponse.next();
 
   if (!request.cookies.has('sessionCartId')) {
