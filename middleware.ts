@@ -7,7 +7,7 @@ const defaultLocale = 'en';
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  // Skip static assets
+  // Skip static assets and API
   if (
     pathname.startsWith('/_next') ||
     pathname.startsWith('/api') ||
@@ -18,21 +18,24 @@ export function middleware(request: NextRequest) {
 
   // Locale redirect
   const hasLocale = locales.some((locale) => pathname.startsWith(`/${locale}`));
+
   if (!hasLocale) {
     const url = request.nextUrl.clone();
     url.pathname = `/${defaultLocale}${pathname}`;
     return NextResponse.redirect(url);
   }
 
-  // PROTECTED ROUTES (just check if session cookie exists)
+  // Auth protection using ONLY cookie (no heavy auth import)
+  const sessionCookie = request.cookies.get('authjs.session-token')?.value;
+
   const protectedPaths = [
     /^\/(en|de|ru)\/user(\/.*)?$/,
     /^\/(en|de|ru)\/admin(\/.*)?$/,
   ];
 
-  const token = request.cookies.get('sessionToken')?.value; // cookie name based on your auth system
+  const isProtected = protectedPaths.some((regex) => regex.test(pathname));
 
-  if (!token && protectedPaths.some((r) => r.test(pathname))) {
+  if (!sessionCookie && isProtected) {
     return NextResponse.redirect(
       new URL(`/${defaultLocale}/login`, request.url)
     );
