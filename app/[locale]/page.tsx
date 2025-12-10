@@ -3,7 +3,7 @@
 import React from 'react';
 import PopularLists from '@/app/[locale]/home/Popular-lists/page';
 import HomeWelcomeSection2 from '@/components/ui/shared/home-welcome-section2';
-import BookComputerSection from '@/components/ui/shared/book-computer-section';
+// import BookComputerSection from '@/components/ui/shared/book-computer-section';
 
 const LocalePage = () => {
   return (
@@ -19,7 +19,7 @@ const LocalePage = () => {
           </div>
         </div>
         <div className="bg-gray-100 dark:bg-gray-800 pt-10 md:pt-0">
-          <BookComputerSection />
+          {/* <BookComputerSection /> */}
         </div>
       </main>
     </div>

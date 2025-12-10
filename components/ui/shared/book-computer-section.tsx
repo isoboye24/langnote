@@ -1,6 +1,6 @@
 import React from 'react';
-import Picture from '@/public/images/booksAndComputer.jpg';
-import Image from 'next/image';
+// import Picture from '@/public/images/booksAndComputer.jpg';
+// import Image from 'next/image';
 import { Brain, LaptopMinimalCheck, Search, Smartphone } from 'lucide-react';
 
 const BookComputerSection = () => {
@@ -12,17 +12,17 @@ const BookComputerSection = () => {
   ];
   return (
     <div className="px-0 md:px-20 py-0 md:py-20">
-      <h1 className="text-2xl md:text-4xl text-black dark:text-gray-300 text-center font-bold mb-0  md:mb-5">
+      {/* <h1 className="text-2xl md:text-4xl text-black dark:text-gray-300 text-center font-bold mb-0  md:mb-5">
         4 S Comparison
-      </h1>
-      <div className="p-0 md:pt-10 xl:p-20 flex flex-col-reverse md:grid grid-cols-2 text-white gap-5">
-        <div className="">
+      </h1> */}
+      <div className="p-0 md:pt-10 xl:p-20 flex flex-col-reverse md:grid grid-cols-1 text-white gap-5">
+        {/* <div className="">
           <Image
             className="rounded-0 md:rounded-full w-full lg:w-[700px] h-[220px] lg:h-[400px]"
             src={Picture}
             alt="book and computer image"
           />
-        </div>
+        </div> */}
         <div className="mt-10 mb-5 md:mb-0 md:mt-0 flex flex-col ">
           {/* make each of them with an icon */}
           <div className="text-xl text-start text-black dark:text-gray-300 px-5 md:px-0">

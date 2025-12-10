@@ -449,11 +449,8 @@ const ListOfWords = ({
                       tooltipText="Favorite Words"
                     />
                   </div>
-                  <div className="" onClick={() => setTimeFilter('KNOWN')}>
-                    <SmallCirclesWithIcon
-                      icon={Brain}
-                      tooltipText="Known Words"
-                    />
+                  <div className="" onClick={() => setTimeFilter('ALL')}>
+                    <SmallCirclesWithIcon icon={Brain} tooltipText="All" />
                   </div>
                 </div>
               </div>
