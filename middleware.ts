@@ -1,14 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { auth } from './auth';
 
 const PUBLIC_FILE = /\.(.*)$/;
 const locales = ['en', 'de', 'ru'];
 const defaultLocale = 'en';
 
-export async function middleware(request: NextRequest) {
+export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  // Skip static assets and API
+  // Skip static assets
   if (
     pathname.startsWith('/_next') ||
     pathname.startsWith('/api') ||
@@ -25,14 +24,15 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(url);
   }
 
-  // Auth protection
-  const session = await auth(); // this uses authConfig
+  // PROTECTED ROUTES (just check if session cookie exists)
   const protectedPaths = [
     /^\/(en|de|ru)\/user(\/.*)?$/,
     /^\/(en|de|ru)\/admin(\/.*)?$/,
   ];
 
-  if (!session && protectedPaths.some((regex) => regex.test(pathname))) {
+  const token = request.cookies.get('sessionToken')?.value; // cookie name based on your auth system
+
+  if (!token && protectedPaths.some((r) => r.test(pathname))) {
     return NextResponse.redirect(
       new URL(`/${defaultLocale}/login`, request.url)
     );
@@ -40,9 +40,8 @@ export async function middleware(request: NextRequest) {
 
   // Cookie handling
   const response = NextResponse.next();
-  const hasCartCookie = request.cookies.has('sessionCartId');
 
-  if (!hasCartCookie) {
+  if (!request.cookies.has('sessionCartId')) {
     response.cookies.set('sessionCartId', crypto.randomUUID(), {
       path: '/',
       httpOnly: true,
