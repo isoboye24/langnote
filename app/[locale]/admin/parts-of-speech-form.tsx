@@ -27,7 +27,7 @@ import {
   SelectItem,
 } from '@/components/ui/select';
 import { PartOfSpeech } from '@prisma/client';
-import { getAllLanguages } from '@/lib/actions/admin/language.actions';
+import { getAllLanguagesToSelect } from '@/lib/actions/admin/language.actions';
 import { upsertPartsOfSpeech } from '@/lib/actions/admin/parts-of-speech.actions';
 
 const PartsOfSpeechForm = ({
@@ -67,7 +67,7 @@ const PartsOfSpeechForm = ({
 
   useEffect(() => {
     const fetchLanguages = async () => {
-      const res = await getAllLanguages();
+      const res = await getAllLanguagesToSelect();
       if (res.success && Array.isArray(res.data)) {
         setLanguages(res.data);
       } else {
