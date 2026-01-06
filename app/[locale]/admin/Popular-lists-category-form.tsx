@@ -30,7 +30,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { UploadButton } from '@uploadthing/react';
 import { OurFileRouter } from '@/lib/uploadthing';
 import { PopularListCategory } from '@prisma/client';
-import { getAllLanguages } from '@/lib/actions/admin/language.actions';
+import { getAllLanguagesToSelect } from '@/lib/actions/admin/language.actions';
 import { upsertPopularCategory } from '@/lib/actions/admin/popular-list-category.actions';
 
 const PopularListsCategoryForm = ({
@@ -75,7 +75,7 @@ const PopularListsCategoryForm = ({
 
   useEffect(() => {
     const fetchLanguages = async () => {
-      const res = await getAllLanguages();
+      const res = await getAllLanguagesToSelect();
       if (res.success && Array.isArray(res.data)) {
         setLanguages(res.data);
       } else {
