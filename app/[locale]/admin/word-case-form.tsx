@@ -27,7 +27,7 @@ import {
   SelectItem,
 } from '@/components/ui/select';
 import { WordCase } from '@prisma/client';
-import { getAllLanguages } from '@/lib/actions/admin/language.actions';
+import { getAllLanguagesToSelect } from '@/lib/actions/admin/language.actions';
 
 import { upsertWordCase } from '@/lib/actions/admin/cases.actions';
 
@@ -68,7 +68,7 @@ const WordCaseForm = ({
 
   useEffect(() => {
     const fetchLanguages = async () => {
-      const res = await getAllLanguages();
+      const res = await getAllLanguagesToSelect();
       if (res.success && Array.isArray(res.data)) {
         setLanguages(res.data);
       } else {

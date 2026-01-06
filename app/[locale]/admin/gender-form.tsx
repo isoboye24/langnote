@@ -28,7 +28,7 @@ import {
   SelectItem,
 } from '@/components/ui/select';
 import { Gender } from '@prisma/client';
-import { getAllLanguages } from '@/lib/actions/admin/language.actions';
+import { getAllLanguagesToSelect } from '@/lib/actions/admin/language.actions';
 
 const GenderForm = ({
   type,
@@ -67,7 +67,7 @@ const GenderForm = ({
 
   useEffect(() => {
     const fetchLanguages = async () => {
-      const res = await getAllLanguages();
+      const res = await getAllLanguagesToSelect();
       if (res.success && Array.isArray(res.data)) {
         setLanguages(res.data);
       } else {
